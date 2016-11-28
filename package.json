@@ -1,0 +1,52 @@
+{
+  "name": "linkr",
+  "version": "1.0.0",
+  "description": "Beautiful link shortening",
+  "scripts": {
+    "build": "npm run build-css && npm run build-js",
+    "build-js": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js",
+    "build-css": "mkdir -p frontend/static/dist && sass --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
+    "build-js-watch": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js --watch --colors",
+    "build-css-watch": "mkdir -p frontend/static/dist && sass --watch --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
+    "build-test": "mkdir -p dist-test && webpack --config config/webpack-test.js",
+    "start": "python linkr.py",
+    "lint": "eslint frontend",
+    "test": "npm run lint && npm run build-test && node dist-test | tap-spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "TODO"
+  },
+  "author": "Kevin Lin <developer@kevinlin.info>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-core": "^6.11.4",
+    "body-parser": "^1.15.2",
+    "browser-request": "^0.3.3",
+    "cookie-parser": "^1.4.3",
+    "deep-extend": "^0.4.1",
+    "dottie": "^1.1.1",
+    "express": "^4.14.0",
+    "morgan": "^1.7.0",
+    "pug": "^2.0.0-beta4",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-helmet": "^3.1.0",
+    "react-router": "^2.6.1"
+  },
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babel-cli": "^6.11.4",
+    "babel-eslint": "^6.1.2",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "eslint": "^3.3.1",
+    "eslint-config-uber-jsx": "^2.0.0",
+    "eslint-plugin-react": "^6.1.2",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.6.0",
+    "webpack": "^1.13.1"
+  }
+}

@@ -1,0 +1,7 @@
+.idea
+*.pyc
+*.swp
+env
+*.db
+frontend/static/dist/
+node_modules/

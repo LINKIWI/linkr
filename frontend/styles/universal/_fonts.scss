@@ -1,0 +1,92 @@
+@import 'colors';
+
+@font-face {
+  font-family: 'montserrat-light';
+  src: url('/static/fonts/montserrat-light.otf');
+}
+
+@font-face {
+  font-family: 'montserrat-regular';
+  src: url('/static/fonts/montserrat-regular.otf');
+}
+
+@font-face {
+  font-family: 'montserrat-semibold';
+  src: url('/static/fonts/montserrat-semibold.otf');
+}
+
+@font-face {
+  font-family: 'montserrat-bold';
+  src: url('/static/fonts/montserrat-bold.otf');
+}
+
+@font-face {
+  font-family: 'inconsolata-regular';
+  src: url('/static/fonts/inconsolata-regular.ttf');
+}
+
+@font-face {
+  font-family: 'inconsolata-bold';
+  src: url('/static/fonts/inconsolata-bold.ttf');
+}
+
+.sans-serif {
+  color: $gray-80;
+  font-family: montserrat-regular, sans-serif !important;
+  letter-spacing: .08em !important;
+
+  &.light {
+    font-family: montserrat-light, sans-serif !important;
+  }
+
+  &.semibold {
+    font-family: montserrat-semibold, sans-serif !important;
+  }
+
+  &.bold {
+    font-family: montserrat-bold, sans-serif !important;
+  }
+}
+
+.monospace {
+  color: $gray-80;
+  font-family: inconsolata-regular, monospace !important;
+
+  &.bold {
+    font-family: inconsolata-bold, monospace !important;
+  }
+}
+
+.alpha {
+  font-size: 60px !important;
+}
+
+.beta {
+  font-size: 54px !important;
+}
+
+.delta {
+  font-size: 36px !important;
+}
+
+.epsilon {
+  font-size: 24px !important;
+}
+
+.gamma {
+  font-size: 18px !important;
+}
+
+@media screen and (max-width: 600px) {
+  .gamma {
+    font-size: 16px !important;
+  }
+}
+
+.iota {
+  font-size: 14px !important;
+}
+
+.kilo {
+  font-size: 10px !important;
+}

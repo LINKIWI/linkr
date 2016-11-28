@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "react"
+  ],
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "classes": true,
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "rules": {
+    "max-len": [2, {"code": 120}],
+    "indent": [2, 2, {"SwitchCase": 1}],
+    "react/no-danger": 0
+  },
+  "extends": [
+    "eslint-config-uber-jsx"
+  ]
+}
