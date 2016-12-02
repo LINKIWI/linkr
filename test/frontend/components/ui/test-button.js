@@ -17,8 +17,8 @@ test('Enabled button', (t) => {
 
   // Default props
   t.notOk(button.props().disabled, 'Defaults to enabled state');
-  t.deepEquals({}, button.props().style, 'Default empty style overrides');
-  t.equals('text', button.props().children, 'Button text contents');
+  t.deepEquals(button.props().style, {}, 'Default empty style overrides');
+  t.equals(button.props().children, 'text', 'Button text contents');
 
   // Onclick behavior
   t.notOk(spy.called, 'onClick is not triggered before click');
@@ -38,7 +38,7 @@ test('Disabled button', (t) => {
   );
 
   t.ok(button.props().disabled, 'Props reflect disabled input');
-  t.deepEquals({}, button.props().style, 'Default empty style overrides');
+  t.deepEquals(button.props().style, {}, 'Default empty style overrides');
 
   // Onclick behavior
   t.notOk(spy.called, 'onClick is not triggered before click');
