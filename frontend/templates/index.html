@@ -3,12 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-
-    <link rel="stylesheet" type="text/css" href="/static/styles/siimple.min.css">
     <link rel="stylesheet" type="text/css" href="/static/dist/main.css">
 </head>
 <body>
     <div id="app"></div>
+
+    <div id="uris" style="display: none;">
+        {% set uri_modules_to_classes = all_uris() %}
+        {% for uri_module in uri_modules_to_classes %}
+            {% for uri_class in uri_modules_to_classes[uri_module] %}
+                <div id="{{ uri_class }}" class="uri">{{ uri(uri_module, uri_class) }}</div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <div id="config" style="display: none;">
+        {% set options = config() %}
+        {% for option in config() %}
+            <div id="{{ option }}" class="config-option">{{ options[option] }}</div>
+        {% endfor %}
+    </div>
+
     <script src="/static/dist/bundle.js"></script>
 </body>
 </html>
