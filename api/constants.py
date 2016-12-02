@@ -38,6 +38,13 @@ INVALID_ALIAS_FAILURE = {
 }
 INVALID_ALIAS_FAILURE_CODE = 400
 
+NONEXISTENT_ALIAS_FAILURE = {
+    RESULT: RESULT_FAILURE,
+    MESSAGE: 'Requested alias does not exist',
+    FAILURE: 'nonexistent_alias_failure',
+}
+NONEXISTENT_ALIAS_FAILURE_CODE = 404
+
 UNAVAILABLE_ALIAS_FAILURE = {
     RESULT: RESULT_FAILURE,
     MESSAGE: 'The requested alias is already taken',
