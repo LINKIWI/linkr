@@ -1,7 +1,15 @@
+# IDE
 .idea
-*.pyc
-*.swp
-env
-*.db
+
+# Build artifacts
+.sass-cache/
 frontend/static/dist/
+*.pyc
+
+# External dependencies
 node_modules/
+env/
+*.db
+
+# Other
+*.swp
