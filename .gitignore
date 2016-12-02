@@ -4,6 +4,7 @@
 # Build artifacts
 .sass-cache/
 frontend/static/dist/
+test/frontend/bundle.js
 *.pyc
 
 # External dependencies
@@ -12,4 +13,5 @@ env/
 *.db
 
 # Other
+npm-debug.log
 *.swp

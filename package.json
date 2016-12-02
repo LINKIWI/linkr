@@ -8,10 +8,10 @@
     "build-css": "mkdir -p frontend/static/dist && sass --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
     "build-js-watch": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js --watch --colors",
     "build-css-watch": "mkdir -p frontend/static/dist && sass --watch --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
-    "build-test": "mkdir -p dist-test && webpack --config config/webpack-test.js",
+    "build-test": "webpack --config frontend/config/webpack-test.js",
     "start": "python linkr.py",
-    "lint": "eslint frontend",
-    "test": "npm run lint && npm run build-test && node dist-test | tap-spec"
+    "lint": "eslint frontend/app",
+    "test": "npm run lint && npm run build-test && node test/frontend/bundle.js | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -23,16 +23,21 @@
     "babel-core": "^6.11.4",
     "body-parser": "^1.15.2",
     "browser-request": "^0.3.3",
+    "clone": "^2.1.0",
     "cookie-parser": "^1.4.3",
+    "copy-to-clipboard": "^3.0.5",
     "deep-extend": "^0.4.1",
     "dottie": "^1.1.1",
     "express": "^4.14.0",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta4",
+    "randomstring": "^1.1.5",
+    "range": "0.0.3",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
     "react-helmet": "^3.1.0",
-    "react-router": "^2.6.1"
+    "react-router": "^2.6.1",
+    "safe-json-parse": "^4.0.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
