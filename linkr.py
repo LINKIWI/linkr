@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
 template_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frontend/templates')
 static_directory = 'frontend/static'
