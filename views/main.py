@@ -1,22 +1,34 @@
-from flask import render_template
 from flask import redirect
-
-from linkr import app
-from database import db_txn
+from flask import render_template
+from flask import request
 
 import database.link
+from database import db_txn
+from linkr import app
+from uri.link import *
+from uri.main import *
 
 
-@app.route('/<alias>', methods=['GET', 'POST'])
+@app.route(LinkAliasRedirectURI.path, methods=LinkAliasRedirectURI.methods)
 @db_txn
 def alias_route(alias):
+    # Attempt to fetch the link mapping from the database
     link = database.link.get_link_by_alias(alias)
     if not link:
-        return 'No such alias'
+        if request.method == 'GET':
+            # For GET requests (likely from a browser), direct to a frontend error
+            return redirect(LinkNotFoundURI.path)
+        elif request.method == 'POST':
+            # For POST requests (likely programmatic), send a plain-text response with an
+            # appropriate status code
+            return 'Link alias not found', 404
+
     link.increment_hits()
+
     return redirect(link.outgoing_url)
 
 
-@app.route('/', methods=['GET'])
-def frontend():
+@app.route(HomeURI.path, defaults={'path': ''}, methods=HomeURI.methods)
+@app.route(DefaultURI.path, methods=DefaultURI.methods)
+def frontend(path):
     return render_template('index.html')

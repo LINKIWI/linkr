@@ -1,3 +1,6 @@
+# Templating utils
+from util.templating import *
+
 # Page view functions
 from main import *
 
