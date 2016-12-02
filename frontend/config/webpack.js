@@ -20,7 +20,7 @@ module.exports = {
   module: {
     loaders: [
       {
-        test: /frontend\/.+.js$/,
+        test: /frontend\/.+\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
       }

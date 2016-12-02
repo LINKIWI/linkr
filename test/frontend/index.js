@@ -1,7 +1,3 @@
-import test from 'tape';
+import './browser';
 
-test('TODO', (assert) => {
-  assert.ok(true);
-
-  assert.end();
-});
+import './components';
