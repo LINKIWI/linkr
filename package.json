@@ -8,10 +8,9 @@
     "build-css": "mkdir -p frontend/static/dist && sass --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
     "build-js-watch": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js --watch --colors",
     "build-css-watch": "mkdir -p frontend/static/dist && sass --watch --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
-    "build-test": "webpack --config frontend/config/webpack-test.js",
     "start": "python linkr.py",
     "lint": "eslint frontend/app test/frontend",
-    "test": "npm run lint && npm run build-test && node test/frontend/bundle.js | tap-spec"
+    "test": "npm run lint && npm run build-test && node test/frontend | tap-spec"
   },
   "repository": {
     "type": "git",
@@ -51,9 +50,9 @@
     "eslint": "^3.3.1",
     "eslint-config-uber-jsx": "^2.0.0",
     "eslint-plugin-react": "^6.1.2",
-    "jsdom": "^9.8.3",
     "json-loader": "^0.5.4",
     "react-addons-test-utils": "^15.4.1",
+    "sinon": "^1.17.6",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0",
     "webpack": "^1.13.1"

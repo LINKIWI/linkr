@@ -1,3 +1,3 @@
-import './browser';
+require('babel-core/register');
 
-import './components';
+module.exports = require('./main');
