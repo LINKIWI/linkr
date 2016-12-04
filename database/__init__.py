@@ -5,7 +5,10 @@ from linkr import db
 
 def db_txn(func):
     """
-    TODO
+    Wrapper for any function that executes write operations on the database.
+
+    :param func: The function to execute.
+    :return: The original return value of func.
     """
     @wraps(func)
     def decorator(*args, **kwargs):

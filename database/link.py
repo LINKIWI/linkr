@@ -1,9 +1,8 @@
 import models
-from linkr import db
-
-from util.exception import *
-from database import db_txn
 import util.validation
+from database import db_txn
+from linkr import db
+from util.exception import *
 
 
 @db_txn

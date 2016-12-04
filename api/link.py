@@ -1,7 +1,5 @@
-import flask
-
-import constants
 import database.link
+import util.response
 from linkr import app
 from uri.link import *
 from util.decorators import *
@@ -16,20 +14,30 @@ def api_add_link(data):
     """
     try:
         new_link = database.link.add_link(data['alias'], data['outgoing_url'])
-        return flask.jsonify({
-            constants.RESULT: constants.RESULT_SUCCESS,
-            constants.MESSAGE: None,
+        return util.response.success({
             'alias': new_link.alias,
             'outgoing_url': new_link.outgoing_url,
-        }), constants.SUCCESS_CODE
+        })
     except InvalidAliasException:
-        return flask.jsonify(constants.INVALID_ALIAS_FAILURE), constants.INVALID_ALIAS_FAILURE_CODE
+        return util.response.error(
+            400,
+            'The requested alias is invalid; it is not URL-safe. Remove all URL-unsafe characters.',
+            'failure_invalid_alias',
+        )
     except InvalidURLException:
-        return flask.jsonify(constants.INVALID_URL_FAILURE), constants.INVALID_URL_FAILURE_CODE
+        return util.response.error(
+            400,
+            'The requested URL is invalid.',
+            'failure_invalid_url',
+        )
     except UnavailableAliasException:
-        return flask.jsonify(constants.UNAVAILABLE_ALIAS_FAILURE), constants.UNAVAILABLE_ALIAS_FAILURE_CODE
+        return util.response.error(
+            409,
+            'The requested alias is already taken.',
+            'failure_unavailable_alias',
+        )
     except:
-        return flask.jsonify(constants.UNDEFINED_FAILURE), constants.UNDEFINED_FAILURE_CODE
+        return util.response.undefined_error()
 
 
 @app.route(LinkDeleteURI.path, methods=LinkDeleteURI.methods)
@@ -40,12 +48,14 @@ def api_delete_link(data):
     """
     try:
         database.link.delete_link(data['alias'])
-        return flask.jsonify({
-            constants.RESULT: constants.RESULT_SUCCESS,
-            constants.MESSAGE: None,
+        return util.response.success({
             'alias': data['alias'],
-        }), constants.SUCCESS_CODE
+        })
     except InvalidAliasException:
-        return flask.jsonify(constants.NONEXISTENT_ALIAS_FAILURE), constants.NONEXISTENT_ALIAS_FAILURE_CODE
+        return util.response.error(
+            404,
+            'The requested alias does not exist.',
+            'failure_nonexistent_alias',
+        )
     except:
-        return flask.jsonify(constants.UNDEFINED_FAILURE), constants.UNDEFINED_FAILURE_CODE
+        return util.response.undefined_error()
