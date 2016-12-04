@@ -1,17 +1,8 @@
-import os
+import core.app
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-
-template_directory = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'frontend/templates')
-static_directory = 'frontend/static'
-
-app = Flask(__name__, template_folder=template_directory, static_folder=static_directory)
-app.config.from_object('config.flask_config')
-db = SQLAlchemy(app, session_options={
-    'expire_on_commit': False,
-})
-session = db.session
+app = core.app.app
+db = core.app.init_db()
+login_manager = core.app.init_login_manager()
 
 import models
 from views import *
