@@ -1,9 +1,8 @@
 from functools import wraps
 
-from flask import jsonify
 from flask import request
 
-from api.constants import *
+import util.response
 
 
 def require_form_args(form_args, allow_blank_values=False, strict_params=False):
@@ -29,9 +28,14 @@ def require_form_args(form_args, allow_blank_values=False, strict_params=False):
         def abort_if_invalid_args(*args, **kwargs):
             data = request.get_json(force=True)
             if (len(form_args) > 0 and not data) or (not strict_params and not set(form_args).issubset(data.keys())) or (strict_params and set(form_args) != set(data.keys())) or (not allow_blank_values and not all([data[arg] is not None and len(unicode(data[arg])) > 0 for arg in form_args])):
-                resp = dict(INCOMPLETE_PARAMS_FAILURE)
-                resp['missing_params'] = list(set(form_args).difference(set(data.keys())))
-                return jsonify(resp), INCOMPLETE_PARAMS_FAILURE_CODE
+                return util.response.error(
+                    400,
+                    'Required parameters are missing',
+                    'failure_incomplete_params',
+                    {
+                        'missing_params': list(set(form_args).difference(set(data.keys()))),
+                    },
+                )
             return func(data, *args, **kwargs)
         return abort_if_invalid_args
     return decorator
