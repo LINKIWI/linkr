@@ -3,14 +3,12 @@ from flask import render_template
 from flask import request
 
 import database.link
-from database import db_txn
 from linkr import app
 from uri.link import *
 from uri.main import *
 
 
 @app.route(LinkAliasRedirectURI.path, methods=LinkAliasRedirectURI.methods)
-@db_txn
 def alias_route(alias):
     # Attempt to fetch the link mapping from the database
     link = database.link.get_link_by_alias(alias)
