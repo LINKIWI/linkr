@@ -6,9 +6,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 template_directory = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
-    'frontend/templates'
+    '../frontend/templates'
 )
-static_directory = 'frontend/static'
+static_directory = '../frontend/static'
 
 app = Flask(__name__, template_folder=template_directory, static_folder=static_directory)
 app.config.from_object('config.flask_config')
