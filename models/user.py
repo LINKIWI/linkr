@@ -23,15 +23,15 @@ class User(db.Model):
     is_active = db.Column(db.Boolean)
     signup_time = db.Column(db.Integer)
     signup_ip = db.Column(db.Text)
-    username = db.Column(db.String(64), index=True)
+    username = db.Column(db.String(64), index=True, unique=True)
     password_hash = db.Column(db.Text)
     api_key = db.Column(db.String(64), index=True)
 
     def __init__(
         self,
-        signup_ip,
         username,
         password_hash,
+        signup_ip,
     ):
         self.is_active = True
         self.signup_time = int(time.time())
@@ -51,6 +51,9 @@ class User(db.Model):
     @staticmethod
     def is_authenticated():
         return True
+
+    def is_active(self):
+        return self.is_active
 
     @staticmethod
     def is_anonymous():
