@@ -1,0 +1,57 @@
+@import '../universal/colors';
+
+// Adapted from https://codepen.io/designcouch/pen/Atyop
+
+.menu-icon {
+  width: 60px;
+  height: 45px;
+  position: relative;
+  transform: scale(0.5) rotate(0deg);
+  transform-origin: right center;
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+
+.menu-icon span {
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: $gray-60;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+
+.menu-icon span:nth-child(1) {
+  top: 0px;
+  transform-origin: left center;
+}
+
+.menu-icon span:nth-child(2) {
+  top: 18px;
+  transform-origin: left center;
+}
+
+.menu-icon span:nth-child(3) {
+  top: 36px;
+  transform-origin: left center;
+}
+
+.menu-icon.open span:nth-child(1) {
+  transform: rotate(45deg);
+  top: -3px;
+  left: 8px;
+}
+
+.menu-icon.open span:nth-child(2) {
+  width: 0%;
+  opacity: 0;
+}
+
+.menu-icon.open span:nth-child(3) {
+  transform: rotate(-45deg);
+  top: 39px;
+  left: 8px;
+}

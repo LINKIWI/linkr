@@ -1,0 +1,19 @@
+@import '../universal/fonts';
+
+@media only screen and (min-width: 0px) {
+  .not-found-text {
+    font-size: $delta;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .not-found-text {
+    font-size: $beta;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .not-found-text {
+    font-size: $alpha;
+  }
+}

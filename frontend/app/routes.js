@@ -1,11 +1,16 @@
 import React from 'react';
-import {IndexRedirect, Route} from 'react-router';
+import {Route} from 'react-router';
 
+import Admin from './components/pages/admin';
 import AppRoot from './components/app-root';
-import Header from './components/header';
+import context from './util/context';
+import NotFound from './components/pages/not-found';
+import Shorten from './components/pages/shorten';
 
 export default (
   <Route path="" component={AppRoot}>
-    <Route path="*" component={Header} />
+    <Route path={context.uris.AdminURI} component={Admin} />
+    <Route path={context.uris.LinkNotFoundURI} component={NotFound} />
+    <Route path="*" component={Shorten} />
   </Route>
 );

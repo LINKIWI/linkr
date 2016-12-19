@@ -6,6 +6,10 @@
   padding: 0;
 }
 
-body {
-  background-color: $gray-10;
+.transition {
+  transition: all .15s ease-out;
+}
+
+.fade {
+  opacity: .6;
 }

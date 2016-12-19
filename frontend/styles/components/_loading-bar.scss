@@ -1,0 +1,16 @@
+@import '../universal/colors';
+
+.loading-bar-container {
+  overflow: hidden;
+  height: 4px;
+  width: 100%;
+  position: absolute;
+}
+
+.loading-bar {
+  background-color: $orange;
+  height: 4px;
+  transition: all 1s cubic-bezier(.75, 0, .32, .99);
+  width: 100px;
+  position: absolute;
+}

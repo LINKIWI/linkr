@@ -1,92 +1,64 @@
 @import 'colors';
 
+$alpha: 60px;
+$beta: 54px;
+$delta: 36px;
+$epsilon: 24px;
+$gamma: 18px;
+$iota: 14px;
+$kilo: 10px;
+
 @font-face {
-  font-family: 'montserrat-light';
-  src: url('/static/fonts/montserrat-light.otf');
+  font-family: 'karla-regular';
+  src: url('/static/fonts/karla-regular.ttf');
 }
 
 @font-face {
-  font-family: 'montserrat-regular';
-  src: url('/static/fonts/montserrat-regular.otf');
+  font-family: 'karla-italic';
+  src: url('/static/fonts/karla-italic.ttf');
 }
 
 @font-face {
-  font-family: 'montserrat-semibold';
-  src: url('/static/fonts/montserrat-semibold.otf');
-}
-
-@font-face {
-  font-family: 'montserrat-bold';
-  src: url('/static/fonts/montserrat-bold.otf');
-}
-
-@font-face {
-  font-family: 'inconsolata-regular';
-  src: url('/static/fonts/inconsolata-regular.ttf');
-}
-
-@font-face {
-  font-family: 'inconsolata-bold';
-  src: url('/static/fonts/inconsolata-bold.ttf');
+  font-family: 'karla-bold';
+  src: url('/static/fonts/karla-bold.ttf');
 }
 
 .sans-serif {
-  color: $gray-80;
-  font-family: montserrat-regular, sans-serif !important;
-  letter-spacing: .08em !important;
+  font-family: karla-regular, sans-serif !important;
 
-  &.light {
-    font-family: montserrat-light, sans-serif !important;
-  }
-
-  &.semibold {
-    font-family: montserrat-semibold, sans-serif !important;
+  &.italic {
+    font-family: karla-italic, sans-serif !important;
   }
 
   &.bold {
-    font-family: montserrat-bold, sans-serif !important;
-  }
-}
-
-.monospace {
-  color: $gray-80;
-  font-family: inconsolata-regular, monospace !important;
-
-  &.bold {
-    font-family: inconsolata-bold, monospace !important;
+    font-family: karla-bold, sans-serif !important;
   }
 }
 
 .alpha {
-  font-size: 60px !important;
+  font-size: $alpha !important;
 }
 
 .beta {
-  font-size: 54px !important;
+  font-size: $beta !important;
 }
 
 .delta {
-  font-size: 36px !important;
+  font-size: $delta !important;
 }
 
 .epsilon {
-  font-size: 24px !important;
+  font-size: $epsilon !important;
 }
 
 .gamma {
-  font-size: 18px !important;
-}
-
-@media screen and (max-width: 600px) {
-  .gamma {
-    font-size: 16px !important;
-  }
+  font-size: $gamma !important;
 }
 
 .iota {
-  font-size: 14px !important;
+  font-size: $iota !important;
 }
 
 .kilo {
-  font-size: 10px !important;
+  font-size: $kilo !important;
 }

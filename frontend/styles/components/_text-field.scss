@@ -1,0 +1,28 @@
+@import '../universal/colors';
+
+.text-field {
+  transition: all 0.15s ease-out;
+  border: none;
+  border-bottom: 1px solid $light-orange;
+  padding: 3px 1px;
+  color: $gray-70;
+  opacity: .7;
+}
+
+.text-field:hover {
+  border-bottom: 1px solid $orange;
+  opacity: .9;
+}
+
+.text-field:focus {
+  border-bottom: 2px solid $orange;
+  opacity: 1;
+}
+
+.text-field::selection {
+  background: $light-orange;
+}
+
+.text-field::-moz-selection {
+  background: $light-orange;
+}

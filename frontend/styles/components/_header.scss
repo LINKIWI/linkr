@@ -1,0 +1,12 @@
+@import '../universal/colors';
+
+.header {
+  background-color: $white;
+  height: 80px;
+  transition: all .15s ease-out;
+
+  &.expanded {
+    background-color: $gray-80;
+    height: 150px;
+  }
+}

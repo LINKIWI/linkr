@@ -1,0 +1,35 @@
+@import '../universal/colors';
+
+.button {
+  transition: all 0.15s ease-out;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: $white;
+  border: none;
+  border-radius: 0;
+  background-color: $orange;
+  opacity: 1;
+  padding: 10px 15px;
+  cursor: pointer;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: .5;
+  }
+}
+
+.button:hover {
+  opacity: .8;
+}
+
+.button:focus {
+  opacity: .8;
+}
+
+.button::-moz-focus-inner {
+  border: 0;
+}
+
+.button:active {
+  opacity: 1;
+}

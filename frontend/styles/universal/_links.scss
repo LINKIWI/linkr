@@ -1,0 +1,22 @@
+@import 'colors';
+
+a {
+  color: $orange;
+  transition: all .1s ease-out;
+}
+
+a:link,
+a:visited,
+a:active {
+  opacity: 1;
+  text-decoration: none;
+}
+
+a:hover {
+  border-bottom: 2px solid $orange;
+  opacity: .7;
+}
+
+.link-selected {
+  border-bottom: 2px solid $orange;
+}

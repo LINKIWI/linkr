@@ -1,0 +1,28 @@
+@import '../universal/colors';
+@import '../universal/fonts';
+
+.tooltip-container {
+  display: inline-block;
+  position: relative;
+}
+
+.tooltip {
+  background: $gray-80;
+  bottom: calc(100% + 5px);
+  color: $gray-10;
+  font-size: $iota;
+  left: 0;
+  padding: 7px 15px;
+  position: absolute;
+  text-align: center;
+}
+
+.tooltip::after {
+  border: 5px solid transparent;
+  border-top-color: $gray-80;
+  content: ' ';
+  left: 50%;
+  margin-left: -5px;
+  position: absolute;
+  top: 100%;
+}

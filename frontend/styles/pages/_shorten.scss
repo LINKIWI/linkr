@@ -1,0 +1,31 @@
+@import '../universal/fonts';
+
+@media only screen and (min-width: 0px) {
+  .shorten-field {
+    font-size: $gamma;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .shorten-field {
+    font-size: $epsilon;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .shorten-field {
+    font-size: $delta;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .shorten-field {
+    font-size: $beta;
+  }
+}
+
+@media only screen and (min-width: 1500px) {
+  .shorten-field {
+    font-size: $alpha;
+  }
+}

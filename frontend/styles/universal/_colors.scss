@@ -10,8 +10,13 @@ $gray-10: #e6e6e6;
 $white: #fff;
 
 $green: #388e3c;
+$light-red: #ffebee;
 $red: #d32f2f;
+$light-blue: #bedeed;
 $blue: #03a9f4;
+$dark-blue: #036996;
+$light-orange: #e69f97;
+$orange: #e74c3c;
 
 .bg-black {
   background-color: $black !important;
@@ -99,4 +104,12 @@ $blue: #03a9f4;
 
 .text-blue {
   color: $blue !important;
+}
+
+.text-dark-blue {
+  color: $dark-blue !important;
+}
+
+.text-orange {
+  color: $orange !important;
 }
