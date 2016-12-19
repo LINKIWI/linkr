@@ -5,9 +5,13 @@ set -ex
 # Python environment initialization
 virtualenv env
 source env/bin/activate
-pip install -r requirements.txt
 
+# Install step
+pip install -r requirements.txt
+gem install sass
 npm install
+
+# Frontend tests
 npm run lint
 npm run build
-npm run test
+npm run cover
