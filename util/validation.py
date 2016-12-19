@@ -48,8 +48,9 @@ def is_alias_valid(alias):
     :param alias:
     :return:
     """
-    # An alias is considered valid if it contains only URL-safe characters.
-    return alias == requests.utils.quote(alias, safe='')
+    # An alias is considered valid if it contains only URL-safe characters and shorter than a
+    # maximum length of 32 characters.
+    return alias == requests.utils.quote(alias, safe='') and len(alias) < 32
 
 
 def is_url_valid(url):

@@ -12,6 +12,9 @@ node_modules/
 env/
 *.db
 
+# User-overriden config
+config/options.py
+
 # Other
 npm-debug.log
 *.swp
