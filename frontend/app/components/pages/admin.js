@@ -1,9 +1,7 @@
-import {Link} from 'react-router';
 import Helmet from 'react-helmet';
 import React from 'react';
 
 import Container from '../container';
-import context from '../../util/context';
 import DisplayUtil from '../../util/display';
 import Header from '../header';
 import LoadingBar from '../ui/loading-bar';

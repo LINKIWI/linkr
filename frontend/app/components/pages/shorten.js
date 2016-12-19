@@ -47,6 +47,10 @@ export default class Shorten extends React.Component {
         outgoing_url: outgoingURL  // eslint-disable-line camelcase
       }
     }, (err, resp, json) => {
+      if (err) {
+        // TODO
+      }
+
       this.setState({
         isLoading: false
       });

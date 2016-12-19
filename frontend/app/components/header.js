@@ -33,9 +33,9 @@ export default class Header extends React.Component {
           });
         }}
       >
-        <span></span>
-        <span></span>
-        <span></span>
+        <span />
+        <span />
+        <span />
       </div>
     );
   }
