@@ -1,0 +1,31 @@
+@import '../universal/colors';
+
+.check {
+  width: 18px;
+  height: 18px;
+  padding: 1px;
+  background-color: $gray-5;
+  color: $light-orange;
+  cursor: pointer;
+
+  g {
+    transition: all .15s ease-out;
+  }
+
+  &.visible {
+    g {
+      opacity: 1;
+    }
+  }
+
+  &.hidden {
+    g {
+      opacity: 0;
+    }
+  }
+}
+
+.check-container:hover,
+.check-container:focus {
+  opacity: 0.7;
+}
