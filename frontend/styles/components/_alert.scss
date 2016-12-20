@@ -5,6 +5,14 @@
   padding: 20px 15px;
   background-color: $light-blue;
 
+  &.alert-success {
+    background-color: $light-green;
+  }
+
+  &.alert-warn {
+    background-color: $light-orange;
+  }
+
   &.alert-error {
     background-color: $light-red;
   }
