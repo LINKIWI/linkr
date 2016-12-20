@@ -88,7 +88,7 @@ export default class Checkbox extends React.Component {
     const {isChecked} = this.state;
 
     return (
-      <div className={className} style={style}>
+      <div className={className} style={style} draggable="false">
         <span
           ref={(elem) => {
             this.container = elem;

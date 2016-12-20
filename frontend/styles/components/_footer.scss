@@ -1,0 +1,38 @@
+@media only screen and (min-width: 0px) and (max-width: 500px) {
+  .footer {
+    height: 40px;
+    padding: 10px 30px 0;
+  }
+
+  .footer-button {
+    padding: 7px 15px;
+  }
+}
+
+@media only screen and (min-width: 500px) {
+  .footer {
+    height: 65px;
+    padding: 20px 60px 0;
+  }
+
+  .footer-container {
+    position: fixed;
+    bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .footer {
+    height: 65px;
+    padding: 20px 100px 0;
+  }
+
+  .footer-container {
+    position: fixed;
+    bottom: 0;
+  }
+}
+
+.footer-container {
+  width: 100%;
+}

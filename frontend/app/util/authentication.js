@@ -18,6 +18,19 @@ function check(cb) {
   });
 }
 
+/**
+ * Logout the current user.
+ *
+ * @param {Function} cb Request callback called when logout is completed.
+ */
+function logout(cb) {
+  request.post({
+    url: context.uris.AuthLogoutURI,
+    json: {}
+  }, cb);
+}
+
 export default {
-  check
+  check,
+  logout
 };

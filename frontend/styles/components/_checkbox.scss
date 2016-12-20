@@ -28,4 +28,5 @@
 .check-container:hover,
 .check-container:focus {
   opacity: 0.7;
+  user-select: none;
 }

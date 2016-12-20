@@ -8,14 +8,17 @@ import request from 'browser-request';
 import url from 'url';
 
 import Alert, {ALERT_TYPE_ERROR} from '../alert';
-import Button from '../ui/button';
 import Container from '../container';
-import DisplayUtil from '../../util/display';
 import Header from '../header';
+import Footer from '../footer';
+
+import Button from '../ui/button';
 import LoadingBar from '../ui/loading-bar';
 import TextField from '../ui/text-field';
 import Tooltip from '../ui/tooltip';
+
 import context from '../../util/context';
+import DisplayUtil from '../../util/display';
 
 /**
  * TODO
@@ -218,6 +221,8 @@ export default class Shorten extends React.Component {
             }
           </div>
         </Container>
+
+        <Footer />
       </div>
     );
   }

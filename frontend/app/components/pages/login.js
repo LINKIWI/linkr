@@ -8,6 +8,7 @@ import request from 'browser-request';
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
 import Container from '../container';
 import Header from '../header';
+import Footer from '../footer';
 
 import Button from '../ui/button';
 import Checkbox from '../ui/checkbox';
@@ -179,6 +180,8 @@ export default class Login extends React.Component {
             </form>
           </div>
         </Container>
+
+        <Footer />
       </div>
     );
   }
