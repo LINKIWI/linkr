@@ -24,6 +24,7 @@ test('Enabled button', (t) => {
   t.notOk(spy.called, 'onClick is not triggered before click');
   button.simulate('click');
   t.ok(spy.called, 'onClick is triggered after click');
+  button.simulate('mouseOut');
 
   t.end();
 });
