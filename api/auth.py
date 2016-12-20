@@ -31,7 +31,7 @@ def auth_check():
 
 
 @app.route(AuthLoginURI.path, methods=AuthLoginURI.methods)
-@require_form_args(['username', 'password_hash'])
+@require_form_args(['username', 'password_hash', 'remember_me'])
 def auth_login(data):
     """
     Attempt to authenticate the specified user.
@@ -42,7 +42,7 @@ def auth_login(data):
 
     try:
         user = database.user.validate_user_credentials(data['username'], data['password_hash'])
-        login_user(user)
+        login_user(user, remember=data['remember_me'])
         return util.response.success(resp_data)
     except InvalidAuthenticationException:
         return util.response.error(

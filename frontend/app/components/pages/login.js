@@ -1,10 +1,13 @@
-import {Link} from 'react-router';
+/* global setTimeout */
+
+import {browserHistory, Link} from 'react-router';
 import Helmet from 'react-helmet';
 import React from 'react';
 import request from 'browser-request';
 
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
 import Button from '../ui/button';
+import Checkbox from '../ui/checkbox';
 import Container from '../container';
 import context from '../../util/context';
 import DisplayUtil from '../../util/display';
@@ -40,7 +43,9 @@ export default class Login extends React.Component {
     });
   }
 
-  submitLogin() {
+  submitLogin(evt) {
+    evt.preventDefault();
+
     this.setState({
       isLoading: true
     });
@@ -50,7 +55,8 @@ export default class Login extends React.Component {
       json: {
         /* eslint-disable camelcase */
         username: this.usernameInput.getValue(),
-        password_hash: this.passwordInput.getValue()
+        password_hash: this.passwordInput.getValue(),
+        remember_me: this.rememberMeCheck.isChecked()
         /* eslint-enable camelcase */
       }
     }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
@@ -61,8 +67,66 @@ export default class Login extends React.Component {
     });
   }
 
+  renderLoginError() {
+    const {loginStatus} = this.state;
+
+    if (DisplayUtil.isDefined(loginStatus.success) && !loginStatus.success) {
+      return (
+        <Alert
+          type={ALERT_TYPE_ERROR}
+          title={'There was an error logging you in.'}
+          message={loginStatus.message}
+          failure={loginStatus.failure}
+          failureMessages={{
+            /* eslint-disable camelcase */
+            failure_incomplete_params: 'You must supply both username and password to login.'
+            /* eslint-enable camelcase */
+          }}
+        />
+      );
+    }
+
+    return null;
+  }
+
+  renderLoginSuccess() {
+    const {loginStatus} = this.state;
+
+    if (DisplayUtil.isDefined(loginStatus.success) && loginStatus.success) {
+      setTimeout(() => browserHistory.push('/'), 1500);
+      return (
+        <Alert
+          type={ALERT_TYPE_SUCCESS}
+          title={'Login successful!'}
+          message={'Redirecting you now...'}
+        />
+      );
+    }
+
+    return null;
+  }
+
+  renderAlreadyLoggedIn() {
+    const {authCheckStatus} = this.state;
+
+    if (authCheckStatus) {
+      return (
+        <Alert
+          title={'You are already logged in.'}
+          message={
+            <span>
+              Click <Link className="sans-serif bold" to="/">here</Link> to return to the homepage.
+            </span>
+          }
+        />
+      );
+    }
+
+    return null;
+  }
+
   render() {
-    const {isLoading, loginStatus, authCheckStatus} = this.state;
+    const {isLoading} = this.state;
 
     return (
       <div>
@@ -73,67 +137,46 @@ export default class Login extends React.Component {
         <Header selectIndex={1}/>
 
         <Container className={isLoading ? 'fade' : ''}>
-          {
-            DisplayUtil.displayIf(
-              DisplayUtil.isDefined(loginStatus.success) && !loginStatus.success,
-              () => (
-                <Alert
-                  type={ALERT_TYPE_ERROR}
-                  title={'There was an error logging you in.'}
-                  message={loginStatus.message}
-                  failure={loginStatus.failure}
-                  failureMessages={{
-                    /* eslint-disable camelcase */
-                    failure_incomplete_params: 'You must supply both username and password to login.'
-                    /* eslint-enable camelcase */
-                  }}
-                />
-              )
-            )
-          }
-
-          {
-            DisplayUtil.displayIf(authCheckStatus, () => (
-              <Alert
-                type={ALERT_TYPE_SUCCESS}
-                title={'You are already logged in.'}
-                message={
-                  <span>
-                    Click <Link className="sans-serif bold" to="/">here</Link> to return to the homepage.
-                  </span>
-                }
-              />
-            ))
-          }
+          {this.renderLoginSuccess()}
+          {this.renderLoginError()}
+          {this.renderAlreadyLoggedIn()}
 
           <div className="margin-large--top margin-large--bottom">
             <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Login</p>
 
             <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">USERNAME</p>
-            <TextField
-              ref={(elem) => {
-                this.usernameInput = elem;
-              }}
-              className="login-field sans-serif light margin--bottom"
-            />
+            <form>
+              <TextField
+                ref={(elem) => {
+                  this.usernameInput = elem;
+                }}
+                className="login-field sans-serif light margin--bottom"
+              />
 
-            <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">PASSWORD</p>
-            <TextField
-              ref={(elem) => {
-                this.passwordInput = elem;
-              }}
-              type="password"
-              className="login-field sans-serif light"
-            />
+              <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">PASSWORD</p>
+              <TextField
+                ref={(elem) => {
+                  this.passwordInput = elem;
+                }}
+                type="password"
+                className="login-field sans-serif light"
+              />
 
-            <br />
+              <Checkbox
+                ref={(elem) => {
+                  this.rememberMeCheck = elem;
+                }}
+                className="margin--top"
+                text="Remember me"
+              />
 
-            <Button
-              className="sans-serif bold iota text-white margin-large--top"
-              text="Login"
-              disabled={isLoading}
-              onClick={this.submitLogin.bind(this)}
-            />
+              <Button
+                className="sans-serif bold iota text-white margin-large--top"
+                text="Login"
+                disabled={isLoading}
+                onClick={this.submitLogin.bind(this)}
+              />
+            </form>
           </div>
         </Container>
       </div>
