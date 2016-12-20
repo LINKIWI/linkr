@@ -1,5 +1,6 @@
 from flask_login import login_user
 from flask_login import logout_user
+from flask_login import current_user
 
 import database.user
 import util.response
@@ -7,6 +8,26 @@ from linkr import app
 from uri.auth import *
 from util.decorators import *
 from util.exception import *
+
+
+@app.route(AuthCheckURI.path, methods=AuthCheckURI.methods)
+def auth_check():
+    """
+    Check if any user is currently authenticated.
+    """
+    try:
+        if current_user.is_authenticated:
+            return util.response.success({
+                'username': current_user.username,
+            })
+
+        return util.response.error(
+            401,
+            'No user is currently authenticated.',
+            'failure_unauthenticated',
+        )
+    except:
+        return util.response.undefined_error()
 
 
 @app.route(AuthLoginURI.path, methods=AuthLoginURI.methods)
