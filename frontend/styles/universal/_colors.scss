@@ -9,6 +9,7 @@ $gray-20: #ccc;
 $gray-10: #e6e6e6;
 $white: #fff;
 
+$light-green: #e8f5e9;
 $green: #388e3c;
 $light-red: #ffebee;
 $red: #d32f2f;
@@ -96,14 +97,38 @@ $orange: #e74c3c;
 
 .text-green {
   color: $green !important;
+
+  a {
+    color: $green;
+  }
+
+  a:hover {
+    border-bottom: 2px solid $green;
+  }
 }
 
 .text-red {
   color: $red !important;
+
+  a {
+    color: $red;
+  }
+
+  a:hover {
+    border-bottom: 2px solid $red;
+  }
 }
 
 .text-blue {
   color: $blue !important;
+
+  a {
+    color: $blue;
+  }
+
+  a:hover {
+    border-bottom: 2px solid $blue;
+  }
 }
 
 .text-dark-blue {
