@@ -6,14 +6,17 @@ import React from 'react';
 import request from 'browser-request';
 
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
+import Container from '../container';
+import Header from '../header';
+
 import Button from '../ui/button';
 import Checkbox from '../ui/checkbox';
-import Container from '../container';
-import context from '../../util/context';
-import DisplayUtil from '../../util/display';
-import Header from '../header';
 import LoadingBar from '../ui/loading-bar';
 import TextField from '../ui/text-field';
+
+import authentication from '../../util/authentication';
+import context from '../../util/context';
+import DisplayUtil from '../../util/display';
 
 /**
  * Login page for user authentication.
@@ -32,13 +35,10 @@ export default class Login extends React.Component {
   componentDidMount() {
     // On page load, first make a request to the authentication check endpoint to check if the user
     // is already authenticated.
-    request.post({
-      url: context.uris.AuthCheckURI,
-      json: {}
-    }, (err, resp) => {
+    authentication.check((authCheckStatus) => {
       this.setState({
         isLoading: false,
-        authCheckStatus: !err && resp.statusCode === 200
+        authCheckStatus
       });
     });
   }
