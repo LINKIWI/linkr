@@ -7,6 +7,7 @@ import React from 'react';
 import request from 'browser-request';
 import url from 'url';
 
+import Alert, {ALERT_TYPE_ERROR} from '../alert';
 import Button from '../ui/button';
 import Container from '../container';
 import DisplayUtil from '../../util/display';
@@ -39,9 +40,8 @@ export default class Shorten extends React.Component {
     const alias = this.aliasInput.getValue() || this.randomAlias;
     const outgoingURL = this.outgoingURLInput.getValue();
 
-    request({
+    request.put({
       url: context.uris.LinkAddURI,
-      method: 'PUT',
       json: {
         alias,
         outgoing_url: outgoingURL  // eslint-disable-line camelcase
@@ -52,10 +52,7 @@ export default class Shorten extends React.Component {
       }
 
       this.setState({
-        isLoading: false
-      });
-
-      this.setState({
+        isLoading: false,
         submitStatus: json
       });
     });
@@ -176,25 +173,19 @@ export default class Shorten extends React.Component {
   renderErrorAlert() {
     const {submitStatus} = this.state;
 
-    const message = (() => {
-      switch (submitStatus.failure) {
-        case 'invalid_alias_failure':
-          return 'The requested alias is invalid; it is not URL-safe. Remove all URL-unsafe characters and try again.';
-        case 'invalid_url_failure':
-          return 'The requested URL is invalid. Please use a valid URL and try again.';
-        case 'unavailable_alias_failure':
-          return 'The requested alias is unavailable. Please use another alias.';
-        case 'incomplete_params_failure':
-          return 'You must supply a URL to link to.';
-        default:
-          return 'There was an unknown failure.';
-      }
-    })();
-
     return (
-      <div className="alert alert-error sans-serif gamma text-red margin-large--bottom">
-        <span className="sans-serif bold">There was an error submitting your link.</span> {message}
-      </div>
+      <Alert
+        type={ALERT_TYPE_ERROR}
+        title={'There was an error submitting your link.'}
+        message={submitStatus.message}
+        failure={submitStatus.failure}
+        failureMessages={{
+          /* eslint-disable camelcase */
+          failure_incomplete_params: 'You must supply a URL to link to.',
+          failure_undefined: 'There was an unknown failure. Please try again later or file an issue on Github.'
+          /* eslint-enable camelcase */
+        }}
+      />
     );
   }
 

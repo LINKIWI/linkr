@@ -21,7 +21,7 @@ def api_add_link(data):
     except InvalidAliasException:
         return util.response.error(
             400,
-            'The requested alias is invalid; it is not URL-safe. Remove all URL-unsafe characters.',
+            'The requested alias is invalid; it is not URL-safe or is too long.',
             'failure_invalid_alias',
         )
     except InvalidURLException:
