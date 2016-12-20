@@ -8,11 +8,13 @@ export default class TextField extends React.Component {
     className: React.PropTypes.string,
     style: React.PropTypes.object,
     placeholder: React.PropTypes.string,
+    type: React.PropTypes.string,
     onChange: React.PropTypes.func
   };
   static defaultProps = {
     className: '',
     style: {},
+    type: 'text',
     onChange: () => {}
   };
 
@@ -35,7 +37,7 @@ export default class TextField extends React.Component {
   }
 
   render() {
-    const {className, style, placeholder, onChange} = this.props;
+    const {className, style, placeholder, type, onChange} = this.props;
 
     return (
       <input
@@ -43,7 +45,7 @@ export default class TextField extends React.Component {
           this.input = elem;
         }}
         className={`text-field ${className}`}
-        type="text"
+        type={type}
         style={style}
         placeholder={placeholder}
         autoComplete="off"
