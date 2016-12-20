@@ -17,6 +17,25 @@ a:hover {
   opacity: .7;
 }
 
+.link-alt {
+  a {
+    color: $gray-10;
+    transition: all .1s ease-out;
+  }
+
+  a:link,
+  a:visited,
+  a:active {
+    opacity: 1;
+    text-decoration: none;
+  }
+
+  a:hover {
+    border-bottom: 2px solid $gray-10;
+    opacity: .7;
+  }
+}
+
 .link-selected {
   border-bottom: 2px solid $orange;
 }
