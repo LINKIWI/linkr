@@ -12,6 +12,7 @@ test('Rendering default TextField', (t) => {
   );
 
   t.equal(field.props().className, '', 'Empty default class name');
+  t.equal(field.props().type, 'text', 'Defaults to text input type');
   t.deepEquals(field.props().style, {}, 'Empty default style override');
 
   t.notOk(onChangeSpy.called, 'Change handler is not called');
