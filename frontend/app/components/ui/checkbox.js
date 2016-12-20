@@ -51,17 +51,19 @@ export default class Checkbox extends React.Component {
 
   /**
    * For accessibility compatibility: while the checkbox is in focus, pressing the space and enter
-   * keys should check the checkbox while pressing the escape key should uncheck it.
+   * keys should toggle the checkbox while pressing the escape key should always uncheck it.
    *
    * @param {Object} evt The keyboard DOM event.
    * @returns {*} Return value is unused.
    */
   handleKeyDown(evt) {
+    const {isChecked} = this.state;
+
     switch (evt.keyCode) {
       case KEY_CODE_SPACE:
       case KEY_CODE_ENTER:
         return this.setState({
-          isChecked: true
+          isChecked: !isChecked
         });
       case KEY_CODE_ESCAPE:
         return this.setState({

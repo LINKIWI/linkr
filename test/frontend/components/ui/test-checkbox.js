@@ -59,6 +59,10 @@ test('Checkbox toggles on keyboard events', (t) => {
     keyCode: 5
   });
   t.ok(check.instance().isChecked(), 'Unknown key code does not change checked state');
+  check.find('.check-container').simulate('keyDown', {
+    keyCode: 32
+  });
+  t.notOk(check.instance().isChecked(), 'Space can toggle the current check state');
 
   t.end();
 });
