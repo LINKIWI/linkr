@@ -1,3 +1,4 @@
+import dottie from 'dottie';
 import request from 'browser-request';
 
 import context from './context';
@@ -12,8 +13,8 @@ function check(cb) {
   request.post({
     url: context.uris.AuthCheckURI,
     json: {}
-  }, (err, resp) => {
-    cb(!err && resp.statusCode === 200);
+  }, (err, resp, json) => {
+    cb(!err && dottie.get(resp, 'statusCode') === 200, dottie.get(json, 'username'));
   });
 }
 
