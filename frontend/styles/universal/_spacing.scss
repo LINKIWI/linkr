@@ -1,47 +1,56 @@
+$default-spacing: 24px;
+$tiny-spacing: 6px;
+$small-spacing: 12px;
+$large-spacing: 36px;
+
 .margin--top {
-  margin-top: 24px !important;
+  margin-top: $default-spacing !important;
 }
 
 .margin-large--top {
-  margin-top: 36px !important;
+  margin-top: $large-spacing !important;
 }
 
 .margin-tiny--bottom {
-  margin-bottom: 6px !important;
+  margin-bottom: $tiny-spacing !important;
 }
 
 .margin-small--bottom {
-  margin-bottom: 12px !important;
+  margin-bottom: $small-spacing !important;
 }
 
 .margin--bottom {
-  margin-bottom: 24px !important;
+  margin-bottom: $default-spacing !important;
 }
 
 .margin-large--bottom {
-  margin-bottom: 36px !important;
+  margin-bottom: $large-spacing !important;
 }
 
 .margin-tiny--right {
-  margin-right: 6px !important;
+  margin-right: $tiny-spacing !important;
 }
 
 .margin-small--right {
-  margin-right: 12px !important;
+  margin-right: $small-spacing !important;
 }
 
 .margin--right {
-  margin-right: 24px !important;
+  margin-right: $default-spacing !important;
 }
 
 .margin-large--right {
-  margin-right: 36px !important;
+  margin-right: $large-spacing !important;
+}
+
+.margin-small--left {
+  margin-left: $small-spacing !important;
 }
 
 .margin--left {
-  margin-left: 24px !important;
+  margin-left: $default-spacing !important;
 }
 
 .pad--all {
-  padding: 24px !important;
+  padding: $default-spacing !important;
 }
