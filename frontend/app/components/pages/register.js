@@ -1,6 +1,6 @@
 /* global setTimeout */
 
-import {browserHistory} from 'react-router';
+import {browserHistory, Link} from 'react-router';
 import Helmet from 'react-helmet';
 import React from 'react';
 import request from 'browser-request';
@@ -108,37 +108,52 @@ export default class Register extends React.Component {
           {this.renderRegisterError()}
           {this.renderRegisterSuccess()}
 
-          <div className="margin-large--top margin-large--bottom">
-            <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Register</p>
+          {
+            DisplayUtil.displayIf(context.config.ALLOW_OPEN_REGISTRATION, () => (
+              <div className="margin-large--top margin-large--bottom">
+                <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Register</p>
 
-            <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">USERNAME</p>
-            <form>
-              <TextField
-                ref={(elem) => {
-                  this.usernameInput = elem;
-                }}
-                className="login-field sans-serif light margin--bottom"
-              />
+                <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">USERNAME</p>
+                <form>
+                  <TextField
+                    ref={(elem) => {
+                      this.usernameInput = elem;
+                    }}
+                    className="login-field sans-serif light margin--bottom"
+                  />
 
-              <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">PASSWORD</p>
-              <TextField
-                ref={(elem) => {
-                  this.passwordInput = elem;
-                }}
-                type="password"
-                className="login-field sans-serif light"
-              />
+                  <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">PASSWORD</p>
+                  <TextField
+                    ref={(elem) => {
+                      this.passwordInput = elem;
+                    }}
+                    type="password"
+                    className="login-field sans-serif light"
+                  />
 
-              <br />
+                  <br />
 
-              <Button
-                className="sans-serif bold iota text-white margin-large--top"
-                text="Register"
-                disabled={isLoading}
-                onClick={this.submitRegistration.bind(this)}
-              />
-            </form>
-          </div>
+                  <Button
+                    className="sans-serif bold iota text-white margin-large--top"
+                    text="Register"
+                    disabled={isLoading}
+                    onClick={this.submitRegistration.bind(this)}
+                  />
+                </form>
+              </div>
+            ), () => (
+              <div className="margin-large--top margin-large--bottom">
+                <p className="sans-serif bold gamma text-gray-70 margin-small--bottom">OPEN REGISTRATION DISABLED</p>
+                <p className="not-found-text sans-serif bold text-gray-70 margin-large--bottom transition">
+                  The server administrator has disabled open user self-registration.
+                </p>
+
+                <p className="sans-serif gamma text-gray-70 margin-small--bottom">
+                  Go back to the <Link to={context.uris.HomeURI}>homepage</Link>.
+                </p>
+              </div>
+            ))
+          }
         </Container>
 
         <Footer />

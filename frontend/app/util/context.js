@@ -26,7 +26,18 @@ function buildIDValueMap(className) {
     .range(0, nodes.length)
     .map((idx) => nodes[idx])
     .reduce((idValueMap, node) => {
-      idValueMap[node.id] = node.innerText;
+      idValueMap[node.id] = (() => {
+        // Config options can be boolean values, so we should convert them to from their Python
+        // string serializations to Javascript boolean values.
+        switch (node.innerText) {
+          case 'True':
+            return true;
+          case 'False':
+            return false;
+          default:
+            return node.innerText;
+        }
+      })();
       return idValueMap;
     }, {});
 }

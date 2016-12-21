@@ -13,6 +13,9 @@ LINKR_URL = 'http://localhost:5000'
 # Require the user to be logged in to shorten a link.
 REQUIRE_LOGIN_TO_CREATE = False
 
+# Allow users to self-register via the client web interface.
+ALLOW_OPEN_REGISTRATION = True
+
 
 """
 DATABASE CONFIGURATION
