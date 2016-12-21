@@ -12,14 +12,19 @@ from uri.main import *
 def alias_route(alias):
     # Attempt to fetch the link mapping from the database
     link = database.link.get_link_by_alias(alias)
+
     if not link:
         if request.method == 'GET':
-            # For GET requests (likely from a browser), direct to a frontend error
-            return redirect(LinkNotFoundURI.path)
+            # For GET requests (likely from a browser), direct to the frontend interface
+            return render_template('index.html')
         elif request.method == 'POST':
             # For POST requests (likely programmatic), send a plain-text response with an
             # appropriate status code
             return 'Link alias not found', 404
+
+    # Redirect to the frontend interface to handle authentication for password-protected links
+    if link.password_hash:
+        return render_template('index.html')
 
     link.increment_hits()
 
