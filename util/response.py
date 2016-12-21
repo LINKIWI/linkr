@@ -24,7 +24,8 @@ def error(status_code, message, failure, data={}):
 
     :param status_code: The HTTP status code to associate with the response.
     :param message: A string describing the error.
-    :param failure: A string describing the failure name/code; frontend logic checks this value as a string.
+    :param failure: A string describing the failure name/code; frontend logic checks this value as a
+                    string.
     :param data: JSON data to package with the response.
     :return: A tuple of (response object, status code) with the input data represented.
     """

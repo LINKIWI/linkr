@@ -9,7 +9,7 @@
     "build-js-watch": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js --watch --colors",
     "build-css-watch": "mkdir -p frontend/static/dist && sass --watch --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
     "start": "python linkr.py",
-    "lint-backend": "echo TODO",
+    "lint-backend": "flake8 **/*.py",
     "test-backend": "python -m unittest discover -s test/backend -v",
     "cover-backend": "coverage run --source=. -m unittest discover -s test/backend -v && coverage report -m",
     "coveralls-backend": "echo TODO",

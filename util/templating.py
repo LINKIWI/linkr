@@ -59,7 +59,10 @@ def get_all_uris():
     return dict(all_uris=lambda: {
         uri_module: filter(
             lambda module_name: module_name.endswith('URI') and len(module_name) > 3,
-            map(lambda module_pair: module_pair[0], inspect.getmembers(sys.modules['uri.' + uri_module])),
+            map(
+                lambda module_pair: module_pair[0],
+                inspect.getmembers(sys.modules['uri.' + uri_module]),
+            ),
         )
         for uri_module in filter(
             lambda mod: not mod.startswith('__'),

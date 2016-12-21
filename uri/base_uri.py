@@ -25,7 +25,10 @@ class URI:
         ]
         uri_str = str(cls.path)
         for embedded_param in embedded_params:
-            uri_str = uri_str.replace('<{key}>'.format(key=embedded_param), str(kwargs[embedded_param]))
+            uri_str = uri_str.replace(
+                '<{key}>'.format(key=embedded_param),
+                str(kwargs[embedded_param])
+            )
         if params:
             uri_str += '?{params}'.format(params='&'.join(params))
         return uri_str
