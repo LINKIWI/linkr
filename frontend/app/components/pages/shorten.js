@@ -13,6 +13,7 @@ import Header from '../header';
 import Footer from '../footer';
 
 import Button from '../ui/button';
+import Checkbox from '../ui/checkbox';
 import LoadingBar from '../ui/loading-bar';
 import TextField from '../ui/text-field';
 import Tooltip from '../ui/tooltip';
@@ -21,7 +22,7 @@ import context from '../../util/context';
 import DisplayUtil from '../../util/display';
 
 /**
- * TODO
+ * Main interface for shortening a new link.
  */
 export default class Shorten extends React.Component {
   constructor(props) {
@@ -34,21 +35,22 @@ export default class Shorten extends React.Component {
     this.randomAlias = randomstring.generate(10);
   }
 
-  submit() {
+  submit(evt) {
+    evt.preventDefault();
+
     this.setState({
       isLoading: true,
-      submitStatus: {}
+      submitStatus: {},
+      passwordProtect: false
     });
-
-    const alias = this.aliasInput.getValue() || this.randomAlias;
-    const outgoingURL = this.outgoingURLInput.getValue();
 
     request.put({
       url: context.uris.LinkAddURI,
       json: {
         /* eslint-disable camelcase */
-        alias,
-        outgoing_url: outgoingURL
+        alias: this.aliasInput.getValue() || this.randomAlias,
+        outgoing_url: this.outgoingURLInput.getValue(),
+        password: this.passwordProtectCheck.isChecked() ? this.passwordProtectInput.getValue() : null
         /* eslint-enable camelcase */
       }
     }, (err, resp, json) => {
@@ -130,53 +132,90 @@ export default class Shorten extends React.Component {
   }
 
   renderShorten() {
-    const {isLoading} = this.state;
+    const {isLoading, passwordProtect} = this.state;
 
     return (
       <div>
         <p className="sans-serif bold gamma text-gray-60 margin-small--bottom">SHORTEN</p>
-        <TextField
-          ref={(elem) => {
-            this.outgoingURLInput = elem;
-          }}
-          className="shorten-field sans-serif light"
-          style={{
-            width: '100%'
-          }}
-          placeholder="https://google.com"
-        />
-
-        <p className="sans-serif bold gamma text-gray-60 margin--top margin-small--bottom">TO</p>
-        <div style={{
-          display: 'table',
-          width: '100%'
-        }}>
-          <span className="shorten-field sans-serif light text-gray-70" style={{
-            display: 'table-cell',
-            width: '1%',
-            whiteSpace: 'nowrap'
-          }}>
-            {url.parse(context.config.LINKR_URL).href}
-          </span>
+        <form>
           <TextField
             ref={(elem) => {
-              this.aliasInput = elem;
+              this.outgoingURLInput = elem;
             }}
             className="shorten-field sans-serif light"
             style={{
-              display: 'table-cell',
               width: '100%'
             }}
-            placeholder={this.randomAlias}
+            placeholder="https://google.com"
           />
-        </div>
 
-        <Button
-          className="sans-serif bold iota text-white margin-large--top"
-          text="Shorten"
-          disabled={isLoading}
-          onClick={this.submit.bind(this)}
-        />
+          <p className="sans-serif bold gamma text-gray-60 margin--top margin-small--bottom">TO</p>
+          <div style={{
+            display: 'table',
+            width: '100%'
+          }}>
+            <span className="shorten-field sans-serif light text-gray-70" style={{
+              display: 'table-cell',
+              width: '1%',
+              whiteSpace: 'nowrap'
+            }}>
+              {url.parse(context.config.LINKR_URL).href}
+            </span>
+            <TextField
+              ref={(elem) => {
+                this.aliasInput = elem;
+              }}
+              className="shorten-field sans-serif light"
+              style={{
+                display: 'table-cell',
+                width: '100%'
+              }}
+              placeholder={this.randomAlias}
+            />
+          </div>
+
+          <Checkbox
+            ref={(elem) => {
+              this.passwordProtectCheck = elem;
+            }}
+            className="margin-large--top"
+            text="Password protect this link"
+            onCheck={() => this.setState({
+              passwordProtect: true
+            })}
+            onUncheck={() => this.setState({
+              passwordProtect: false
+            })}
+          />
+
+          {
+            passwordProtect && (
+              <div className="margin-tiny--bottom margin--top">
+                <p className="sans-serif bold text-gray-60 iota">
+                  LINK PASSWORD
+                </p>
+                <p className="sans-serif text-gray-50 kilo margin-small--bottom">
+                  Users will be prompted to enter this password before they can access this link.
+                </p>
+
+                <TextField
+                  ref={(elem) => {
+                    this.passwordProtectInput = elem;
+                  }}
+                  className="login-field sans-serif light"
+                  type="password"
+                />
+              </div>
+            )
+          }
+
+          <Button
+            className="sans-serif bold iota text-white margin-large--top"
+            text="Shorten"
+            disabled={isLoading}
+            onClick={this.submit.bind(this)}
+          />
+        </form>
       </div>
     );
   }
