@@ -14,5 +14,13 @@ class NonexistentUserException(Exception):
     pass
 
 
+class UnavailableUsernameException(Exception):
+    pass
+
+
+class InvalidUsernameException(Exception):
+    pass
+
+
 class InvalidAuthenticationException(Exception):
     pass

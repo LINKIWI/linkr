@@ -6,6 +6,6 @@ class UserRegistrationURI(URI):
     path = URI.view_uri('/register')
 
 
-class AddUserURI(URI):
+class UserAddURI(URI):
     methods = ['PUT']
     path = URI.api_uri('/user/add')

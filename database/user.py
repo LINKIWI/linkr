@@ -1,5 +1,6 @@
 import models
 import util.cryptography
+import util.validation
 from database import db_txn
 from linkr import db
 from linkr import login_manager
@@ -16,8 +17,19 @@ def add_user(username, password, signup_ip):
     :param signup_ip:
     :return:
     """
+    if models.User.query.filter_by(username=username).scalar() is not None:
+        raise UnavailableUsernameException('The username `{username}` is already taken'.format(
+            username=username,
+        ))
+
+    if not util.validation.is_username_valid(username):
+        raise InvalidUsernameException('The username `{username}` is invalid'.format(
+            username=username,
+        ))
+
     new_user = models.User(username, password, signup_ip)
     db.session.add(new_user)
+
     return new_user
 
 
@@ -46,7 +58,7 @@ def validate_user_credentials(username, password):
     user = get_user_by_username(username)
     if not user:
         raise NonexistentUserException(
-            'User identified by username `username` does not exist'.format(username=username)
+            'User identified by username `{username}` does not exist'.format(username=username)
         )
 
     if user.password_hash != util.cryptography.secure_hash(password):

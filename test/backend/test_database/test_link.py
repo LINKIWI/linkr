@@ -1,9 +1,9 @@
-from util.testing import DatabaseTestCase
+from util.testing import LinkrTestCase
 
 import database.link
 
 
-class TestLink(DatabaseTestCase):
+class TestLink(LinkrTestCase):
     def test_add_link_invalid_alias(self):
         pass
 

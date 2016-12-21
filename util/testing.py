@@ -4,9 +4,10 @@ from linkr import db
 from flask_testing import TestCase
 
 
-class DatabaseTestCase(TestCase):
+class LinkrTestCase(TestCase):
     """
-    Generic subclass of TestCase with Modern Paste-specific test environment initialization for database testing.
+    Generic subclass of TestCase with Linkr-specific test environment initialization for database
+    testing.
     """
 
     def create_app(self):

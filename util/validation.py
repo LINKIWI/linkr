@@ -40,6 +40,8 @@ VALID_URL_REGEX = re.compile(
     re.UNICODE,
 )
 
+VALID_USERNAME_REGEX = re.compile('^[a-zA-Z0-9]+$')
+
 
 def is_alias_valid(alias):
     """
@@ -61,3 +63,13 @@ def is_url_valid(url):
     :return:
     """
     return bool(re.match(VALID_URL_REGEX, url))
+
+
+def is_username_valid(username):
+    """
+    TODO
+
+    :param username:
+    :return:
+    """
+    return bool(re.match(VALID_USERNAME_REGEX, username))
