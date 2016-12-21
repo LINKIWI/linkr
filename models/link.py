@@ -1,5 +1,6 @@
 import time
 
+import util.cryptography
 from linkr import db
 
 
@@ -18,15 +19,29 @@ class Link(db.Model):
         self,
         alias,
         outgoing_url,
-        password_hash=None,
+        password=None,
     ):
         self.submit_time = int(time.time())
         self.alias = alias
         self.outgoing_url = outgoing_url
-        self.password_hash = password_hash
+        self.password_hash = util.cryptography.secure_hash(password) if password else None
 
     def deactivate(self):
         self.is_active = False
 
     def increment_hits(self):
         self.hits += 1
+
+    def validate_password(self, password):
+        return not self.password_hash or \
+               util.cryptography.secure_hash(password) == self.password_hash
+
+    def as_dict(self):
+        return {
+            'link_id': self.link_id,
+            'submit_time': self.submit_time,
+            'is_active': self.is_active,
+            'hits': self.hits,
+            'alias': self.alias,
+            'outgoing_url': self.outgoing_url,
+        }

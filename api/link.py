@@ -6,6 +6,38 @@ from util.decorators import *
 from util.exception import *
 
 
+@app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
+@require_form_args(['alias'])
+def api_link_details(data):
+    """
+    Retrieve details for a particular alias.
+    """
+    try:
+        link_details = database.link.get_link_by_alias(data['alias'])
+
+        if not link_details:
+            return util.response.error(
+                404,
+                'The requested link alias does not exist.',
+                'failure_nonexistent_alias',
+            )
+
+        # If the link is password-protected, it's necessary to check that the link password is both
+        # included as a request parameter and is correct before serving the details to the client
+        if not link_details.validate_password(data.get('password', '')):
+            return util.response.error(
+                401,
+                'The supplied link password is incorrect.',
+                'failure_incorrect_link_password',
+            )
+
+        return util.response.success({
+            'details': link_details.as_dict()
+        })
+    except:
+        return util.response.undefined_error()
+
+
 @app.route(LinkAddURI.path, methods=LinkAddURI.methods)
 @require_form_args(['alias', 'outgoing_url'])
 def api_add_link(data):
@@ -13,7 +45,11 @@ def api_add_link(data):
     Add a new link (alias <-> outgoing URL association).
     """
     try:
-        new_link = database.link.add_link(data['alias'], data['outgoing_url'])
+        new_link = database.link.add_link(
+            alias=data['alias'],
+            outgoing_url=data['outgoing_url'],
+            password=data.get('password'),
+        )
         return util.response.success({
             'alias': new_link.alias,
             'outgoing_url': new_link.outgoing_url,

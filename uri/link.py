@@ -11,6 +11,11 @@ class LinkNotFoundURI(URI):
     path = URI.view_uri('/not-found')
 
 
+class LinkDetailsURI(URI):
+    methods = ['GET', 'POST']
+    path = URI.api_uri('/link/details')
+
+
 class LinkAddURI(URI):
     methods = ['PUT']
     path = URI.api_uri('/link/add')

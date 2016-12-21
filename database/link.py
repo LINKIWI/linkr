@@ -6,12 +6,13 @@ from util.exception import *
 
 
 @db_txn
-def add_link(alias, outgoing_url):
+def add_link(alias, outgoing_url, password=None):
     """
     Add a new link to the database after performing necessary input validation.
 
     :param alias: The link alias.
     :param outgoing_url: The associated outgoing URL.
+    :param password: TODO
     :return: An instance of models.Link representing the new entry.
     :raises InvalidAliasException: If the alias is invalid.
     :raises InvalidURLException: If the outgoing URL is invalid.
@@ -24,7 +25,7 @@ def add_link(alias, outgoing_url):
     if models.Link.query.filter_by(alias=alias).scalar():
         raise UnavailableAliasException('Alias `{alias}` already exists'.format(alias=alias))
 
-    new_link = models.Link(alias, outgoing_url)
+    new_link = models.Link(alias, outgoing_url, password)
     db.session.add(new_link)
 
     return new_link
