@@ -13,9 +13,9 @@ class DefaultURI(URI):
 
 class AdminURI(URI):
     methods = ['GET']
-    path = '/linkr/admin'
+    path = URI.view_uri('/admin')
 
 
 class APIDocumentationURI(URI):
     methods = ['GET']
-    path = '/linkr/api'
+    path = URI.view_uri('/api')

@@ -48,3 +48,23 @@ class URI:
         :return:
         """
         return cls.path
+
+    @classmethod
+    def view_uri(cls, path):
+        """
+        Generate the Linkr URI for a standard page.
+
+        :param path: Desired path.
+        :return: A formatted Linkr URI for the view.
+        """
+        return '/linkr{path}'.format(path=path)
+
+    @classmethod
+    def api_uri(cls, path):
+        """
+        Generate the Linkr URI for an API endpoint.
+
+        :param path: Desired path.
+        :return: A formatted Linkr URI for the API endpoint.
+        """
+        return '/linkr/api{path}'.format(path=path)

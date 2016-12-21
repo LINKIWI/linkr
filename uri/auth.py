@@ -3,19 +3,19 @@ from base_uri import URI
 
 class LoginURI(URI):
     methods = ['GET']
-    path = '/linkr/login'
+    path = URI.view_uri('/login')
 
 
 class AuthCheckURI(URI):
     methods = ['GET', 'POST']
-    path = '/linkr/api/auth/check'
+    path = URI.api_uri('/auth/check')
 
 
 class AuthLoginURI(URI):
     methods = ['POST']
-    path = '/linkr/api/auth/login'
+    path = URI.api_uri('/auth/login')
 
 
 class AuthLogoutURI(URI):
     methods = ['GET', 'POST']
-    path = '/linkr/api/auth/logout'
+    path = URI.api_uri('/auth/logout')
