@@ -5,6 +5,8 @@ const KEY_CODE_SPACE = 32;
 const KEY_CODE_ENTER = 13;
 const KEY_CODE_ESCAPE = 27;
 
+const noop = () => {};
+
 /**
  * Styled checkbox element.
  */
@@ -13,12 +15,16 @@ export default class Checkbox extends React.Component {
     className: React.PropTypes.string,
     style: React.PropTypes.object,
     isChecked: React.PropTypes.bool,
-    text: React.PropTypes.string
+    text: React.PropTypes.string,
+    onCheck: React.PropTypes.func,
+    onUncheck: React.PropTypes.func
   };
   static defaultProps = {
     className: '',
     style: {},
-    isChecked: false
+    isChecked: false,
+    onCheck: noop,
+    onUncheck: noop
   };
 
   constructor(props) {
@@ -30,14 +36,25 @@ export default class Checkbox extends React.Component {
   }
 
   /**
-   * Clicking the checkbox should toggle the current check state.
+   * Toggle the current check state of the checkbox. This will also trigger the check/uncheck
+   * callbacks as appropriate.
    */
-  handleClick() {
+  toggleCheckState() {
     const {isChecked} = this.state;
+    const {onCheck, onUncheck} = this.props;
 
     this.setState({
       isChecked: !isChecked
     });
+
+    (isChecked ? onUncheck : onCheck)();
+  }
+
+  /**
+   * Clicking the checkbox should toggle the current check state.
+   */
+  handleClick() {
+    this.toggleCheckState();
   }
 
   /**
@@ -57,18 +74,17 @@ export default class Checkbox extends React.Component {
    * @returns {*} Return value is unused.
    */
   handleKeyDown(evt) {
-    const {isChecked} = this.state;
+    const {onUncheck} = this.props;
 
     switch (evt.keyCode) {
       case KEY_CODE_SPACE:
       case KEY_CODE_ENTER:
-        return this.setState({
-          isChecked: !isChecked
-        });
+        return this.toggleCheckState();
       case KEY_CODE_ESCAPE:
-        return this.setState({
+        this.setState({
           isChecked: false
         });
+        return onUncheck();
       default:
         return null;
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
+import sinon from 'sinon';
 import test from 'tape';
 
 import Checkbox from '../../../../frontend/app/components/ui/checkbox';
@@ -63,6 +64,27 @@ test('Checkbox toggles on keyboard events', (t) => {
     keyCode: 32
   });
   t.notOk(check.instance().isChecked(), 'Space can toggle the current check state');
+
+  t.end();
+});
+
+test('Check and uncheck event handlers', (t) => {
+  const onCheckSpy = sinon.spy();
+  const onUncheckSpy = sinon.spy();
+  const check = mount(
+    <Checkbox
+      onCheck={onCheckSpy}
+      onUncheck={onUncheckSpy}
+    />
+  );
+
+  t.notOk(onCheckSpy.called, 'onCheck is not called on component mount');
+  t.notOk(onUncheckSpy.called, 'onUncheck is not called on component mount');
+  check.find('.check-container').simulate('click');
+  t.ok(onCheckSpy.called, 'onCheck is called after click');
+  t.notOk(onUncheckSpy.called, 'onUncheck is not called after initial click');
+  check.find('.check-container').simulate('click');
+  t.ok(onUncheckSpy.called, 'onUncheck is called after second click');
 
   t.end();
 });
