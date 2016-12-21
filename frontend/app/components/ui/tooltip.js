@@ -61,7 +61,7 @@ export default class Tooltip extends React.Component {
 
     // Conditionally display the tooltip based on current state
     const style = extend(clone(tooltipStyle), {
-      display: displayTooltip ? 'inherit' : 'none'
+      opacity: displayTooltip ? 1 : 0
     });
 
     return (
@@ -70,13 +70,13 @@ export default class Tooltip extends React.Component {
         onMouseOver={this.onMouseOver.bind(this)}
         onMouseOut={this.onMouseOut.bind(this)}
       >
-        <div>
+        <div className="tooltip-children">
           {children}
         </div>
 
         {
           DisplayUtil.displayIf(contents, () => (
-            <span className="tooltip" style={style}>
+            <span className="tooltip transition" style={style}>
               {contents}
             </span>
           ))
