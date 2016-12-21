@@ -34,7 +34,7 @@ class Link(db.Model):
 
     def validate_password(self, password):
         return not self.password_hash or \
-               util.cryptography.secure_hash(password) == self.password_hash
+            util.cryptography.secure_hash(password) == self.password_hash
 
     def as_dict(self):
         return {

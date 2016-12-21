@@ -4,8 +4,8 @@ import {Route} from 'react-router';
 import AppRoot from './components/app-root';
 
 import Admin from './components/pages/admin';
+import Alias from './components/pages/alias';
 import Login from './components/pages/login';
-import NotFound from './components/pages/not-found';
 import Register from './components/pages/register';
 import Shorten from './components/pages/shorten';
 
@@ -16,7 +16,7 @@ export default (
     <Route path={context.uris.AdminURI} component={Admin} />
     <Route path={context.uris.LoginURI} component={Login} />
     <Route path={context.uris.UserRegistrationURI} component={Register} />
-    <Route path={context.uris.LinkNotFoundURI} component={NotFound} />
+    <Route path={'/:alias'} component={Alias} />
     <Route path="*" component={Shorten} />
   </Route>
 );
