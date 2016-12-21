@@ -1,4 +1,4 @@
-/* global setTimeout, clearInterval */
+/* global setTimeout, clearTimeout */
 
 import React from 'react';
 
@@ -29,7 +29,7 @@ export default class LoadingBar extends React.Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearTimeout(this.interval);
   }
 
   tick() {

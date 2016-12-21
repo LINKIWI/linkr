@@ -23,6 +23,9 @@ test('Loading bar state update logic', (t) => {
   clock.tick(BOUNCE_INTERVAL);
   t.equals(loadingBar.state().position, POSITION_LEFT, 'Position state bounces back');
 
+  // Unmount clears timeout
+  loadingBar.unmount();
+
   clock.restore();
   t.end();
 });
