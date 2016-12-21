@@ -178,6 +178,10 @@ export default class Login extends React.Component {
                 onClick={this.submitLogin.bind(this)}
               />
             </form>
+
+            <p className="sans-serif iota text-gray-60 margin-huge--top">
+              Don't have an account? <Link to={context.uris.UserRegistrationURI}>Register here</Link>.
+            </p>
           </div>
         </Container>
 
