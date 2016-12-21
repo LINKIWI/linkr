@@ -2,55 +2,92 @@ $default-spacing: 24px;
 $tiny-spacing: 6px;
 $small-spacing: 12px;
 $large-spacing: 36px;
+$huge-spacing: 50px;
+
+/* Top margin */
 
 .margin--top {
   margin-top: $default-spacing !important;
+}
+
+.margin-huge--top {
+  margin-top: $huge-spacing !important;
 }
 
 .margin-large--top {
   margin-top: $large-spacing !important;
 }
 
-.margin-tiny--bottom {
-  margin-bottom: $tiny-spacing !important;
+.margin-small--top {
+  margin-top: $small-spacing !important;
 }
 
-.margin-small--bottom {
-  margin-bottom: $small-spacing !important;
+.margin-tiny--top {
+  margin-top: $tiny-spacing !important;
 }
+
+/* Bottom margin */
 
 .margin--bottom {
   margin-bottom: $default-spacing !important;
+}
+
+.margin-huge--bottom {
+  margin-bottom: $huge-spacing !important;
 }
 
 .margin-large--bottom {
   margin-bottom: $large-spacing !important;
 }
 
-.margin-tiny--right {
-  margin-right: $tiny-spacing !important;
+.margin-small--bottom {
+  margin-bottom: $small-spacing !important;
 }
 
-.margin-small--right {
-  margin-right: $small-spacing !important;
+.margin-tiny--bottom {
+  margin-bottom: $tiny-spacing !important;
 }
+
+/* Right margin */
 
 .margin--right {
   margin-right: $default-spacing !important;
+}
+
+.margin-huge--right {
+  margin-right: $huge-spacing !important;
 }
 
 .margin-large--right {
   margin-right: $large-spacing !important;
 }
 
-.margin-small--left {
-  margin-left: $small-spacing !important;
+.margin-small--right {
+  margin-right: $small-spacing !important;
 }
+
+.margin-tiny--right {
+  margin-right: $tiny-spacing !important;
+}
+
+/* Left margin */
 
 .margin--left {
   margin-left: $default-spacing !important;
 }
 
-.pad--all {
-  padding: $default-spacing !important;
+.margin-huge--left {
+  margin-left: $huge-spacing !important;
+}
+
+.margin-large--left {
+  margin-left: $large-spacing !important;
+}
+
+.margin-small--left {
+  margin-left: $small-spacing !important;
+}
+
+.margin-tiny--left {
+  margin-left: $tiny-spacing !important;
 }
