@@ -12,6 +12,8 @@ gem install sass
 npm install
 
 # Frontend tests
-npm run lint
+npm run lint-backend
+npm run lint-frontend
 npm run build
-npm run cover
+npm run cover-backend
+npm run cover-frontend

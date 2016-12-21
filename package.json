@@ -9,10 +9,14 @@
     "build-js-watch": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js --watch --colors",
     "build-css-watch": "mkdir -p frontend/static/dist && sass --watch --style compressed frontend/styles/main.scss:frontend/static/dist/main.css",
     "start": "python linkr.py",
-    "lint": "eslint frontend/app test/frontend",
-    "test": "npm run lint && node test/frontend | tap-spec",
-    "cover": "istanbul cover test/frontend --print detail",
-    "coveralls": "istanbul cover test/frontend --print detail && cat coverage/lcov.info | coveralls"
+    "lint-backend": "echo TODO",
+    "test-backend": "python -m unittest discover -s test/backend -v",
+    "cover-backend": "coverage run --source=. -m unittest discover -s test/backend -v && coverage report -m",
+    "coveralls-backend": "echo TODO",
+    "lint-frontend": "eslint frontend/app test/frontend",
+    "test-frontend": "npm run lint && node test/frontend | tap-spec",
+    "cover-frontend": "istanbul cover test/frontend --print detail",
+    "coveralls-frontend": "istanbul cover test/frontend --print detail && cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",

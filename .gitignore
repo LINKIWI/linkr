@@ -3,6 +3,7 @@
 
 # Build artifacts
 .sass-cache/
+.coverage
 coverage/
 frontend/static/dist/
 *.pyc
