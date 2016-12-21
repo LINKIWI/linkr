@@ -11,7 +11,7 @@ from util.exception import *
 
 
 @app.route(AuthCheckURI.path, methods=AuthCheckURI.methods)
-def auth_check():
+def api_auth_check():
     """
     Check if any user is currently authenticated.
     """
@@ -32,7 +32,7 @@ def auth_check():
 
 @app.route(AuthLoginURI.path, methods=AuthLoginURI.methods)
 @require_form_args(['username', 'password', 'remember_me'])
-def auth_login(data):
+def api_auth_login(data):
     """
     Attempt to authenticate the specified user.
     """
@@ -63,7 +63,7 @@ def auth_login(data):
 
 
 @app.route(AuthLogoutURI.path, methods=AuthLogoutURI.methods)
-def auth_logout():
+def api_auth_logout():
     """
     Log out the currently authenticated user.
     """
