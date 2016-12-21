@@ -1,3 +1,5 @@
+// TOOD: no need for class with static methods, just export functions
+
 /**
  * Class exposing static methods for common display tasks.
  */
