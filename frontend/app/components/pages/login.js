@@ -56,7 +56,7 @@ export default class Login extends React.Component {
       json: {
         /* eslint-disable camelcase */
         username: this.usernameInput.getValue(),
-        password_hash: this.passwordInput.getValue(),
+        password: this.passwordInput.getValue(),
         remember_me: this.rememberMeCheck.isChecked()
         /* eslint-enable camelcase */
       }

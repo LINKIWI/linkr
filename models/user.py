@@ -1,8 +1,9 @@
-import os
 import base64
-import time
+import os
 import re
+import time
 
+import util.cryptography
 from linkr import db
 
 
@@ -30,14 +31,14 @@ class User(db.Model):
     def __init__(
         self,
         username,
-        password_hash,
+        password,
         signup_ip,
     ):
         self.is_active = True
         self.signup_time = int(time.time())
         self.signup_ip = signup_ip
         self.username = username
-        self.password_hash = password_hash
+        self.password_hash = util.cryptography.secure_hash(password)
         self.generate_new_api_key()
 
     def generate_new_api_key(self):

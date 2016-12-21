@@ -1,4 +1,5 @@
 import models
+import util.cryptography
 from database import db_txn
 from linkr import db
 from linkr import login_manager
@@ -6,16 +7,16 @@ from util.exception import *
 
 
 @db_txn
-def add_user(username, password_hash, signup_ip):
+def add_user(username, password, signup_ip):
     """
     TODO
 
     :param username:
-    :param password_hash:
+    :param password:
     :param signup_ip:
     :return:
     """
-    new_user = models.User(username, password_hash, signup_ip)
+    new_user = models.User(username, password, signup_ip)
     db.session.add(new_user)
     return new_user
 
@@ -34,12 +35,12 @@ def generate_new_api_key(user_id):
     return user
 
 
-def validate_user_credentials(username, password_hash):
+def validate_user_credentials(username, password):
     """
     TODO
 
     :param username:
-    :param password_hash:
+    :param password:
     :return:
     """
     user = get_user_by_username(username)
@@ -48,7 +49,7 @@ def validate_user_credentials(username, password_hash):
             'User identified by username `username` does not exist'.format(username=username)
         )
 
-    if user.password_hash != password_hash:
+    if user.password_hash != util.cryptography.secure_hash(password):
         raise InvalidAuthenticationException('Specified password is incorrect')
 
     return user

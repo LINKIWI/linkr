@@ -11,7 +11,7 @@ class Link(db.Model):
     is_active = db.Column(db.Boolean, default=True)
     hits = db.Column(db.Integer, default=0)
     password_hash = db.Column(db.Text, default=None)
-    alias = db.Column(db.Text(length=32), index=True, unique=True)
+    alias = db.Column(db.String(32), index=True, unique=True)
     outgoing_url = db.Column(db.Text)
 
     def __init__(
