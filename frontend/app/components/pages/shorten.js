@@ -46,15 +46,23 @@ export default class Shorten extends React.Component {
     request.put({
       url: context.uris.LinkAddURI,
       json: {
+        /* eslint-disable camelcase */
         alias,
-        outgoing_url: outgoingURL  // eslint-disable-line camelcase
+        outgoing_url: outgoingURL
+        /* eslint-enable camelcase */
       }
     }, (err, resp, json) => {
       if (err) {
-        // TODO
+        return this.setState({
+          isLoading: false,
+          submitStatus: {
+            success: false,
+            message: 'There was a network error. Please submitting again.'
+          }
+        });
       }
 
-      this.setState({
+      return this.setState({
         isLoading: false,
         submitStatus: json
       });
