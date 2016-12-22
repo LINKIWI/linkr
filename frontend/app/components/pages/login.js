@@ -145,8 +145,8 @@ export default class Login extends React.Component {
           <div className="margin-large--top margin-large--bottom">
             <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Login</p>
 
-            <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">USERNAME</p>
             <form>
+              <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">USERNAME</p>
               <TextField
                 ref={(elem) => {
                   this.usernameInput = elem;
