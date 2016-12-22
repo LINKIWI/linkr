@@ -1,17 +1,22 @@
+/* global window */
+
 import AccountCircle from 'react-icons/lib/md/account-circle';
 import {browserHistory} from 'react-router';
 import MediaQuery from 'react-responsive';
 import React from 'react';
 
 import Button from './ui/button';
+import LoadingBar from './ui/loading-bar';
 
 import authentication from '../util/authentication';
+import context from '../util/context';
 
 export default class Footer extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      isLoading: false,
       isLoggedIn: false
     };
   }
@@ -29,15 +34,34 @@ export default class Footer extends React.Component {
     });
   }
 
+  handleAccountClick(evt) {
+    evt.preventDefault();
+
+    browserHistory.push(context.uris.UserAccountURI);
+  }
+
+  handleLogoutClick(evt) {
+    evt.preventDefault();
+
+    this.setState({
+      isLoading: true
+    });
+    authentication.logout(() => {
+      window.location.href = context.uris.HomeURI;
+    });
+  }
+
   render() {
-    const {username} = this.state;
+    const {isLoading, username} = this.state;
 
     if (!username) {
       return null;
     }
 
     return (
-      <div className="footer-container">
+      <div className={`footer-container transition ${isLoading && 'fade'}`}>
+        {isLoading && <LoadingBar />}
+
         <div className="footer bg-gray-80 text-gray-10 sans-serif link-alt">
           <div style={{
             display: 'table',
@@ -71,18 +95,12 @@ export default class Footer extends React.Component {
               <Button
                 className="footer-button sans-serif bold kilo bg-gray-10 text-gray-80"
                 text={'ACCOUNT'}
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  browserHistory.push('/linkr/account');
-                }}
+                onClick={this.handleAccountClick.bind(this)}
               />
               <Button
                 className="footer-button sans-serif bold kilo bg-gray-10 text-gray-80 margin--left"
                 text={'LOGOUT'}
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  authentication.logout(this.checkAuthStatus.bind(this));
-                }}
+                onClick={this.handleLogoutClick.bind(this)}
               />
             </div>
           </div>
