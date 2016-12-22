@@ -6,13 +6,14 @@ from util.exception import *
 
 
 @db_txn
-def add_link(alias, outgoing_url, password=None):
+def add_link(alias, outgoing_url, password=None, user_id=None):
     """
     Add a new link to the database after performing necessary input validation.
 
     :param alias: The link alias.
     :param outgoing_url: The associated outgoing URL.
-    :param password: TODO
+    :param password: Plain-text password associated with this link, if applicable.
+    :param user_id: ID of the user to associate with this link, if applicable.
     :return: An instance of models.Link representing the new entry.
     :raises InvalidAliasException: If the alias is invalid.
     :raises InvalidURLException: If the outgoing URL is invalid.
@@ -25,7 +26,12 @@ def add_link(alias, outgoing_url, password=None):
     if models.Link.query.filter_by(alias=alias).scalar():
         raise UnavailableAliasException('Alias `{alias}` already exists'.format(alias=alias))
 
-    new_link = models.Link(alias, outgoing_url, password)
+    new_link = models.Link(
+        alias=alias,
+        outgoing_url=outgoing_url,
+        password=password,
+        user_id=user_id,
+    )
     db.session.add(new_link)
 
     return new_link
@@ -47,6 +53,28 @@ def delete_link(alias):
     to_delete.delete(synchronize_session='fetch')
 
     return to_delete
+
+
+@db_txn
+def add_link_hit(link_id, remote_ip, referer, user_agent):
+    """
+    Add a new link hit.
+
+    :param link_id: ID of the accessed link.
+    :param remote_ip: The remote IP address of the client.
+    :param referer: The referer of the hit.
+    :param user_agent: The client's user agent string.
+    :return: An instance of models.LinkHit representing the added entry.
+    """
+    new_link_hit = models.LinkHit(
+        link_id=link_id,
+        remote_ip=remote_ip,
+        referer=referer,
+        user_agent=user_agent,
+    )
+    db.session.add(new_link_hit)
+
+    return new_link_hit
 
 
 def get_link_by_id(link_id):

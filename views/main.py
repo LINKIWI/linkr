@@ -26,7 +26,12 @@ def alias_route(alias):
     if link.password_hash:
         return render_template('index.html')
 
-    link.increment_hits()
+    database.link.add_link_hit(
+        link_id=link.link_id,
+        remote_ip=request.remote_addr,
+        referer=request.referrer,
+        user_agent=request.user_agent,
+    )
 
     return redirect(link.outgoing_url)
 

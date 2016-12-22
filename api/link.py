@@ -1,3 +1,5 @@
+from flask_login import current_user
+
 import database.link
 import util.response
 from linkr import app
@@ -49,6 +51,7 @@ def api_add_link(data):
             alias=data['alias'],
             outgoing_url=data['outgoing_url'],
             password=data.get('password'),
+            user_id=current_user.user_id if current_user.is_authenticated else None
         )
         return util.response.success({
             'alias': new_link.alias,
