@@ -14,7 +14,7 @@
     "cover-backend": "coverage run --source=. -m unittest discover -s test/backend -v && coverage report -m",
     "coveralls-backend": "echo TODO",
     "lint-frontend": "eslint frontend/app test/frontend",
-    "test-frontend": "npm run lint-frontend && node test/frontend | tap-spec",
+    "test-frontend": "node test/frontend | tap-spec",
     "cover-frontend": "istanbul cover test/frontend --print detail",
     "coveralls-frontend": "istanbul cover test/frontend --print detail && cat coverage/lcov.info | coveralls"
   },
