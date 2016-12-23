@@ -13,6 +13,12 @@ from util.decorators import require_form_args
 @app.route(LinkAliasRedirectURI.path, methods=LinkAliasRedirectURI.methods)
 @require_form_args([])
 def alias_route(data, alias):
+    """
+    Server-side link alias processing. For GET requests, will respond with a 302 redirect to the
+    outgoing URL, or serve the frontend if some user intervention is required (e.g. entering a
+    password). Programmatic POST requests are served a JSON error similar to that of
+    api_link_details.
+    """
     # Attempt to fetch the link mapping from the database
     link = database.link.get_link_by_alias(alias)
 
@@ -53,4 +59,7 @@ def alias_route(data, alias):
 @app.route(HomeURI.path, defaults={'path': ''}, methods=HomeURI.methods)
 @app.route(DefaultURI.path, methods=DefaultURI.methods)
 def frontend(path):
+    """
+    Serve the frontend application. All rendering logic is handled client-side.
+    """
     return render_template('index.html')
