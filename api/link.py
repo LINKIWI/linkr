@@ -48,6 +48,14 @@ def api_link_details(data):
                 'failure_incorrect_link_password',
             )
 
+        if data.get('increment_hits'):
+            database.link.add_link_hit(
+                link_id=link_details.link_id,
+                remote_ip=request.remote_addr,
+                referer=request.referrer,
+                user_agent=request.user_agent,
+            )
+
         return util.response.success({
             'details': link_details.as_dict()
         })

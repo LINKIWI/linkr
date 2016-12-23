@@ -31,7 +31,7 @@ export default class Alias extends React.Component {
   }
 
   componentDidMount() {
-    this.loadLinkDetails(this.props.params.alias, null, () => {
+    this.loadLinkDetails(this.props.params.alias, null, false, () => {
       this.setState({
         initialLoad: true
       });
@@ -43,9 +43,11 @@ export default class Alias extends React.Component {
    *
    * @param {String} alias Link alias.
    * @param {String} password Optional password for the alias, if necessary.
+   * @param {Boolean} incrementHits True to request for the backend to increment the number of hits
+   *                                on thi link when the request completes.
    * @param {Function=} cb Callback function called after setting component state.
    */
-  loadLinkDetails(alias, password, cb) {
+  loadLinkDetails(alias, password, incrementHits, cb) {
     this.setState({
       isLoading: true
     });
@@ -53,8 +55,11 @@ export default class Alias extends React.Component {
     request.post({
       url: context.uris.LinkDetailsURI,
       json: {
-        alias: alias,
-        password: password
+        /* eslint-disable camelcase */
+        alias,
+        password,
+        increment_hits: incrementHits
+        /* eslint-enable camelcase */
       }
     }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
       this.setState({
@@ -74,7 +79,7 @@ export default class Alias extends React.Component {
   submitPassword(evt) {
     evt.preventDefault();
 
-    this.loadLinkDetails(this.props.params.alias, this.linkPasswordInput.getValue());
+    this.loadLinkDetails(this.props.params.alias, this.linkPasswordInput.getValue(), true);
   }
 
   /**
