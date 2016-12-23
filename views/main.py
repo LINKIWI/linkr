@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request
 
 import database.link
+import util.response
 from linkr import app
 from uri.link import *
 from uri.main import *
@@ -20,13 +21,24 @@ def alias_route(data, alias):
             # For GET requests (likely from a browser), direct to the frontend interface
             return render_template('index.html')
         elif request.method == 'POST':
-            # For POST requests (likely programmatic), send a plain-text response with an
-            # appropriate status code
-            return 'Link alias not found', 404
+            # For POST requests (likely programmatic), send a JSON response with an appropriate
+            # status code
+            return util.response.error(
+                status_code=404,
+                message='The requested link alias does not exist.',
+                failure='failure_nonexistent_alias',
+            )
 
     # Redirect to the frontend interface to handle authentication for password-protected links
     if link.password_hash and not link.validate_password(data.get('password', '')):
-        return render_template('index.html')
+        if request.method == 'GET':
+            return render_template('index.html')
+        elif request.method == 'POST':
+            return util.response.error(
+                status_code=401,
+                message='The supplied link password is incorrect.',
+                failure='failure_incorrect_link_password',
+            )
 
     database.link.add_link_hit(
         link_id=link.link_id,
