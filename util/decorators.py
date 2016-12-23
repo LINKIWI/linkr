@@ -28,7 +28,7 @@ def require_form_args(form_args, allow_blank_values=False, strict_params=False):
     def decorator(func):
         @wraps(func)
         def abort_if_invalid_args(*args, **kwargs):
-            data = request.get_json(force=True)
+            data = request.get_json(force=True, silent=True) or {}
             if (len(form_args) > 0 and not data) or \
                     (not strict_params and not set(form_args).issubset(data.keys())) or \
                     (strict_params and set(form_args) != set(data.keys())) or \
