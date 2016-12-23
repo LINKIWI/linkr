@@ -25,6 +25,7 @@
   "author": "Kevin Lin <developer@kevinlin.info>",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.1.4",
     "babel-core": "^6.11.4",
     "body-parser": "^1.15.2",
     "browser-request": "^0.3.3",
@@ -34,6 +35,7 @@
     "deep-extend": "^0.4.1",
     "dottie": "^1.1.1",
     "express": "^4.14.0",
+    "humanize": "0.0.9",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta4",
     "randomstring": "^1.1.5",
