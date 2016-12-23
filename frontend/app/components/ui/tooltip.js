@@ -16,6 +16,7 @@ export const GRACE_TIMEOUT_INTERVAL = 150;
 export default class Tooltip extends React.Component {
   static propTypes = {
     contents: React.PropTypes.element,
+    tooltipClassName: React.PropTypes.string,
     tooltipStyle: React.PropTypes.object,
     alwaysDisplay: React.PropTypes.bool
   };
@@ -56,12 +57,13 @@ export default class Tooltip extends React.Component {
   }
 
   render() {
-    const {contents, tooltipStyle, children} = this.props;
+    const {contents, tooltipClassName, tooltipStyle, children} = this.props;
     const {displayTooltip} = this.state;
 
     // Conditionally display the tooltip based on current state
     const style = extend(clone(tooltipStyle), {
-      opacity: displayTooltip ? 1 : 0
+      opacity: displayTooltip ? 1 : 0,
+      visibility: displayTooltip ? 'inherit' : 'hidden'
     });
 
     return (
@@ -76,7 +78,7 @@ export default class Tooltip extends React.Component {
 
         {
           DisplayUtil.displayIf(contents, () => (
-            <span className="tooltip transition" style={style}>
+            <span className={`tooltip transition ${tooltipClassName}`} style={style}>
               {contents}
             </span>
           ))
