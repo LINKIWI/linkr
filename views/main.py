@@ -6,10 +6,12 @@ import database.link
 from linkr import app
 from uri.link import *
 from uri.main import *
+from util.decorators import require_form_args
 
 
 @app.route(LinkAliasRedirectURI.path, methods=LinkAliasRedirectURI.methods)
-def alias_route(alias):
+@require_form_args([])
+def alias_route(data, alias):
     # Attempt to fetch the link mapping from the database
     link = database.link.get_link_by_alias(alias)
 
@@ -23,7 +25,7 @@ def alias_route(alias):
             return 'Link alias not found', 404
 
     # Redirect to the frontend interface to handle authentication for password-protected links
-    if link.password_hash:
+    if link.password_hash and not link.validate_password(data.get('password', '')):
         return render_template('index.html')
 
     database.link.add_link_hit(
