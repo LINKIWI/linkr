@@ -8,7 +8,7 @@ class LinkHit(db.Model):
 
     hit_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     link_id = db.Column(db.Integer, index=True)
-    timestamp = db.column(db.Integer)
+    timestamp = db.Column(db.Integer)
     remote_ip = db.Column(db.String(20))
     referer = db.Column(db.Text)
     user_agent = db.Column(db.Text)
@@ -28,6 +28,7 @@ class LinkHit(db.Model):
 
     def as_dict(self):
         return {
+            'hit_id': self.hit_id,
             'link_id': self.link_id,
             'timestamp': self.timestamp,
             'remote_ip': self.remote_ip,
