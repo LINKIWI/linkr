@@ -9,13 +9,23 @@ from util.exception import *
 
 
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
-@require_form_args(['alias'])
+@require_form_args([])
 def api_link_details(data):
     """
     Retrieve details for a particular alias.
     """
     try:
-        link_details = database.link.get_link_by_alias(data['alias'])
+        # Prioritize retrieval by ID
+        if data.get('link_id'):
+            link_details = database.link.get_link_by_id(data['link_id'])
+        elif data.get('alias'):
+            link_details = database.link.get_link_by_alias(data['alias'])
+        else:
+            return util.response.error(
+                400,
+                'A link_id or alias must be supplied to retrieve link details.',
+                'failure_incomplete_params',
+            )
 
         if not link_details:
             return util.response.error(
@@ -25,8 +35,13 @@ def api_link_details(data):
             )
 
         # If the link is password-protected, it's necessary to check that the link password is both
-        # included as a request parameter and is correct before serving the details to the client
-        if not link_details.validate_password(data.get('password', '')):
+        # included as a request parameter and is correct before serving the details to the client.
+        # The admin account is allowed to bypass the password protection check.
+        should_deny_access = all([
+            not link_details.validate_password(data.get('password', '')),
+            not current_user.is_authenticated or not current_user.is_admin,
+        ])
+        if should_deny_access:
             return util.response.error(
                 401,
                 'The supplied link password is incorrect.',
