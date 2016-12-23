@@ -6,6 +6,11 @@ class LinkAliasRedirectURI(URI):
     path = '/<alias>'
 
 
+class LinkAliasURI(URI):
+    methods = ['GET']
+    path = '/:alias'
+
+
 class LinkNotFoundURI(URI):
     methods = ['GET']
     path = URI.view_uri('/not-found')
@@ -24,3 +29,8 @@ class LinkAddURI(URI):
 class LinkDeleteURI(URI):
     methods = ['DELETE']
     path = URI.api_uri('/link/delete')
+
+
+class LinkHitsURI(URI):
+    methods = ['GET', 'POST']
+    path = URI.api_uri('/link/hits')

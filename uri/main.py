@@ -16,6 +16,11 @@ class AdminURI(URI):
     path = URI.view_uri('/admin')
 
 
+class AdminLinkDetailsURI(URI):
+    methods = ['GET']
+    path = URI.view_uri('/admin/link/:link_id')
+
+
 class APIDocumentationURI(URI):
     methods = ['GET']
     path = URI.view_uri('/api')
