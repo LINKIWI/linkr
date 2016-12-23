@@ -121,3 +121,33 @@ def api_delete_link(data):
         )
     except:
         return util.response.undefined_error()
+
+
+@app.route(LinkHitsURI.path, methods=LinkHitsURI.methods)
+@require_form_args(['link_id'])
+def api_link_hits(data):
+    """
+    Retrieve a paginated list of hits for a particular link.
+    """
+    # Only the admin user is allowed to access this endpoint.
+    if not current_user.is_authenticated or not current_user.is_admin:
+        return util.response.error(
+            status_code=403,
+            message='Only the admin user is allowed to access this endpoint.',
+            failure='failure_unauth',
+        )
+
+    expect_args = {'link_id', 'page_num', 'num_per_page'}
+    filtered_data = {
+        key: value
+        for key, value in data.items()
+        if key in expect_args
+    }
+
+    try:
+        hits = database.link.get_link_hits_by_id(**filtered_data)
+        return util.response.success({
+            'hits': [hit.as_dict() for hit in hits]
+        })
+    except:
+        return util.response.undefined_error()

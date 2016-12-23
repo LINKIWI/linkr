@@ -77,6 +77,18 @@ def add_link_hit(link_id, remote_ip, referer, user_agent):
     return new_link_hit
 
 
+def get_link_hits_by_id(link_id, page_num=0, num_per_page=100):
+    return models.LinkHit.query.filter_by(
+        link_id=link_id,
+    ).order_by(
+        models.LinkHit.hit_id.desc()
+    ).offset(
+        page_num * num_per_page
+    ).limit(
+        num_per_page
+    ).all()
+
+
 def get_link_by_id(link_id):
     """
     Retrieve a link by its ID.
