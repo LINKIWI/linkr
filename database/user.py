@@ -8,13 +8,14 @@ from util.exception import *
 
 
 @db_txn
-def add_user(username, password, signup_ip):
+def add_user(username, password, signup_ip, is_admin=False):
     """
     TODO
 
     :param username:
     :param password:
     :param signup_ip:
+    :param is_admin:
     :return:
     """
     if models.User.query.filter_by(username=username).scalar() is not None:
@@ -27,7 +28,12 @@ def add_user(username, password, signup_ip):
             username=username,
         ))
 
-    new_user = models.User(username, password, signup_ip)
+    new_user = models.User(
+        username=username,
+        password=password,
+        signup_ip=signup_ip,
+        is_admin=is_admin,
+    )
     db.session.add(new_user)
 
     return new_user
