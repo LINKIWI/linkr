@@ -21,7 +21,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    is_active = db.Column(db.Boolean)
+    is_admin = db.Column(db.Boolean)
     signup_time = db.Column(db.Integer)
     signup_ip = db.Column(db.Text)
     username = db.Column(db.String(64), index=True, unique=True)
@@ -33,13 +33,14 @@ class User(db.Model):
         username,
         password,
         signup_ip,
+        is_admin=False,
     ):
-        self.is_active = True
         self.signup_time = int(time.time())
         self.signup_ip = signup_ip
         self.username = username
         self.password_hash = util.cryptography.secure_hash(password)
         self.generate_new_api_key()
+        self.is_admin = is_admin
 
     def generate_new_api_key(self):
         """
