@@ -78,6 +78,15 @@ def add_link_hit(link_id, remote_ip, referer, user_agent):
 
 
 def get_link_hits_by_id(link_id, page_num=0, num_per_page=100):
+    """
+    Retrieve paginated listing of link hits for a particular link ID.
+
+    :param link_id: The link ID whose hits should be retrieved.
+    :param page_num: The page number to use in the pagination, zero-indexed.
+    :param num_per_page: The number of hits to retrieve per page.
+    :return: A list of models.LinkHit instances describing link hits, ordered by timestamp (most
+             recent first).
+    """
     return models.LinkHit.query.filter_by(
         link_id=link_id,
     ).order_by(
@@ -107,3 +116,13 @@ def get_link_by_alias(alias):
     :return: The models.Link entry, or None if nonexistent.
     """
     return models.Link.query.filter_by(alias=alias).first()
+
+
+def get_links_for_user(user_id):
+    """
+    Retrieve all links created by a user.
+
+    :param user_id: The ID of the user for which links should be retrieved.
+    :return: A list of models.Link objects describing the links created by the specified user.
+    """
+    return models.Link.query.filter_by(user_id=user_id).all()
