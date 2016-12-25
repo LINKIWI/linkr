@@ -3,7 +3,7 @@ configparser==3.5.0
 coverage==4.2
 enum34==1.1.6
 flake8==3.2.1
-Flask==0.11.1
+Flask==0.12
 Flask-Login==0.4.0
 Flask-SQLAlchemy==2.1
 Flask-Testing==0.6.1
