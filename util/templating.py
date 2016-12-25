@@ -9,14 +9,19 @@ from linkr import app
 @app.context_processor
 def get_config():
     """
-    TODO
-
-    :return:
+    Expose the server-side configuration options to the templating utility. Sensitive constants
+    are deliberately excluded.
     """
+    sensitive_constants = {
+        'DATABASE_HOST',
+        'DATABASE_NAME',
+        'DATABASE_USER',
+        'DATABASE_PASSWORD',
+    }
     return dict(config=lambda: {
         option: getattr(config.options, option)
         for option in filter(
-            lambda opt: not opt.startswith('__'),
+            lambda opt: not opt.startswith('__') and opt not in sensitive_constants,
             dir(config.options),
         )
     })

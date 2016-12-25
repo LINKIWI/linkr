@@ -2,6 +2,9 @@
 
 import range from 'range';
 
+const uris = buildIDValueMap('uri');
+const config = buildIDValueMap('config-option');
+
 /**
  * Given a DOM subtree of the form
  *
@@ -43,6 +46,6 @@ function buildIDValueMap(className) {
 }
 
 export default {
-  uris: buildIDValueMap('uri'),
-  config: buildIDValueMap('config-option')
+  uris,
+  config
 };
