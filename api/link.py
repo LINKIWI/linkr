@@ -1,5 +1,3 @@
-from flask_login import current_user
-
 import database.link
 import util.response
 from linkr import app
@@ -155,6 +153,7 @@ def api_link_hits(data):
 
 @app.route(LinksForUserURI.path, methods=LinksForUserURI.methods)
 @require_form_args([])
+@require_login_api
 def api_links_for_user(data):
     """
     Retrieve all links for a user. If a user_id is specified, results are always returned if the

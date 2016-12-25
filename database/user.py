@@ -93,6 +93,17 @@ def get_user_by_username(username):
     return models.User.query.filter_by(username=username).first()
 
 
+def get_user_by_api_key(api_key):
+    """
+    Retrieve a user by his or her API key.
+
+    :param api_key: The user's API key.
+    :return: An instance of models.User with the provided API key or None if no user exists with
+             the specified API key.
+    """
+    return models.User.query.filter_by(api_key=api_key).first()
+
+
 @login_manager.user_loader
 def load_user(user_id):
     """
