@@ -8,7 +8,7 @@ import database.user
 import util.response
 
 
-def require_form_args(form_args, allow_blank_values=False, strict_params=False):
+def require_form_args(form_args=tuple([]), allow_blank_values=False, strict_params=False):
     """
     Require this endpoint function to be requested with at least the specified parameters in its
     JSON body.

@@ -7,7 +7,7 @@ from util.exception import *
 
 
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
-@require_form_args([])
+@require_form_args()
 def api_link_details(data):
     """
     Retrieve details for a particular alias.
@@ -145,7 +145,7 @@ def api_link_hits(data):
 
 
 @app.route(LinksForUserURI.path, methods=LinksForUserURI.methods)
-@require_form_args([])
+@require_form_args()
 @require_login_api()
 def api_links_for_user(data):
     """
@@ -171,7 +171,7 @@ def api_links_for_user(data):
 
 
 @app.route(RecentLinksURI.path, methods=RecentLinksURI.methods)
-@require_form_args([])
+@require_form_args()
 @require_login_api(admin_only=True)
 def api_recent_links(data):
     """
