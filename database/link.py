@@ -126,3 +126,21 @@ def get_links_for_user(user_id):
     :return: A list of models.Link objects describing the links created by the specified user.
     """
     return models.Link.query.filter_by(user_id=user_id).all()
+
+
+def get_recent_links(page_num=0, num_per_page=100):
+    """
+    Retrieve paginated listing of recently created links.
+
+    :param page_num: The page number to use in the pagination, zero-indexed.
+    :param num_per_page: The number of links to retrieve per page.
+    :return: A list of models.Link instances describing recent links, ordered by timestamp (most
+             recent first).
+    """
+    return models.Link.query.order_by(
+        models.Link.link_id.desc()
+    ).offset(
+        page_num * num_per_page
+    ).limit(
+        num_per_page
+    ).all()

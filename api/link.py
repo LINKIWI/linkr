@@ -168,3 +168,26 @@ def api_links_for_user(data):
         )
     except:
         return util.response.undefined_error()
+
+
+@app.route(RecentLinksURI.path, methods=RecentLinksURI.methods)
+@require_form_args([])
+@require_login_api(admin_only=True)
+def api_recent_links(data):
+    """
+    Retrieve a paginated list of all recently created links.
+    """
+    expect_args = {'page_num', 'num_per_page'}
+    filtered_data = {
+        key: value
+        for key, value in data.items()
+        if key in expect_args
+    }
+
+    try:
+        links = database.link.get_recent_links(**filtered_data)
+        return util.response.success({
+            'links': [link.as_dict() for link in links]
+        })
+    except:
+        return util.response.undefined_error()

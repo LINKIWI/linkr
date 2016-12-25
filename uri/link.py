@@ -39,3 +39,8 @@ class LinkHitsURI(URI):
 class LinksForUserURI(URI):
     methods = ['GET', 'POST']
     path = URI.api_uri('/link/list-for-user')
+
+
+class RecentLinksURI(URI):
+    methods = ['GET', 'POST']
+    path = URI.api_uri('/link/recent')
