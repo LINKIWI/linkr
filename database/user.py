@@ -67,7 +67,7 @@ def validate_user_credentials(username, password):
             'User identified by username `{username}` does not exist'.format(username=username)
         )
 
-    if user.password_hash != util.cryptography.secure_hash(password):
+    if not user.validate_password(password):
         raise InvalidAuthenticationException('Specified password is incorrect')
 
     return user

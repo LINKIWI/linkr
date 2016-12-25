@@ -36,7 +36,7 @@ def alias_route(data, alias):
             )
 
     # Redirect to the frontend interface to handle authentication for password-protected links
-    if link.password_hash and not link.validate_password(data.get('password', '')):
+    if link.is_password_protected() and not link.validate_password(data.get('password', '')):
         if request.method == 'GET':
             return render_template('index.html')
         elif request.method == 'POST':
