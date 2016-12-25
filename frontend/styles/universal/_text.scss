@@ -1,0 +1,17 @@
+@import 'colors';
+@import 'fonts';
+@import 'spacing';
+
+.text--page-title {
+  font-family: karla-bold, sans-serif;
+  color: $gray-70;
+  font-size: $delta;
+  margin-bottom: $spacing-large;
+}
+
+.text--section-header {
+  font-family: karla-bold, sans-serif;
+  color: $gray-70;
+  font-size: $gamma;
+  margin-bottom: $spacing-small;
+}

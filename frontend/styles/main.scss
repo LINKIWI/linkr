@@ -1,9 +1,10 @@
-@import 'universal/general';
-@import 'universal/spacing';
-@import 'universal/colors';
-@import 'universal/links';
-@import 'universal/fonts';
 @import 'universal/alignment';
+@import 'universal/colors';
+@import 'universal/fonts';
+@import 'universal/general';
+@import 'universal/links';
+@import 'universal/spacing';
+@import 'universal/text';
 
 @import 'components/alert';
 @import 'components/button';
@@ -14,6 +15,7 @@
 @import 'components/loading-bar';
 @import 'components/logo';
 @import 'components/menu';
+@import 'components/table';
 @import 'components/text-field';
 @import 'components/tooltip';
 
