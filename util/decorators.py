@@ -54,7 +54,7 @@ def require_form_args(form_args, allow_blank_values=False, strict_params=False):
     return decorator
 
 
-def require_login_api(func):
+def require_login_api(admin_only=False):
     """
     A custom implementation of Flask-login's built-in @login_required decorator.
     This decorator will allow usage of the API endpoint if the user is either currently logged in
@@ -71,33 +71,43 @@ def require_login_api(func):
       def view_function():
           pass
 
-    :param func: The wrapped API endpoint function.
+    :param admin_only: True to only allow admin users to access this endpoint; False to allow any
+                       authenticated user.
     """
-    @wraps(func)
-    def decorator(data, *args, **kwargs):
-        if current_user.is_authenticated:
-            return func(data, *args, **kwargs)
-
-        if data.get('api_key'):
-            user = database.user.get_user_by_api_key(data['api_key'])
-            if user:
-                # Log the user in before servicing the request, passing along the input data to the
-                # API endpoint, excluding the sensitive information (API key).
-                login_user(user)
-                del data['api_key']
+    def decorator(func):
+        @wraps(func)
+        def validate_auth(data, *args, **kwargs):
+            if current_user.is_authenticated and (not admin_only or current_user.is_admin):
                 return func(data, *args, **kwargs)
+
+            if data.get('api_key'):
+                user = database.user.get_user_by_api_key(data['api_key'])
+                if user and (not admin_only or user.is_admin):
+                    # Log the user in before servicing the request, passing along the input data to
+                    # the API endpoint, excluding sensitive information (API key).
+                    login_user(user)
+                    del data['api_key']
+                    return func(data, *args, **kwargs)
+                elif not user:
+                    return util.response.error(
+                        status_code=401,
+                        message='The supplied API key is invalid.',
+                        failure='failure_unauth',
+                    )
+                else:
+                    return util.response.error(
+                        status_code=403,
+                        message='Only admin users are allowed to access this endpoint.',
+                        failure='failure_unauth',
+                    )
+
             else:
                 return util.response.error(
-                    status_code=401,
-                    message='The supplied API key is invalid.',
+                    status_code=403,
+                    message='You must be authenticated to access this endpoint.',
                     failure='failure_unauth',
                 )
-        else:
-            return util.response.error(
-                status_code=403,
-                message='You must be authenticated to access this endpoint.',
-                failure='failure_unauth',
-            )
+        return validate_auth
 
     return decorator
 
