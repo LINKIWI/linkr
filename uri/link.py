@@ -34,3 +34,8 @@ class LinkDeleteURI(URI):
 class LinkHitsURI(URI):
     methods = ['GET', 'POST']
     path = URI.api_uri('/link/hits')
+
+
+class LinksForUserURI(URI):
+    methods = ['GET', 'POST']
+    path = URI.api_uri('/link/list-for-user')

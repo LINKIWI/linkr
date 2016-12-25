@@ -151,3 +151,28 @@ def api_link_hits(data):
         })
     except:
         return util.response.undefined_error()
+
+
+@app.route(LinksForUserURI.path, methods=LinksForUserURI.methods)
+@require_form_args([])
+def api_links_for_user(data):
+    """
+    Retrieve all links for a user. If a user_id is specified, results are always returned if the
+    user ID agrees with the currently logged in user's ID, or if the currently logged in user is an
+    admin. If no user_id is specified, links for the currently logged in user are returned.
+    """
+    try:
+        user_id = data.get('user_id', current_user.user_id)
+
+        if user_id == current_user.user_id or current_user.is_admin:
+            return util.response.success({
+                'links': database.link.get_links_for_user(user_id),
+            })
+
+        return util.response.error(
+            status_code=403,
+            message='',
+            failure='failure_unauth',
+        )
+    except:
+        return util.response.undefined_error()
