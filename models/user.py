@@ -9,15 +9,18 @@ from linkr import db
 
 def _generate_api_key():
     """
-    TODO
+    Generate a random API key.
 
-    :return:
+    :return: A random alphanumeric string.
     """
-    # Attempt to get a random alphanumeric string for an API key
     return re.sub('(\W\D)+', '', base64.b64encode(os.urandom(32)))
 
 
 class User(db.Model):
+    """
+    Model representing a registered user.
+    """
+
     __tablename__ = 'user'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -42,11 +45,18 @@ class User(db.Model):
         self.generate_new_api_key()
         self.is_admin = is_admin
 
+    def validate_password(self, password):
+        """
+        Validate that the supplied password is correct for this user account.
+
+        :param password: The supplied password.
+        :return: True if the supplied password matches the user's password; False otherwise.
+        """
+        return util.cryptography.secure_hash(password) == self.password_hash
+
     def generate_new_api_key(self):
         """
-        TODO
-
-        :return:
+        Generate a new API key for this user.
         """
         self.api_key = _generate_api_key()
 
