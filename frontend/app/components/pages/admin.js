@@ -1,7 +1,7 @@
-import copy from 'copy-to-clipboard';
 import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import humanize from 'humanize';
+import {Link} from 'react-router';
 import React from 'react';
 import request from 'browser-request';
 import truncate from 'lodash.truncate';
@@ -10,11 +10,12 @@ import Container from '../container';
 import Footer from '../footer';
 import Header from '../header';
 import HOC from '../hoc';
-import LinkTooltip from '../link-tooltip';
+import InfoTable from '../info-table';
 import Table from '../table';
 
 import Button from '../ui/button';
 import LoadingBar from '../ui/loading-bar';
+import Tooltip from '../ui/tooltip';
 
 import context from '../../util/context';
 
@@ -27,13 +28,29 @@ class Admin extends React.Component {
 
     this.state = {
       recentLinksPageNum: 0,
-      recentLinks: []
+      recentLinks: [],
+      config: {}
     };
   }
 
   componentDidMount() {
     this.loadRecentLinks((_, json) => this.setState({
       recentLinks: dottie.get(json, 'links', [])
+    }));
+    this.loadConfig((_, json) => this.setState({
+      config: dottie.get(json, 'config', {})
+    }));
+  }
+
+  loadConfig(cb) {
+    const {loading} = this.props;
+
+    loading((done) => request.post({
+      url: context.uris.ConfigURI,
+      json: {}
+    }, (err, resp, json) => {
+      done();
+      return cb(err, json);
     }));
   }
 
@@ -81,10 +98,13 @@ class Admin extends React.Component {
 
     return (
       <div className="margin-huge--bottom">
-        <p className="text--section-header">LINKS</p>
+        <p className="text--section-header">Links</p>
+        <p className="text--section-caption">
+          These are all recently created links. Click any alias to see more details about that link.
+        </p>
 
         <Table
-          className="sans-serif text-gray-60 iota"
+          className="sans-serif text-gray-60 iota margin-small--top"
           headerClassName="sans-serif bold"
           header={[
             'ALIAS',
@@ -92,16 +112,10 @@ class Admin extends React.Component {
             'CREATED'
           ]}
           entries={recentLinks.map((link) => [
-            // Alias link with a click-to-copy tooltip
-            <LinkTooltip
-              textBeforeTransition={'Click to copy to your clipboard.'}
-              textAfterTransition={
-                'Done! Link is copied to your clipboard. Click again to follow through.'
-              }
-              tooltipClassName={'sans-serif kilo'}
-              href={link.full_alias}
-              onTransition={() => copy(link.full_alias)}
-            />,
+            // Alias link directing to the link details page
+            <Link to={`/linkr/admin/link/${link.link_id}`}>
+              {link.alias}
+            </Link>,
             // Link to the outgoing URL
             <a href={link.outgoing_url}>
               {truncate(link.outgoing_url, {length: 80})}
@@ -116,6 +130,36 @@ class Admin extends React.Component {
           text="Load more..."
           onClick={this.handleLoadMoreRecentLinks.bind(this)}
         />
+      </div>
+    );
+  }
+
+  renderConfig() {
+    const {config} = this.state;
+
+    const configEntries = Object.keys(config).map((key) => {
+      const valueMaxLength = 60;
+      const configValue = config[key].toString();
+      const value = configValue.length > valueMaxLength ? (
+        <Tooltip contents={<span>{configValue}</span>}>
+          {truncate(configValue, {length: valueMaxLength})}
+        </Tooltip>
+      ) : configValue;
+
+      return {key, value};
+    });
+
+    const configFile = <span className="monospace bold">config/options.py</span>;
+
+    return (
+      <div className="margin-huge--bottom">
+        <p className="text--section-header">Configuration</p>
+        <p className="text--section-caption">
+          These configuration values are defined server-side in {configFile}.&nbsp;
+          To change any of the below values, modify {configFile} and reload Apache.
+        </p>
+
+        <InfoTable className="margin-small--top" entries={configEntries} />
       </div>
     );
   }
@@ -136,6 +180,7 @@ class Admin extends React.Component {
             <p className="text--page-title">Admin</p>
 
             {this.renderRecentLinks()}
+            {this.renderConfig()}
           </div>
         </Container>
 
