@@ -14,4 +14,20 @@
   color: $gray-70;
   font-size: $gamma;
   margin-bottom: $spacing-small;
+  text-transform: uppercase;
+}
+
+.text--section-caption {
+  font-family: karla-regular, sans-serif;
+  color: $gray-50;
+  font-size: $iota;
+  margin-bottom: $spacing-default;
+}
+
+.text--field-header {
+  font-family: karla-bold, sans-serif;
+  color: $gray-50;
+  font-size: $iota;
+  margin-bottom: $spacing-tiny;
+  text-transform: uppercase;
 }
