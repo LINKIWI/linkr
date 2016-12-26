@@ -23,6 +23,16 @@ $kilo: 12px;
   src: url('/static/fonts/karla-bold.ttf');
 }
 
+@font-face {
+  font-family: 'source-code-pro-regular';
+  src: url('/static/fonts/source-code-pro-regular.ttf');
+}
+
+@font-face {
+  font-family: 'source-code-pro-medium';
+  src: url('/static/fonts/source-code-pro-medium.ttf');
+}
+
 .sans-serif {
   font-family: karla-regular, sans-serif !important;
 
@@ -32,6 +42,14 @@ $kilo: 12px;
 
   &.bold {
     font-family: karla-bold, sans-serif !important;
+  }
+}
+
+.monospace {
+  font-family: source-code-pro-regular, monospace !important;
+
+  &.bold {
+    font-family: source-code-pro-medium, monospace !important;
   }
 }
 
