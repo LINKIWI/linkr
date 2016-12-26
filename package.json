@@ -36,6 +36,7 @@
     "dottie": "^1.1.1",
     "express": "^4.14.0",
     "humanize": "0.0.9",
+    "lodash.truncate": "^4.4.2",
     "morgan": "^1.7.0",
     "pug": "^2.0.0-beta4",
     "randomstring": "^1.1.5",
