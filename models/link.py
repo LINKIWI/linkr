@@ -40,6 +40,28 @@ class Link(db.Model):
         self.password_hash = util.cryptography.secure_hash(password) if password else None
         self.user_id = user_id
 
+    def edit(self, alias=None, outgoing_url=None):
+        """
+        Edit this link's alias or outgoing URL. All input fields are optional; if an input has a
+        falsey value, its value will not be changed.
+
+        :param alias: The new alias.
+        :param outgoing_url: The new outgoing URL.
+        """
+        if alias:
+            self.alias = alias
+        if outgoing_url:
+            self.outgoing_url = outgoing_url
+
+    def update_password(self, password):
+        """
+        Update the password for this link. To remove this link's password, the password must be
+        explicitly passed in as a falsey value.
+
+        :param password: The new plain-text password, or None.
+        """
+        self.password_hash = util.cryptography.secure_hash(password) if password else None
+
     def validate_password(self, password):
         """
         Validate that the supplied link password is correct for this link. This method will
