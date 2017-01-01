@@ -45,6 +45,7 @@
     "react-dom": "^15.3.0",
     "react-helmet": "^3.1.0",
     "react-icons": "^2.2.2",
+    "react-loading-hoc": "0.0.1",
     "react-responsive": "^1.2.5",
     "react-router": "^2.6.1",
     "safe-json-parse": "^4.0.0"

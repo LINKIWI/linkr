@@ -2,6 +2,7 @@ import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import humanize from 'humanize';
 import {Link} from 'react-router';
+import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 import truncate from 'lodash.truncate';
@@ -9,7 +10,6 @@ import truncate from 'lodash.truncate';
 import Container from '../container';
 import Footer from '../footer';
 import Header from '../header';
-import HOC from '../hoc';
 import InfoTable from '../info-table';
 import Table from '../table';
 
@@ -190,4 +190,4 @@ class Admin extends React.Component {
   }
 }
 
-export default HOC(Admin);
+export default LoadingHOC(Admin);
