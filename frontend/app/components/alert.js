@@ -23,14 +23,15 @@ export default class Alert extends React.Component {
       React.PropTypes.element
     ]),
     failure: React.PropTypes.string,
-    failureMessages: React.PropTypes.object
+    failureMessages: React.PropTypes.object,
+    className: React.PropTypes.string
   };
   static defaultProps = {
     type: ALERT_TYPE_INFO
   };
 
   render() {
-    const {type, title, message, failure, failureMessages} = this.props;
+    const {type, title, message, failure, failureMessages, className} = this.props;
     const alertClasses = {
       [ALERT_TYPE_INFO]: 'text-blue',
       [ALERT_TYPE_SUCCESS]: 'alert-success text-green',
@@ -39,10 +40,10 @@ export default class Alert extends React.Component {
     };
 
     return (
-      <div className={`alert ${alertClasses[type]} sans-serif gamma margin-large--bottom`}>
+      <div className={`alert ${alertClasses[type]} sans-serif gamma margin-large--bottom ${className}`}>
         <span className="alert-title sans-serif bold">{title}</span>&nbsp;
         <span className="alert-message">
-          {dottie.get(failureMessages, failure) || message}
+          {(type === ALERT_TYPE_ERROR && dottie.get(failureMessages, failure)) || message}
         </span>
       </div>
     );

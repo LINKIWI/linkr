@@ -1,10 +1,17 @@
-import {Link} from 'react-router';
+/* global setTimeout */
+
+import {browserHistory, Link} from 'react-router';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
+import request from 'browser-request';
+
+import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from './alert';
 
 import Button from './ui/button';
 import LoadingBar from './ui/loading-bar';
 import Modal from './ui/modal';
+
+import context from '../util/context';
 
 class DeactivateModal extends React.Component {
   static propTypes = {
@@ -14,6 +21,12 @@ class DeactivateModal extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      deactivateStatus: {
+        success: null
+      }
+    };
   }
 
   handleCancelClick(evt) {
@@ -25,11 +38,27 @@ class DeactivateModal extends React.Component {
   handleSubmitClick(evt) {
     evt.preventDefault();
 
-    this.props.loading(() => {});
+    const {alias, loading} = this.props;
+
+    loading((done) => request({
+      url: context.uris.LinkDeleteURI,
+      method: 'DELETE',
+      json: {alias}
+    }, (err, resp, deactivateStatus) => {  // eslint-disable-line handle-callback-err
+      this.setState({deactivateStatus});
+
+      // On successful deactivation, redirect back to the admin page
+      if (deactivateStatus.success) {
+        setTimeout(() => browserHistory.push(context.uris.AdminURI), 3000);
+      }
+
+      return done();
+    }));
   }
 
   render() {
     const {alias, fullAlias, isLoading} = this.props;
+    const {deactivateStatus} = this.state;
 
     return (
       <Modal
@@ -39,7 +68,33 @@ class DeactivateModal extends React.Component {
         cancelable={!isLoading}
       >
         {isLoading && <LoadingBar />}
+
         <div className={`modal-content transition ${isLoading && 'fade'}`}>
+          {
+            deactivateStatus.success !== null && (
+              <Alert
+                className={'iota'}
+                type={deactivateStatus.success ? ALERT_TYPE_SUCCESS : ALERT_TYPE_ERROR}
+                title={
+                  deactivateStatus.success ?
+                    'This link was deactivated successfully!' :
+                    'There was an error deactivating this link.'
+                }
+                message={
+                  deactivateStatus.success ?
+                    'Redirecting you back to the admin page...' :
+                    deactivateStatus.message
+                }
+                failure={deactivateStatus.failure}
+                failureMessages={{
+                  /* eslint-disable camelcase */
+                  failure_incomplete_params: 'This link does not seem to exist.'
+                  /* eslint-enable camelcase */
+                }}
+              />
+            )
+          }
+
           <div className="margin-large--bottom">
             <p className="sans-serif bold text-gray-70 delta margin-small--bottom">
               Deactivate Link
