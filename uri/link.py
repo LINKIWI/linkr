@@ -26,6 +26,16 @@ class LinkAddURI(URI):
     path = URI.api_uri('/link/add')
 
 
+class LinkEditURI(URI):
+    methods = ['POST']
+    path = URI.api_uri('/link/edit')
+
+
+class LinkUpdatePasswordURI(URI):
+    methods = ['POST']
+    path = URI.api_uri('/link/update-password')
+
+
 class LinkDeleteURI(URI):
     methods = ['DELETE']
     path = URI.api_uri('/link/delete')

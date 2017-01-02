@@ -100,6 +100,49 @@ def api_add_link(data):
         return util.response.undefined_error()
 
 
+@app.route(LinkEditURI.path, methods=LinkEditURI.methods)
+@require_form_args(['link_id', 'alias', 'outgoing_url'])
+@require_login_api()
+def api_edit_link(data):
+    try:
+        modified_link = database.link.edit_link(
+            link_id=data['link_id'],
+            user_id=current_user.user_id,
+            alias=data['alias'],
+            outgoing_url=data['outgoing_url'],
+        )
+        return util.response.success({
+            'alias': modified_link.alias,
+            'outgoing_url': modified_link.outgoing_url,
+        })
+    except NonexistentLinkException:
+        return util.response.error(
+            status_code=404,
+            message='The requested link alias does not exist.',
+            failure='failure_nonexistent_alias',
+        )
+    except UnauthorizedException:
+        return util.response.error(
+            status_code=403,
+            message='You may only edit the link details for links created by you.',
+            failure='failure_unauth',
+        )
+    except InvalidAliasException:
+        return util.response.error(
+            status_code=400,
+            message='The requested alias is invalid; it is not URL-safe or is too long.',
+            failure='failure_invalid_alias',
+        )
+    except InvalidURLException:
+        return util.response.error(
+            status_code=400,
+            message='The requested URL is invalid.',
+            failure='failure_invalid_url',
+        )
+    except:
+        return util.response.undefined_error()
+
+
 @app.route(LinkDeleteURI.path, methods=LinkDeleteURI.methods)
 @require_form_args(['link_id'])
 def api_delete_link(data):
@@ -163,7 +206,7 @@ def api_links_for_user(data):
 
         return util.response.error(
             status_code=403,
-            message='',
+            message='You may only view links created by yourself.',
             failure='failure_unauth',
         )
     except:
