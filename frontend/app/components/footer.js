@@ -2,6 +2,8 @@
 
 import AccountCircle from 'react-icons/lib/md/account-circle';
 import {browserHistory} from 'react-router';
+import dottie from 'dottie';
+import LoadingHOC from 'react-loading-hoc';
 import MediaQuery from 'react-responsive';
 import React from 'react';
 
@@ -11,14 +13,11 @@ import LoadingBar from './ui/loading-bar';
 import authentication from '../util/authentication';
 import context from '../util/context';
 
-export default class Footer extends React.Component {
+class Footer extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isLoading: false,
-      isLoggedIn: false
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -26,10 +25,9 @@ export default class Footer extends React.Component {
   }
 
   checkAuthStatus() {
-    authentication.check((isLoggedIn, username) => {
+    authentication.check((user) => {
       this.setState({
-        isLoggedIn,
-        username
+        username: dottie.get(user, 'username')
       });
     });
   }
@@ -43,16 +41,14 @@ export default class Footer extends React.Component {
   handleLogoutClick(evt) {
     evt.preventDefault();
 
-    this.setState({
-      isLoading: true
-    });
-    authentication.logout(() => {
+    this.props.loading(() => authentication.logout(() => {
       window.location.href = context.uris.HomeURI;
-    });
+    }));
   }
 
   render() {
-    const {isLoading, username} = this.state;
+    const {isLoading} = this.props;
+    const {username} = this.state;
 
     if (!username) {
       return null;
@@ -109,3 +105,5 @@ export default class Footer extends React.Component {
     );
   }
 }
+
+export default LoadingHOC(Footer);

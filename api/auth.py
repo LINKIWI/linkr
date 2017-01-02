@@ -16,7 +16,7 @@ def api_auth_check():
     try:
         if current_user.is_authenticated:
             return util.response.success({
-                'username': current_user.username,
+                'user': current_user.as_dict(),
             })
 
         return util.response.error(

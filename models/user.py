@@ -60,6 +60,21 @@ class User(db.Model):
         """
         self.api_key = _generate_api_key()
 
+    def as_dict(self):
+        """
+        Represent this user as a API-friendly, JSON-formatted dictionary.
+
+        :return: A representation of this user's data as a dictionary.
+        """
+        return {
+            'user_id': self.user_id,
+            'is_admin': self.is_admin,
+            'signup_time': self.signup_time,
+            'signup_ip': self.signup_ip,
+            'username': self.username,
+            'api_key': self.api_key,
+        }
+
     @staticmethod
     def is_authenticated():
         return True

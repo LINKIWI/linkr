@@ -6,15 +6,15 @@ import context from './context';
 /**
  * Check if the user is currently authenticated.
  *
- * @param {Function} cb Callback function called with a single boolean parameter indicating if the
- *                      session is authenticated.
+ * @param {Function} cb Callback function called with a single parameter that is an object with the
+ *                      logged in user details, or null if the user is not logged in.
  */
 function check(cb) {
   request.post({
     url: context.uris.AuthCheckURI,
     json: {}
   }, (err, resp, json) => {
-    cb(!err && dottie.get(resp, 'statusCode') === 200, dottie.get(json, 'username'));
+    cb(!err && dottie.get(resp, 'statusCode') === 200 && dottie.get(json, 'user'));
   });
 }
 
