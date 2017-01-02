@@ -33,7 +33,7 @@
     "cookie-parser": "^1.4.3",
     "copy-to-clipboard": "^3.0.5",
     "deep-extend": "^0.4.1",
-    "dottie": "^1.1.1",
+    "dottie": "^2.0.0",
     "express": "^4.14.0",
     "humanize": "0.0.9",
     "lodash.truncate": "^4.4.2",
