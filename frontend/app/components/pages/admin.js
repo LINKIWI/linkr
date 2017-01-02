@@ -7,6 +7,7 @@ import React from 'react';
 import request from 'browser-request';
 import truncate from 'lodash.truncate';
 
+import Alert, {ALERT_TYPE_ERROR} from '../alert';
 import Container from '../container';
 import Footer from '../footer';
 import Header from '../header';
@@ -17,6 +18,7 @@ import Button from '../ui/button';
 import LoadingBar from '../ui/loading-bar';
 import Tooltip from '../ui/tooltip';
 
+import authentication from '../../util/authentication';
 import context from '../../util/context';
 
 /**
@@ -27,6 +29,7 @@ class Admin extends React.Component {
     super(props);
 
     this.state = {
+      isAdmin: null,
       recentLinksPageNum: 0,
       recentLinks: [],
       config: {}
@@ -34,27 +37,30 @@ class Admin extends React.Component {
   }
 
   componentDidMount() {
-    this.loadRecentLinks((_, json) => this.setState({
-      recentLinks: dottie.get(json, 'links', [])
-    }));
-    this.loadConfig((_, json) => this.setState({
-      config: dottie.get(json, 'config', {})
-    }));
+    this.checkAdmin();
+    this.loadRecentLinks();
+    this.loadConfig();
   }
 
-  loadConfig(cb) {
+  checkAdmin() {
+    authentication.check(({is_admin}) => this.setState({isAdmin: is_admin}));  // eslint-disable-line camelcase
+  }
+
+  loadConfig() {
     const {loading} = this.props;
 
     loading((done) => request.post({
       url: context.uris.ConfigURI,
       json: {}
-    }, (err, resp, json) => {
-      done();
-      return cb(err, json);
+    }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
+      this.setState({
+        config: dottie.get(json, 'config', {})
+      });
+      return done();
     }));
   }
 
-  loadRecentLinks(cb) {
+  loadRecentLinks() {
     const {loading} = this.props;
     const {recentLinksPageNum} = this.state;
 
@@ -66,9 +72,11 @@ class Admin extends React.Component {
         num_per_page: 10
         /* eslint-enable camelcase */
       }
-    }, (err, resp, json) => {
-      done();
-      return cb(err, json);
+    }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
+      this.setState({
+        recentLinks: dottie.get(json, 'links', [])
+      });
+      return done();
     }));
   }
 
@@ -166,6 +174,7 @@ class Admin extends React.Component {
 
   render() {
     const {isLoading} = this.props;
+    const {isAdmin} = this.state;
 
     return (
       <div>
@@ -176,12 +185,22 @@ class Admin extends React.Component {
         <Header selectIndex={1}/>
 
         <Container className={isLoading ? 'fade' : ''}>
-          <div className="margin-large--top margin-large--bottom">
-            <p className="text--page-title">Admin</p>
+          {
+            isAdmin === true ? (
+              <div className="margin-large--top margin-large--bottom">
+                <p className="text--page-title">Admin</p>
 
-            {this.renderRecentLinks()}
-            {this.renderConfig()}
-          </div>
+                {this.renderRecentLinks()}
+                {this.renderConfig()}
+              </div>
+            ) : (
+              <Alert
+                type={ALERT_TYPE_ERROR}
+                title={'You are not allowed to view this page.'}
+                message={'This page is only accessible by admin users.'}
+              />
+            )
+          }
         </Container>
 
         <Footer />
