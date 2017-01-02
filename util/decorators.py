@@ -80,31 +80,31 @@ def require_login_api(admin_only=False):
             if current_user.is_authenticated and (not admin_only or current_user.is_admin):
                 return func(data, *args, **kwargs)
 
-            if data.get('api_key'):
-                user = database.user.get_user_by_api_key(data['api_key'])
-                if user and (not admin_only or user.is_admin):
-                    # Log the user in before servicing the request, passing along the input data to
-                    # the API endpoint, excluding sensitive information (API key).
-                    login_user(user)
-                    del data['api_key']
-                    return func(data, *args, **kwargs)
-                elif not user:
-                    return util.response.error(
-                        status_code=401,
-                        message='The supplied API key is invalid.',
-                        failure='failure_unauth',
-                    )
-                else:
-                    return util.response.error(
-                        status_code=403,
-                        message='Only admin users are allowed to access this endpoint.',
-                        failure='failure_unauth',
-                    )
-
-            else:
+            api_key = request.headers.get('X-Linkr-Key') or data.get('api_key')
+            if not api_key:
                 return util.response.error(
                     status_code=403,
                     message='You must be authenticated to access this endpoint.',
+                    failure='failure_unauth',
+                )
+
+            user = database.user.get_user_by_api_key(api_key)
+            if user and (not admin_only or user.is_admin):
+                # Log the user in before servicing the request, passing along the input data to
+                # the API endpoint, excluding sensitive information (API key).
+                login_user(user)
+                del data['api_key']
+                return func(data, *args, **kwargs)
+            elif not user:
+                return util.response.error(
+                    status_code=401,
+                    message='The supplied API key is invalid.',
+                    failure='failure_unauth',
+                )
+            else:
+                return util.response.error(
+                    status_code=403,
+                    message='Only admin users are allowed to access this endpoint.',
                     failure='failure_unauth',
                 )
         return validate_auth
