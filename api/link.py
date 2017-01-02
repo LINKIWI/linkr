@@ -101,7 +101,7 @@ def api_add_link(data):
 
 
 @app.route(LinkEditURI.path, methods=LinkEditURI.methods)
-@require_form_args(['link_id', 'alias', 'outgoing_url'])
+@require_form_args(['link_id', 'alias', 'outgoing_url'], allow_blank_values=True)
 @require_login_api()
 def api_edit_link(data):
     try:
