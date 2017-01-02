@@ -101,15 +101,15 @@ def api_add_link(data):
 
 
 @app.route(LinkDeleteURI.path, methods=LinkDeleteURI.methods)
-@require_form_args(['alias'])
+@require_form_args(['link_id'])
 def api_delete_link(data):
     """
     Delete an existing link.
     """
     try:
-        database.link.delete_link(data['alias'])
+        database.link.delete_link(data['link_id'])
         return util.response.success({
-            'alias': data['alias'],
+            'link_id': data['link_id'],
         })
     except InvalidAliasException:
         return util.response.error(

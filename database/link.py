@@ -80,17 +80,17 @@ def update_link_password(link_id, password):
 
 
 @db_txn
-def delete_link(alias):
+def delete_link(link_id):
     """
     Delete a link from the database, if it exists.
 
-    :param alias: The link alias.
+    :param link_id: The link ID to delete.
     :return: The models.Link instance representing the deleted entry.
     :raises InvalidAliasException: If the alias does not exist.
     """
-    to_delete = models.Link.query.filter_by(alias=alias)
+    to_delete = models.Link.query.filter_by(link_id=link_id)
     if not to_delete.scalar():
-        raise InvalidAliasException('Alias `{alias}` does not exist.'.format(alias=alias))
+        raise InvalidAliasException('Link ID `{link_id}` does not exist.'.format(link_id=link_id))
 
     to_delete.delete(synchronize_session='fetch')
 

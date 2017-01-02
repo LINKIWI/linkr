@@ -15,6 +15,7 @@ import context from '../util/context';
 
 class DeactivateModal extends React.Component {
   static propTypes = {
+    linkID: React.PropTypes.number,
     alias: React.PropTypes.string,
     fullAlias: React.PropTypes.string
   };
@@ -38,12 +39,16 @@ class DeactivateModal extends React.Component {
   handleSubmitClick(evt) {
     evt.preventDefault();
 
-    const {alias, loading} = this.props;
+    const {linkID, loading} = this.props;
 
     loading((done) => request({
       url: context.uris.LinkDeleteURI,
       method: 'DELETE',
-      json: {alias}
+      json: {
+        /* eslint-disable camelcase */
+        link_id: linkID
+        /* eslint-enable camelcase */
+      }
     }, (err, resp, deactivateStatus) => {  // eslint-disable-line handle-callback-err
       this.setState({deactivateStatus});
 
