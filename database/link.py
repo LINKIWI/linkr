@@ -38,12 +38,11 @@ def add_link(alias, outgoing_url, password=None, user_id=None):
 
 
 @db_txn
-def edit_link(link_id, user_id, alias=None, outgoing_url=None):
+def edit_link(link_id, alias=None, outgoing_url=None):
     """
     Edit an existing link's details.
 
     :param link_id: The ID of the link to edit.
-    :param user_id: The ID of the user performing this action.
     :param alias: The new alias of the link, or None to leave it unchanged.
     :param outgoing_url: The new outgoing URL of the link, or None to leave it unchanged.
     :return: The models.Link instance representing the modified link object.
@@ -54,12 +53,6 @@ def edit_link(link_id, user_id, alias=None, outgoing_url=None):
     to_modify = get_link_by_id(link_id)
     if not to_modify:
         raise NonexistentLinkException('No link exists with link ID `{link_id}`'.format(
-            link_id=link_id,
-        ))
-
-    if to_modify.user_id != user_id:
-        raise UnauthorizedException('User ID `{user_id}` does not own link ID `{link_id}`'.format(
-            user_id=user_id,
             link_id=link_id,
         ))
 
