@@ -145,7 +145,7 @@ def api_edit_link(data):
 
 
 @app.route(LinkUpdatePasswordURI.path, methods=LinkUpdatePasswordURI.methods)
-@require_form_args(['link_id', 'password'])
+@require_form_args(['link_id', 'password'], allow_blank_values=True)
 @require_login_api()
 def api_update_link_password(data):
     try:
