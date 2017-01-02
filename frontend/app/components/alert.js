@@ -43,7 +43,7 @@ export default class Alert extends React.Component {
       <div className={`alert ${alertClasses[type]} sans-serif gamma margin-large--bottom ${className}`}>
         <span className="alert-title sans-serif bold">{title}</span>&nbsp;
         <span className="alert-message">
-          {(type === ALERT_TYPE_ERROR && dottie.get(failureMessages, failure)) || message}
+          {(type === ALERT_TYPE_ERROR && failure && dottie.get(failureMessages, failure)) || message}
         </span>
       </div>
     );
