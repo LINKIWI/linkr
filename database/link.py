@@ -81,6 +81,11 @@ def update_link_password(link_id, password):
     :return: The models.Link instance representing the modified Link object.
     """
     to_modify = get_link_by_id(link_id)
+    if not to_modify:
+        raise NonexistentLinkException('No link exists with link ID `{link_id}`'.format(
+            link_id=link_id,
+        ))
+
     to_modify.update_password(password)
 
     db.session.add(to_modify)

@@ -144,6 +144,30 @@ def api_edit_link(data):
         return util.response.undefined_error()
 
 
+@app.route(LinkUpdatePasswordURI.path, methods=LinkUpdatePasswordURI.methods)
+@require_form_args(['link_id', 'password'])
+@require_login_api()
+def api_update_link_password(data):
+    try:
+        validate_link_ownership(data['link_id'], current_user.user_id)
+
+        modified_link = database.link.update_link_password(
+            link_id=data['link_id'],
+            password=data['password'],
+        )
+        return util.response.success({
+            'link_id': modified_link.link_id,
+        })
+    except NonexistentLinkException:
+        return util.response.error(
+            status_code=404,
+            message='The requested link alias does not exist.',
+            failure='failure_nonexistent_alias',
+        )
+    except:
+        return util.response.undefined_error()
+
+
 @app.route(LinkDeleteURI.path, methods=LinkDeleteURI.methods)
 @require_form_args(['link_id'])
 @require_login_api()
