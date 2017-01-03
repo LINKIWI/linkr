@@ -3,6 +3,9 @@ import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from raven.contrib.flask import Sentry
+
+import config.options
 
 template_directory = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -34,3 +37,14 @@ def init_login_manager():
     login_manager = LoginManager()
     login_manager.init_app(app)
     return login_manager
+
+
+def init_sentry():
+    """
+    Initialize the Sentry client.
+
+    :return: A Sentry instance used universally for capturing uncaught exceptions.
+    """
+    sentry = Sentry(dsn=config.options.SENTRY_DSN)
+    sentry.init_app(app)
+    return sentry
