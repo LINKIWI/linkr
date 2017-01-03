@@ -178,11 +178,11 @@ def api_delete_link(data):
     try:
         validate_link_ownership(data['link_id'], current_user.user_id)
 
-        deleted_link = database.link.delete_link(data['link_id'])
+        database.link.delete_link(data['link_id'])
         return util.response.success({
-            'link_id': deleted_link.link_id,
+            'link_id': data['link_id'],
         })
-    except InvalidAliasException:
+    except NonexistentLinkException:
         return util.response.error(
             404,
             'The requested alias does not exist.',

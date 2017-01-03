@@ -104,7 +104,9 @@ def delete_link(link_id):
     """
     to_delete = models.Link.query.filter_by(link_id=link_id)
     if not to_delete.scalar():
-        raise InvalidAliasException('Link ID `{link_id}` does not exist.'.format(link_id=link_id))
+        raise NonexistentLinkException('Link ID `{link_id}` does not exist.'.format(
+            link_id=link_id,
+        ))
 
     to_delete.delete(synchronize_session='fetch')
 
