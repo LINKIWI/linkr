@@ -29,10 +29,10 @@ class Link(db.Model):
         """
         Create a new link entry.
 
-        :param alias:
-        :param outgoing_url:
-        :param password:
-        :param user_id:
+        :param alias: The alias for the link.
+        :param outgoing_url: The fully qualified outgoing URL for the link.
+        :param password: An optional password to associate with the link.
+        :param user_id: An optional user ID to associate with the link.
         """
         self.submit_time = int(time.time())
         self.alias = alias

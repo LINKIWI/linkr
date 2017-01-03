@@ -35,7 +35,7 @@ export default class Alert extends React.Component {
     const alertClasses = {
       [ALERT_TYPE_INFO]: 'text-blue',
       [ALERT_TYPE_SUCCESS]: 'alert-success text-green',
-      [ALERT_TYPE_WARN]: 'alert-warn text-orange',
+      [ALERT_TYPE_WARN]: 'alert-warn text-yellow',
       [ALERT_TYPE_ERROR]: 'alert-error text-red'
     };
 
