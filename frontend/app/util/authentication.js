@@ -14,7 +14,7 @@ function check(cb) {
     url: context.uris.AuthCheckURI,
     json: {}
   }, (err, resp, json) => {
-    cb(!err && dottie.get(resp, 'statusCode') === 200 && dottie.get(json, 'user'));
+    cb(!err && dottie.get(resp, 'statusCode') === 200 && dottie.get(json, 'user', {}));
   });
 }
 

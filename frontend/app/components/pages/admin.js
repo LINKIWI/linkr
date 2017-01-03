@@ -8,7 +8,7 @@ import request from 'browser-request';
 import truncate from 'lodash.truncate';
 
 import AuthenticationHOC from '../hoc/authentication-hoc';
-import Alert, {ALERT_TYPE_ERROR} from '../alert';
+import Alert, {ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../alert';
 import Container from '../container';
 import Footer from '../footer';
 import Header from '../header';
@@ -168,25 +168,35 @@ class Admin extends React.Component {
   }
 
   render() {
-    const {isLoading, user} = this.props;
+    const {isLoading, isLoggedIn, user} = this.props;
 
     const content = (() => {
-      switch (user.is_admin) {
+      switch (isLoggedIn) {
         case true:
-          return (
+          return user.is_admin ? (
             <div className="margin-large--top margin-large--bottom">
               <p className="text--page-title">Admin</p>
 
               {this.renderRecentLinks()}
               {this.renderConfig()}
             </div>
-          );
-        case false:
-          return (
+          ) : (
             <Alert
               type={ALERT_TYPE_ERROR}
               title={'You are not allowed to view this page.'}
               message={'This page is only accessible by admin users.'}
+            />
+          );
+        case false:
+          return (
+            <Alert
+              type={ALERT_TYPE_WARN}
+              title={'You must be logged in to view the admin page.'}
+              message={
+                <span>
+                  <Link className="sans-serif bold" to={context.uris.LoginURI}>Click here</Link> to log in.
+                </span>
+              }
             />
           );
         default:
