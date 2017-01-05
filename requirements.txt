@@ -3,6 +3,8 @@ click==6.6
 configparser==3.5.0
 contextlib2==0.5.4
 coverage==4.2
+coveralls==1.1
+docopt==0.6.2
 enum34==1.1.6
 flake8==3.2.1
 Flask==0.12

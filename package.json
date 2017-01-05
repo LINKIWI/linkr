@@ -11,12 +11,12 @@
     "start": "python linkr.py",
     "lint-backend": "flake8 **/*.py",
     "test-backend": "python -m unittest discover -s test/backend -v",
-    "cover-backend": "coverage run --source=. -m unittest discover -s test/backend -v && coverage report -m",
-    "coveralls-backend": "echo TODO",
+    "cover-backend": "coverage run --source=$(ls | grep -v env | grep -v node_modules | tr '\n' ',') -m unittest discover -s test/backend -v && coverage report -m",
+    "coveralls-backend": "npm run cover-backend && coveralls",
     "lint-frontend": "eslint frontend/app test/frontend",
     "test-frontend": "node test/frontend | tap-spec",
     "cover-frontend": "istanbul cover test/frontend --print detail",
-    "coveralls-frontend": "istanbul cover test/frontend --print detail && cat coverage/lcov.info | coveralls"
+    "coveralls-frontend": "npm run cover-frontend && cat coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
