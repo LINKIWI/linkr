@@ -12,7 +12,7 @@ def is_alias_valid(alias):
     :param alias: The alias to validate.
     :return: True if the alias is valid; False otherwise.
     """
-    return alias == requests.utils.quote(alias, safe='') and len(alias) < 32
+    return alias == requests.utils.quote(alias, safe='') and 0 < len(alias) < 32
 
 
 def is_url_valid(url):
