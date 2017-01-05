@@ -1,8 +1,10 @@
+import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import humanize from 'humanize';
 import {Link} from 'react-router';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
+import request from 'browser-request';
 import truncate from 'lodash.truncate';
 
 import Alert, {ALERT_TYPE_WARN} from '../alert';
@@ -27,6 +29,28 @@ class Account extends React.Component {
     this.state = {
       userLinks: []
     };
+  }
+
+  componentDidMount() {
+    this.loadUserLinks((_, json) => this.setState({
+      userLinks: dottie.get(json, 'links')
+    }));
+  }
+
+  loadUserLinks(cb) {
+    const {loading} = this.props;
+
+    loading((done) => request.post({
+      url: context.uris.LinksForUserURI,
+      json: {}
+    }, (err, resp, json) => {
+      cb(err, json);
+      return done();
+    }));
+  }
+
+  handleLoadMoreUserLinks(evt) {
+    evt.preventDefault();
   }
 
   renderUserLinks() {
@@ -64,13 +88,14 @@ class Account extends React.Component {
         <Button
           className="sans-serif bold iota text-white margin-small--top"
           text="Load more..."
+          onClick={this.handleLoadMoreUserLinks.bind(this)}
         />
       </div>
     );
   }
 
   render() {
-    const {isLoggedIn, isLoading, user} = this.props;
+    const {isLoggedIn, isLoading} = this.props;
 
     const content = (() => {
       switch (isLoggedIn) {

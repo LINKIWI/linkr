@@ -228,8 +228,9 @@ def api_links_for_user(data):
         user_id = data.get('user_id', current_user.user_id)
 
         if user_id == current_user.user_id or current_user.is_admin:
+            links = database.link.get_links_for_user(user_id)
             return util.response.success({
-                'links': database.link.get_links_for_user(user_id),
+                'links': [link.as_dict() for link in links],
             })
 
         return util.response.error(
