@@ -32,10 +32,12 @@ class Factory:
     @classmethod
     def random_or_specified_value(cls, value):
         """
-        Helper utility for choosing between a user-specified value for a field or a randomly generated value.
+        Helper utility for choosing between a user-specified value for a field or a randomly
+        generated value.
 
         :param value: Either a lambda type or a non-lambda type.
-        :return: The value itself if not a lambda type, otherwise the value of the evaluated lambda (random value)
+        :return: The value itself if not a lambda type, otherwise the value of the evaluated
+                 lambda (random value)
         """
         return value() if isinstance(value, types.FunctionType) else value
 

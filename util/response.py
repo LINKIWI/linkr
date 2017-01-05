@@ -47,6 +47,6 @@ def undefined_error():
     """
     return flask.jsonify({
         'success': False,
-        'message': 'Undefined server-side failure',
+        'message': 'There was an undefined server-side failure. This is probably a bug.',
         'failure': 'failure_undefined',
     }), 500
