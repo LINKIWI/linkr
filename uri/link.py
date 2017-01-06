@@ -54,3 +54,8 @@ class LinksForUserURI(URI):
 class RecentLinksURI(URI):
     methods = ['GET', 'POST']
     path = URI.api_uri('/link/recent')
+
+
+class LinkIncrementHitsURI(URI):
+    methods = ['POST']
+    path = URI.api_uri('/link/increment-hits')

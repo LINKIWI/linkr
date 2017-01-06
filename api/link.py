@@ -7,56 +7,77 @@ from util.exception import *
 
 
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
-@require_form_args()
+@require_form_args([])
+@optional_login_api
 def api_link_details(data):
     """
-    Retrieve details for a particular alias.
+    Retrieve details for a particular link by ID or alias.
     """
     try:
         # Prioritize retrieval by ID
-        if data.get('link_id'):
-            link_details = database.link.get_link_by_id(data['link_id'])
-        elif data.get('alias'):
-            link_details = database.link.get_link_by_alias(data['alias'])
-        else:
-            return util.response.error(
-                400,
-                'A link_id or alias must be supplied to retrieve link details.',
-                'failure_incomplete_params',
-            )
-
-        if not link_details:
-            return util.response.error(
-                404,
-                'The requested link alias does not exist.',
-                'failure_nonexistent_alias',
-            )
+        link = database.link.get_link_by_id(data.get('link_id')) or \
+            database.link.get_link_by_alias(data.get('alias'))
+        if not link:
+            raise NonexistentLinkException
 
         # If the link is password-protected, it's necessary to check that the link password is both
         # included as a request parameter and is correct before serving the details to the client.
-        # The admin account is allowed to bypass the password protection check.
-        should_deny_access = all([
-            not link_details.validate_password(data.get('password', '')),
-            not current_user.is_authenticated or not current_user.is_admin,
-        ])
-        if should_deny_access:
-            return util.response.error(
-                401,
-                'The supplied link password is incorrect.',
-                'failure_incorrect_link_password',
-            )
-
-        if data.get('increment_hits'):
-            database.link.add_link_hit(
-                link_id=link_details.link_id,
-                remote_ip=request.remote_addr,
-                referer=request.referrer,
-                user_agent=request.user_agent,
-            )
+        validate_link_password(link.link_id, data.get('password'))
 
         return util.response.success({
-            'details': link_details.as_dict()
+            'details': link.as_dict(),
         })
+    except NonexistentLinkException:
+        return util.response.error(
+            status_code=404,
+            message='No link exists with the provided ID or alias, or no `link_id` or `alias` '
+                    'parameter was provided in the request.',
+            failure='failure_nonexistent_link',
+        )
+    except InvalidAuthenticationException:
+        return util.response.error(
+            status_code=401,
+            message='The supplied link password is incorrect.',
+            failure='failure_incorrect_link_password',
+        )
+    except:
+        return util.response.undefined_error()
+
+
+@app.route(LinkIncrementHitsURI.path, methods=LinkIncrementHitsURI.methods)
+@require_form_args(['link_id'])
+@optional_login_api
+def api_increment_link_hits(data):
+    """
+    Increment the number of hits for a particular link.
+    """
+    try:
+        # The client should only be able to increment the number of hits on a password-protected
+        # link if the password is both supplied and valid.
+        validate_link_password(data['link_id'], data.get('password'))
+
+        hit = database.link.add_link_hit(
+            link_id=data['link_id'],
+            remote_ip=request.remote_addr,
+            referer=request.referrer,
+            user_agent=request.user_agent,
+        )
+
+        return util.response.success({
+            'hit': hit.as_dict(),
+        })
+    except NonexistentLinkException:
+        return util.response.error(
+            status_code=404,
+            message='The link ID associated with this hit does not exist.',
+            failure='failure_nonexistent_link',
+        )
+    except InvalidAuthenticationException:
+        return util.response.error(
+            status_code=401,
+            message='The supplied link password is incorrect.',
+            failure='failure_incorrect_link_password',
+        )
     except:
         return util.response.undefined_error()
 
@@ -275,6 +296,29 @@ def api_recent_links(data):
         })
     except:
         return util.response.undefined_error()
+
+
+def validate_link_password(link_id, password):
+    """
+    Validate the link password for a specified link ID. The request is considered to be authorized
+    if (1) the link is not password-protected, (2) the link is password-protected and the supplied
+    password is correct, or (3) the currently logged in user is an admin, who is allowed to bypass
+    all link password authentication requests.
+
+    :param link_id: ID of the link to check.
+    :param password: The attempted password for this link.
+    :raises NonexistentLinkException: If the link does not exist.
+    :raises InvalidAuthenticationException: If the supplied password is incorrect.
+    """
+    link = database.link.get_link_by_id(link_id)
+    if not link:
+        raise NonexistentLinkException('No link exists with link ID `{link_id}`'.format(
+            link_id=link_id,
+        ))
+
+    is_admin = current_user.is_authenticated and current_user.is_admin
+    if not link.validate_password(password or '') and not is_admin:
+        raise InvalidAuthenticationException('The supplied password is incorrect')
 
 
 def validate_link_ownership(link_id, user_id):

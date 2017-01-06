@@ -67,7 +67,7 @@ def require_login_api(admin_only=False):
 
       @app.route('/', methods=['POST'])
       @require_form_args([])
-      @require_login_api
+      @require_login_api()
       def view_function():
           pass
 
