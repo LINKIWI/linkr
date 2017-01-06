@@ -36,7 +36,7 @@ class LinkHit(db.Model):
         self.timestamp = int(time.time())
         self.remote_ip = remote_ip
         self.referer = referer
-        self.user_agent = user_agent
+        self.user_agent = str(user_agent)
 
     def as_dict(self):
         """

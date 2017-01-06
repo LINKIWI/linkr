@@ -110,6 +110,9 @@ def api_add_link(data):
 @require_form_args(['link_id', 'alias', 'outgoing_url'], allow_blank_values=True)
 @require_login_api()
 def api_edit_link(data):
+    """
+    Edit an existing link's details.
+    """
     try:
         validate_link_ownership(data['link_id'], current_user.user_id)
 
@@ -126,7 +129,7 @@ def api_edit_link(data):
         return util.response.error(
             status_code=404,
             message='The requested link alias does not exist.',
-            failure='failure_nonexistent_alias',
+            failure='failure_nonexistent_link',
         )
     except UnauthorizedException:
         return util.response.error(
@@ -154,6 +157,9 @@ def api_edit_link(data):
 @require_form_args(['link_id', 'password'], allow_blank_values=True)
 @require_login_api()
 def api_update_link_password(data):
+    """
+    Update or remove the password of an existing link.
+    """
     try:
         validate_link_ownership(data['link_id'], current_user.user_id)
 
