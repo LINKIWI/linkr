@@ -1,41 +1,36 @@
-/* global window, setTimeout */
-
 import dottie from 'dottie';
-import {Link} from 'react-router';
+import LoadingHOC from 'react-loading-hoc';
 import Helmet from 'react-helmet';
 import React from 'react';
 import request from 'browser-request';
 
-import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
+import Alert, {ALERT_TYPE_SUCCESS} from '../alert';
+import AliasNotFound from './alias-not-found';
+import AliasPassword from './alias-password';
 import Container from '../container';
 import Header from '../header';
 
-import Button from '../ui/button';
 import LoadingBar from '../ui/loading-bar';
-import TextField from '../ui/text-field';
 
+import browser from '../../util/browser';
 import context from '../../util/context';
 
 /**
  * Default status page for an alias, if redirected to the frontend.
  */
-export default class Alias extends React.Component {
+class Alias extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isLoading: true,
-      initialLoad: true,
-      details: {}
-    };
+    this.state = {data: {}};
   }
 
   componentDidMount() {
-    this.loadLinkDetails(this.props.params.alias, null, () => {
-      this.setState({
-        initialLoad: true
-      });
-    });
+    // Attempt to load link details immediately on mount.
+    // This gives the user an opportunity to directly access the link without any intermediary
+    // interactive steps, which is possible if (for example) the currently logged in user is an
+    // admin.
+    this.loadLinkDetails(this.props.params.alias, null, (_, resp, data) => this.setState({data}));
   }
 
   /**
@@ -46,174 +41,81 @@ export default class Alias extends React.Component {
    * @param {Function=} cb Callback function called after setting component state.
    */
   loadLinkDetails(alias, password, cb) {
-    this.setState({
-      isLoading: true
-    });
+    this.props.loading((done) => {
+      request.post({
+        url: context.uris.LinkDetailsURI,
+        json: {alias, password}
+      }, (err, resp, json) => {
+        if (json.success) {
+          // Redirect the user to the outgoing URL
+          browser.go(dottie.get(json, 'details.outgoing_url'), 1500);
 
-    request.post({
-      url: context.uris.LinkDetailsURI,
-      json: {alias, password}
-    }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
-      this.setState({
-        isLoading: false,
-        initialLoad: false,
-        details: json
+          return request.post({
+            url: context.uris.LinkIncrementHitsURI,
+            json: {
+              /* eslint-disable camelcase */
+              link_id: dottie.get(json, 'details.link_id'),
+              password
+              /* eslint-enable camelcase */
+            }
+          }, () => {
+            done();
+            return cb(err, resp, json);
+          });
+        }
+
+        done();
+        return cb(err, resp, json);
       });
-      (cb || (() => {}))(err, resp, json);
     });
   }
 
-  /**
-   * Increment the number of hits for this link. It is understood that this function should be
-   * invoked only after a successful link authentication.
-   *
-   * @param {Number} linkID ID of the link that was successfully authenticated.
-   * @param {String} password Link password, as applicable.
-   * @param {Function} cb Optional callback.
-   */
-  incrementLinkHits(linkID, password, cb) {
-    request.post({
-      url: context.uris.LinkIncrementHitsURI,
-      json: {
-        /* eslint-disable camelcase */
-        link_id: linkID,
-        password
-        /* eslint-enable camelcase */
-      }
-    }, cb || (() => {}));
-  }
+  renderContents() {
+    const {data} = this.state;
+    const details = dottie.get(data, 'details', {});
 
-  /**
-   * Submit a password check on the current link.
-   *
-   * @param {Object} evt DOM event triggered by form submit.
-   */
-  submitPassword(evt) {
-    evt.preventDefault();
+    if (data.success) {
+      return (
+        <Alert
+          type={ALERT_TYPE_SUCCESS}
+          title={'Success!'}
+          message={`Redirecting you to ${details.outgoing_url}...`}
+        />
+      );
+    }
 
-    const alias = this.props.params.alias;
-    const password = this.linkPasswordInput.getValue();
-    this.loadLinkDetails(alias, password, (err, resp, json) => {
-      if (!err && json.success) {
-        this.incrementLinkHits(json.details.link_id, password);
-      }
-    });
-  }
-
-  /**
-   * Render an element for details about a nonexistent link.
-   *
-   * @returns {XML} React element for the page contents for a nonexistent link.
-   */
-  renderLinkNotFound() {
-    return (
-      <div className="margin-large--top margin-large--bottom">
-        <p className="sans-serif bold gamma text-gray-70 margin-small--bottom">LINK NOT FOUND</p>
-        <p className="not-found-text sans-serif bold text-gray-70 margin-large--bottom transition">
-          The requested link does not exist.
-        </p>
-
-        <p className="sans-serif gamma text-gray-70 margin-small--bottom">
-          Try to <Link to={context.uris.HomeURI}>create a new link</Link>.
-        </p>
-      </div>
-    );
-  }
-
-  /**
-   * Render an element for a password submission form for a password-protected link.
-   *
-   * @returns {XML} React element for the page contents for a password-protected link.
-   */
-  renderLinkPassword() {
-    const {isLoading} = this.state;
-
-    return (
-      <div className="margin-large--top margin-large--bottom">
-        <p className="sans-serif bold gamma text-gray-70 margin-small--bottom">PASSWORD PROTECTED LINK</p>
-        <p className="not-found-text sans-serif bold text-gray-70 margin-large--bottom transition">
-          This link is password protected.
-        </p>
-
-        <p className="sans-serif gamma text-gray-70 margin--top margin-small--bottom">
-          Enter the link password below to continue.
-        </p>
-
-        <form>
-          <TextField
-            ref={(elem) => {
-              this.linkPasswordInput = elem;
-            }}
-            type="password"
-            className="shorten-field sans-serif light margin--bottom"
-            style={{
-              width: '100%'
-            }}
-          />
-
-          <Button
-            className="sans-serif bold gamma text-white margin-large--top"
-            text="Submit"
-            disabled={isLoading}
-            onClick={this.submitPassword.bind(this)}
-            style={{
-              padding: '15px 30px'
-            }}
-          />
-        </form>
-      </div>
-    );
+    return null;
   }
 
   render() {
-    const {isLoading, initialLoad, details} = this.state;
+    const {isLoading} = this.props;
+    const {data} = this.state;
 
-    const contents = (() => {
-      switch (details.failure) {
-        case 'failure_nonexistent_link':
-          return this.renderLinkNotFound();
-        case 'failure_incorrect_link_password':
-          return this.renderLinkPassword();
-        default:
-          return null;
-      }
-    })();
-    const outgoingURL = dottie.get(details, 'details.outgoing_url');
+    if (data.failure === 'failure_nonexistent_link') {
+      return <AliasNotFound />;
+    }
 
-    if (outgoingURL) {
-      setTimeout(() => {
-        window.location.href = outgoingURL;
-      }, 1500);
+    if (data.failure === 'failure_incorrect_link_password') {
+      return (
+        <AliasPassword
+          loadLinkDetails={this.loadLinkDetails.bind(this)}
+          {...this.props}
+        />
+      );
     }
 
     return (
       <div>
         <Helmet title="Linkr" />
-
         {isLoading && <LoadingBar />}
-
-        <Header selectIndex={-1} />
+        <Header />
 
         <Container className={isLoading ? 'fade' : ''}>
-          {outgoingURL && (
-            <Alert
-              type={ALERT_TYPE_SUCCESS}
-              title={'Success!'}
-              message={`Redirecting you to ${outgoingURL}...`}
-            />
-          )}
-
-          {details.failure && details.failure === 'failure_incorrect_link_password' && !initialLoad && (
-            <Alert
-              type={ALERT_TYPE_ERROR}
-              title={'The submitted password was not correct.'}
-              message={'Please try again.'}
-            />
-          )}
-
-          {contents}
+          {this.renderContents()}
         </Container>
       </div>
     );
   }
 }
+
+export default LoadingHOC(Alias);

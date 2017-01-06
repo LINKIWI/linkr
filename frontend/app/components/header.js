@@ -7,16 +7,16 @@ import Logo from './logo';
 
 export default class Header extends React.Component {
   static propTypes = {
-    // TODO
+    selectIndex: React.PropTypes.number
+  };
+  static defaultProps = {
+    selectIndex: -1
   };
 
   constructor(props) {
     super(props);
 
-    this.state = {
-      isMenuOpen: false,
-      isLoading: false
-    };
+    this.state = {isMenuOpen: false};
   }
 
   renderMenuIcon() {
