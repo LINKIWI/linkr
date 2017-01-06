@@ -16,6 +16,7 @@ def add_link(alias, outgoing_url, password=None, user_id=None):
     :param user_id: ID of the user to associate with this link, if applicable.
     :return: An instance of models.Link representing the new entry.
     :raises InvalidAliasException: If the alias is invalid.
+    :raises ReservedAliasException: If the alias is reserved.
     :raises InvalidURLException: If the outgoing URL is invalid.
     :raises UnavailableAliasException: If the alias already exists in the database.
     """
@@ -102,7 +103,7 @@ def delete_link(link_id):
 
     :param link_id: The link ID to delete.
     :return: The models.Link instance representing the deleted entry.
-    :raises InvalidAliasException: If the alias does not exist.
+    :raises NonexistentLinkException: If the link ID does not exist.
     """
     to_delete = models.Link.query.filter_by(link_id=link_id)
     if not to_delete.scalar():
@@ -125,7 +126,14 @@ def add_link_hit(link_id, remote_ip, referer, user_agent):
     :param referer: The referer of the hit.
     :param user_agent: The client's user agent string.
     :return: An instance of models.LinkHit representing the added entry.
+    :raises NonexistentLinkException: If the link ID does not exist.
     """
+    associated_link = models.Link.query.filter_by(link_id=link_id)
+    if not associated_link.scalar():
+        raise NonexistentLinkException('Link ID `{link_id}` does not exist.'.format(
+            link_id=link_id,
+        ))
+
     new_link_hit = models.LinkHit(
         link_id=link_id,
         remote_ip=remote_ip,

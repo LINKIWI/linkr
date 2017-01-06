@@ -204,9 +204,20 @@ class TestLink(LinkrTestCase):
 
         self.assertIsNone(database.link.get_link_by_id(added.link_id))
 
-    def test_add_link_hit(self):
-        link_hit = database.link.add_link_hit(
+    def test_add_link_hit_nonexistent(self):
+        self.assertRaises(
+            NonexistentLinkException,
+            database.link.add_link_hit,
             link_id=1,
+            remote_ip='127.0.0.1',
+            referer='referer',
+            user_agent='user-agent',
+        )
+
+    def test_add_link_hit(self):
+        associated_link = LinkFactory.generate()
+        link_hit = database.link.add_link_hit(
+            link_id=associated_link.link_id,
             remote_ip='127.0.0.1',
             referer='referer',
             user_agent='user-agent',
@@ -221,7 +232,10 @@ class TestLink(LinkrTestCase):
     def test_get_link_hits_by_id(self):
         link = LinkFactory.generate()
         hits = [LinkHitFactory.generate(link_id=link.link_id) for _ in xrange(10)]
-        [LinkHitFactory.generate(link_id=-1) for _ in xrange(10)]
+
+        irrelevant_link = LinkFactory.generate()
+        [LinkHitFactory.generate(link_id=irrelevant_link.link_id) for _ in xrange(10)]
+
         queried_hits = database.link.get_link_hits_by_id(link_id=link.link_id)
 
         self.assertEqual(queried_hits, list(reversed(hits)))
