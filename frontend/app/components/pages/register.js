@@ -1,11 +1,11 @@
-/* global setTimeout */
-
-import {browserHistory, Link} from 'react-router';
+import {Link} from 'react-router';
 import Helmet from 'react-helmet';
+import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
+import AuthenticationHOC from '../hoc/authentication-hoc';
 import Container from '../container';
 import Header from '../header';
 import Footer from '../footer';
@@ -14,18 +14,17 @@ import Button from '../ui/button';
 import LoadingBar from '../ui/loading-bar';
 import TextField from '../ui/text-field';
 
+import browser from '../../util/browser';
 import context from '../../util/context';
-import DisplayUtil from '../../util/display';
 
 /**
  * Registration page for new users.
  */
-export default class Register extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isLoading: false,
       registrationStatus: {}
     };
   }
@@ -33,11 +32,16 @@ export default class Register extends React.Component {
   submitRegistration(evt) {
     evt.preventDefault();
 
-    this.setState({
-      isLoading: true
-    });
+    if (this.passwordInput.getValue() !== this.confirmPasswordInput.getValue()) {
+      return this.setState({
+        registrationStatus: {
+          success: false,
+          message: 'The two passwords do not match. Please try again.'
+        }
+      });
+    }
 
-    request.put({
+    return this.props.loading((done) => request.put({
       url: context.uris.UserAddURI,
       json: {
         /* eslint-disable camelcase */
@@ -45,18 +49,16 @@ export default class Register extends React.Component {
         password: this.passwordInput.getValue()
         /* eslint-enable camelcase */
       }
-    }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
-      this.setState({
-        isLoading: false,
-        registrationStatus: json
-      });
-    });
+    }, (err, resp, registrationStatus) => {  // eslint-disable-line handle-callback-err
+      this.setState({registrationStatus});
+      return done();
+    }));
   }
 
   renderRegisterError() {
     const {registrationStatus} = this.state;
 
-    if (DisplayUtil.isDefined(registrationStatus.success) && !registrationStatus.success) {
+    if (registrationStatus.success === false) {
       return (
         <Alert
           type={ALERT_TYPE_ERROR}
@@ -78,8 +80,8 @@ export default class Register extends React.Component {
   renderRegisterSuccess() {
     const {registrationStatus} = this.state;
 
-    if (DisplayUtil.isDefined(registrationStatus.success) && registrationStatus.success) {
-      setTimeout(() => browserHistory.push(context.uris.LoginURI), 1500);
+    if (registrationStatus.success) {
+      browser.push(context.uris.LoginURI, 1500);
 
       return (
         <Alert
@@ -93,43 +95,74 @@ export default class Register extends React.Component {
     return null;
   }
 
+  renderAlreadyLoggedIn() {
+    const {isLoggedIn} = this.props;
+
+    return isLoggedIn && (
+      <Alert
+        title={'You are already logged in.'}
+        message={
+          <span>
+            Click <Link className="sans-serif bold" to={context.uris.HomeURI}>here</Link> to return to the homepage.
+          </span>
+        }
+      />
+    );
+  }
+
   render() {
-    const {isLoading} = this.state;
+    const {isLoading} = this.props;
 
     return (
       <div>
         <Helmet title="Register - Linkr"/>
 
-        {DisplayUtil.displayIf(isLoading, () => <LoadingBar />)}
+        {isLoading && <LoadingBar />}
 
         <Header selectIndex={1}/>
 
         <Container className={isLoading ? 'fade' : ''}>
           {this.renderRegisterError()}
           {this.renderRegisterSuccess()}
+          {this.renderAlreadyLoggedIn()}
 
           {
-            DisplayUtil.displayIf(context.config.ALLOW_OPEN_REGISTRATION, () => (
+            context.config.ALLOW_OPEN_REGISTRATION ? (
               <div className="margin-large--top margin-large--bottom">
                 <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Register</p>
 
-                <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">USERNAME</p>
                 <form>
-                  <TextField
-                    ref={(elem) => {
-                      this.usernameInput = elem;
-                    }}
-                    className="login-field sans-serif light margin--bottom"
-                  />
+                  <div className="margin--bottom">
+                    <p className="text--field-header">USERNAME</p>
+                    <TextField
+                      ref={(elem) => {
+                        this.usernameInput = elem;
+                      }}
+                      className="login-field sans-serif light"
+                    />
+                  </div>
 
-                  <p className="sans-serif bold text-gray-50 iota margin-tiny--bottom">PASSWORD</p>
-                  <TextField
-                    ref={(elem) => {
-                      this.passwordInput = elem;
-                    }}
-                    type="password"
-                    className="login-field sans-serif light"
-                  />
+                  <div className="margin--bottom">
+                    <p className="text--field-header">PASSWORD</p>
+                    <TextField
+                      ref={(elem) => {
+                        this.passwordInput = elem;
+                      }}
+                      type="password"
+                      className="login-field sans-serif light"
+                    />
+                  </div>
+
+                  <div>
+                    <p className="text--field-header">CONFIRM PASSWORD</p>
+                    <TextField
+                      ref={(elem) => {
+                        this.confirmPasswordInput = elem;
+                      }}
+                      type="password"
+                      className="login-field sans-serif light"
+                    />
+                  </div>
 
                   <br />
 
@@ -140,8 +173,12 @@ export default class Register extends React.Component {
                     onClick={this.submitRegistration.bind(this)}
                   />
                 </form>
+
+                <p className="sans-serif iota text-gray-60 margin-huge--top">
+                  Already have an account? <Link to={context.uris.LoginURI}>Login here</Link>.
+                </p>
               </div>
-            ), () => (
+            ) : (
               <div className="margin-large--top margin-large--bottom">
                 <p className="sans-serif bold gamma text-gray-70 margin-small--bottom">OPEN REGISTRATION DISABLED</p>
                 <p className="not-found-text sans-serif bold text-gray-70 margin-large--bottom transition">
@@ -152,7 +189,7 @@ export default class Register extends React.Component {
                   Go back to the <Link to={context.uris.HomeURI}>homepage</Link>.
                 </p>
               </div>
-            ))
+            )
           }
         </Container>
 
@@ -161,3 +198,5 @@ export default class Register extends React.Component {
     );
   }
 }
+
+export default AuthenticationHOC(LoadingHOC(Register));
