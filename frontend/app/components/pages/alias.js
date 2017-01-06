@@ -31,7 +31,7 @@ export default class Alias extends React.Component {
   }
 
   componentDidMount() {
-    this.loadLinkDetails(this.props.params.alias, null, false, () => {
+    this.loadLinkDetails(this.props.params.alias, null, () => {
       this.setState({
         initialLoad: true
       });
@@ -43,24 +43,16 @@ export default class Alias extends React.Component {
    *
    * @param {String} alias Link alias.
    * @param {String} password Optional password for the alias, if necessary.
-   * @param {Boolean} incrementHits True to request for the backend to increment the number of hits
-   *                                on thi link when the request completes.
    * @param {Function=} cb Callback function called after setting component state.
    */
-  loadLinkDetails(alias, password, incrementHits, cb) {
+  loadLinkDetails(alias, password, cb) {
     this.setState({
       isLoading: true
     });
 
     request.post({
       url: context.uris.LinkDetailsURI,
-      json: {
-        /* eslint-disable camelcase */
-        alias,
-        password,
-        increment_hits: incrementHits
-        /* eslint-enable camelcase */
-      }
+      json: {alias, password}
     }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
       this.setState({
         isLoading: false,
@@ -72,6 +64,26 @@ export default class Alias extends React.Component {
   }
 
   /**
+   * Increment the number of hits for this link. It is understood that this function should be
+   * invoked only after a successful link authentication.
+   *
+   * @param {Number} linkID ID of the link that was successfully authenticated.
+   * @param {String} password Link password, as applicable.
+   * @param {Function} cb Optional callback.
+   */
+  incrementLinkHits(linkID, password, cb) {
+    request.post({
+      url: context.uris.LinkIncrementHitsURI,
+      json: {
+        /* eslint-disable camelcase */
+        link_id: linkID,
+        password
+        /* eslint-enable camelcase */
+      }
+    }, cb || (() => {}));
+  }
+
+  /**
    * Submit a password check on the current link.
    *
    * @param {Object} evt DOM event triggered by form submit.
@@ -79,7 +91,13 @@ export default class Alias extends React.Component {
   submitPassword(evt) {
     evt.preventDefault();
 
-    this.loadLinkDetails(this.props.params.alias, this.linkPasswordInput.getValue(), true);
+    const alias = this.props.params.alias;
+    const password = this.linkPasswordInput.getValue();
+    this.loadLinkDetails(alias, password, (err, resp, json) => {
+      if (!err && json.success) {
+        this.incrementLinkHits(json.details.link_id, password);
+      }
+    });
   }
 
   /**
@@ -152,7 +170,7 @@ export default class Alias extends React.Component {
 
     const contents = (() => {
       switch (details.failure) {
-        case 'failure_nonexistent_alias':
+        case 'failure_nonexistent_link':
           return this.renderLinkNotFound();
         case 'failure_incorrect_link_password':
           return this.renderLinkPassword();
