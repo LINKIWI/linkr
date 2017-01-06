@@ -1,7 +1,7 @@
 import json
 
 import util.response
-from util.testing import LinkrTestCase
+from test.backend.test_case import LinkrTestCase
 
 
 class TestResponse(LinkrTestCase):

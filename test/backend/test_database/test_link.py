@@ -1,9 +1,9 @@
 import database.link
 import util.cryptography
+from test.backend.factory import LinkFactory
+from test.backend.factory import LinkHitFactory
+from test.backend.test_case import LinkrTestCase
 from util.exception import *
-from util.testing import LinkrTestCase
-from util.testing import LinkFactory
-from util.testing import LinkHitFactory
 
 
 class TestLink(LinkrTestCase):

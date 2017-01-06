@@ -1,6 +1,5 @@
-from util.testing import LinkrTestCase
-
 import util.validation
+from test.backend.test_case import LinkrTestCase
 
 
 class TestValidation(LinkrTestCase):
