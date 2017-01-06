@@ -1,3 +1,5 @@
+/* global window */
+
 import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import humanize from 'humanize';
@@ -6,6 +8,7 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 import truncate from 'lodash.truncate';
+import url from 'url';
 
 import AuthenticationHOC from '../hoc/authentication-hoc';
 import Alert, {ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../alert';
@@ -194,7 +197,17 @@ class Admin extends React.Component {
               title={'You must be logged in to view the admin page.'}
               message={
                 <span>
-                  <Link className="sans-serif bold" to={context.uris.LoginURI}>Click here</Link> to log in.
+                  <Link
+                    className="sans-serif bold"
+                    to={{
+                      pathname: context.uris.LoginURI,
+                      query: {
+                        redirect: url.parse(window.location.href).pathname
+                      }
+                    }}
+                  >
+                    Click here
+                  </Link> to log in.
                 </span>
               }
             />

@@ -1,9 +1,11 @@
-/* global setTimeout */
+/* global window, setTimeout */
 
 import {browserHistory, Link} from 'react-router';
 import Helmet from 'react-helmet';
 import React from 'react';
+import querystring from 'querystring';
 import request from 'browser-request';
+import url from 'url';
 
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
 import Container from '../container';
@@ -94,7 +96,8 @@ export default class Login extends React.Component {
     const {loginStatus} = this.state;
 
     if (DisplayUtil.isDefined(loginStatus.success) && loginStatus.success) {
-      setTimeout(() => browserHistory.push('/'), 1500);
+      const redirect = this.parseRedirectURL() || context.uris.HomeURI;
+      setTimeout(() => browserHistory.push(redirect), 1500);
       return (
         <Alert
           type={ALERT_TYPE_SUCCESS}
@@ -124,6 +127,11 @@ export default class Login extends React.Component {
     }
 
     return null;
+  }
+
+  parseRedirectURL() {
+    const parsed = querystring.parse(url.parse(window.location.href).query);
+    return parsed.redirect;
   }
 
   render() {
