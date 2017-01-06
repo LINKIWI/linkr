@@ -15,6 +15,19 @@ def is_alias_valid(alias):
     return alias == requests.utils.quote(alias, safe='') and 0 < len(alias) < 32
 
 
+def is_alias_reserved(alias):
+    """
+    Check if an alias is reserved, and thus unable to be used.
+
+    :param alias: The alias to validate.
+    :return: True if the alias is reserved; False otherwise.
+    """
+    reserved_aliases = [
+        'linkr',
+    ]
+    return alias in reserved_aliases
+
+
 def is_url_valid(url):
     """
     Check if a URL is valid. The URL is considered valid if a hostname can be parsed out of the

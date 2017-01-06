@@ -80,21 +80,27 @@ def api_add_link(data):
         })
     except InvalidAliasException:
         return util.response.error(
-            400,
-            'The requested alias is invalid; it is not URL-safe or is too long.',
-            'failure_invalid_alias',
+            status_code=400,
+            message='The requested alias is invalid; it is not URL-safe or is too long.',
+            failure='failure_invalid_alias',
+        )
+    except ReservedAliasException:
+        return util.response.error(
+            status_code=404,
+            message='The requested alias is reserved, and cannot be used. Use a different alias.',
+            failure='failure_reserved_alias',
         )
     except InvalidURLException:
         return util.response.error(
-            400,
-            'The requested URL is invalid.',
-            'failure_invalid_url',
+            status_code=400,
+            message='The requested URL is invalid.',
+            failure='failure_invalid_url',
         )
     except UnavailableAliasException:
         return util.response.error(
-            409,
-            'The requested alias is already taken.',
-            'failure_unavailable_alias',
+            status_code=409,
+            message='The requested alias is already taken.',
+            failure='failure_unavailable_alias',
         )
     except:
         return util.response.undefined_error()

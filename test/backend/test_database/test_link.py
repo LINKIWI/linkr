@@ -39,6 +39,14 @@ class TestLink(LinkrTestCase):
             outgoing_url='',
         )
 
+    def test_add_link_reserved_alias(self):
+        self.assertRaises(
+            ReservedAliasException,
+            database.link.add_link,
+            alias='linkr',
+            outgoing_url='',
+        )
+
     def test_add_link_invalid_url(self):
         self.assertRaises(
             InvalidURLException,

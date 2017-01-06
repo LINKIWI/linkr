@@ -21,6 +21,8 @@ def add_link(alias, outgoing_url, password=None, user_id=None):
     """
     if not util.validation.is_alias_valid(alias):
         raise InvalidAliasException('Alias `{alias}` is not URL safe'.format(alias=alias))
+    if util.validation.is_alias_reserved(alias):
+        raise ReservedAliasException('Alias `{alias}` is reserved'.format(alias=alias))
     if not util.validation.is_url_valid(outgoing_url):
         raise InvalidURLException('URL `{url}` is not a valid URL'.format(url=outgoing_url))
     if models.Link.query.filter_by(alias=alias).scalar():

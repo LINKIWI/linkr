@@ -5,6 +5,14 @@ class InvalidAliasException(Exception):
     pass
 
 
+class ReservedAliasException(Exception):
+    """
+    Currently, raised only when the input alias is "linkr," a reserved keyword used for
+    application-level routing.
+    """
+    pass
+
+
 class UnavailableAliasException(Exception):
     """
     Raised when an input alias already exists, and is thus unavailable.
