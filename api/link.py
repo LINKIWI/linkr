@@ -135,7 +135,7 @@ def api_edit_link(data):
     Edit an existing link's details.
     """
     try:
-        validate_link_ownership(data['link_id'], current_user.user_id)
+        validate_link_ownership(data['link_id'])
 
         modified_link = database.link.edit_link(
             link_id=data['link_id'],
@@ -182,7 +182,7 @@ def api_update_link_password(data):
     Update or remove the password of an existing link.
     """
     try:
-        validate_link_ownership(data['link_id'], current_user.user_id)
+        validate_link_ownership(data['link_id'])
 
         modified_link = database.link.update_link_password(
             link_id=data['link_id'],
@@ -209,7 +209,7 @@ def api_delete_link(data):
     Delete an existing link.
     """
     try:
-        validate_link_ownership(data['link_id'], current_user.user_id)
+        validate_link_ownership(data['link_id'])
 
         database.link.delete_link(data['link_id'])
         return util.response.success({
@@ -321,15 +321,13 @@ def validate_link_password(link_id, password):
         raise InvalidAuthenticationException('The supplied password is incorrect')
 
 
-def validate_link_ownership(link_id, user_id):
+def validate_link_ownership(link_id):
     """
     Validate that the link is accessible by the user. The link is considered accessible if it is
     owned by the user, or the user is an admin.
 
     :param link_id: ID of the link to check.
-    :param user_id: ID of the user attempting to access the link.
     :raises NonexistentLinkException: If the link does not exist.
-    :raises NonexistentUserException: If the user does not exist.
     :raises UnauthorizedException: If the user is not allowed to access the link.
     """
     link = database.link.get_link_by_id(link_id)
@@ -338,13 +336,7 @@ def validate_link_ownership(link_id, user_id):
             link_id=link_id,
         ))
 
-    user = database.user.get_user_by_id(user_id)
-    if not user:
-        raise NonexistentUserException('No user exists with user ID `{user_id}`'.format(
-            user_id=user_id,
-        ))
-
-    if link.user_id != user_id and not user.is_admin:
+    if link.user_id != current_user.user_id and not current_user.is_admin:
         raise UnauthorizedException('User ID `{user_id}` does not own link ID `{link_id}`'.format(
             user_id=user_id,
             link_id=link_id,
