@@ -10,13 +10,15 @@ from util.exception import *
 @db_txn
 def add_user(username, password, signup_ip, is_admin=False):
     """
-    TODO
+    Add a new user to the database after performing necessary input validation.
 
-    :param username:
-    :param password:
-    :param signup_ip:
-    :param is_admin:
-    :return:
+    :param username: The desired username.
+    :param password: The desired password, in plain text (not hashed).
+    :param signup_ip: The signup IP address of the user.
+    :param is_admin: True for the user to have an admin role; False otherwise.
+    :return: The models.User instance representing the newly created user.
+    :raises UnavailableUsernameException: If the username is taken by another, existing user.
+    :raises InvalidUsernameException: If the desired username fails the validation criteria.
     """
     if models.User.query.filter_by(username=username).scalar() is not None:
         raise UnavailableUsernameException('The username `{username}` is already taken'.format(
@@ -40,12 +42,34 @@ def add_user(username, password, signup_ip, is_admin=False):
 
 
 @db_txn
+def delete_user(user_id):
+    """
+    Delete a user and all associated links.
+
+    :param user_id: ID of the user to delete.
+    :return: The (previously existent) models.User instance that was deleted.
+    """
+    # Delete the user itself
+    to_delete_user = get_user_by_id(user_id)
+    if not to_delete_user:
+        raise NonexistentUserException('User ID `{user_id}` does not exist'.format(user_id=user_id))
+    db.session.delete(to_delete_user)
+
+    # Delete all links associated with the user (if any)
+    to_delete_links = models.Link.query.filter_by(user_id=user_id).all()
+    for link in to_delete_links:
+        db.session.delete(link)
+
+    return to_delete_user
+
+
+@db_txn
 def generate_new_api_key(user_id):
     """
-    TODO
+    Generate a new API key for the user.
 
-    :param user_id:
-    :return:
+    :param user_id: The ID of the user for which a new API key should be generated.
+    :return: The modified models.User instance.
     """
     user = get_user_by_id(user_id)
     user.generate_new_api_key()
@@ -55,11 +79,11 @@ def generate_new_api_key(user_id):
 
 def validate_user_credentials(username, password):
     """
-    TODO
+    Validate a pair of username/password credentials.
 
-    :param username:
-    :param password:
-    :return:
+    :param username: The username to authenticate.
+    :param password: The password of the user, in plain text.
+    :return: The models.User instance representing the user.
     """
     user = get_user_by_username(username)
     if not user:
@@ -73,43 +97,34 @@ def validate_user_credentials(username, password):
     return user
 
 
+@login_manager.user_loader
 def get_user_by_id(user_id):
     """
-    TODO
+    Get a models.User instance by ID.
 
-    :param user_id:
-    :return:
+    :param user_id: ID of the user to retrieve.
+    :return: The models.User instance with the specified user ID, or None if no such user exists.
     """
     return models.User.query.filter_by(user_id=user_id).first()
 
 
 def get_user_by_username(username):
     """
-    TODO
+    Get a models.User instance by username.
 
-    :param username:
-    :return:
+    :param username: Username of the user to retrieve.
+    :return: The models.User instance with the specified user username, or None if no such user
+             exists.
     """
     return models.User.query.filter_by(username=username).first()
 
 
 def get_user_by_api_key(api_key):
     """
-    Retrieve a user by his or her API key.
+    Get a models.User instance by API key.
 
     :param api_key: The user's API key.
     :return: An instance of models.User with the provided API key or None if no user exists with
              the specified API key.
     """
     return models.User.query.filter_by(api_key=api_key).first()
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    """
-    TODO
-
-    :param user_id:
-    :return:
-    """
-    return get_user_by_id(user_id)

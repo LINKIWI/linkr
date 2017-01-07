@@ -3,7 +3,7 @@ import {Route} from 'react-router';
 
 import AppRoot from './components/app-root';
 
-import Account from './components/pages/account';
+import Account from './components/pages/account/account';
 import Admin from './components/pages/admin/admin';
 import AdminLinkDetails from './components/pages/admin/admin-link-details';
 import Alias from './components/pages/alias';

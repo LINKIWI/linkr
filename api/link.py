@@ -347,7 +347,6 @@ def validate_link_ownership(link_id):
         ))
 
     if link.user_id != current_user.user_id and not current_user.is_admin:
-        raise UnauthorizedException('User ID `{user_id}` does not own link ID `{link_id}`'.format(
-            user_id=user_id,
+        raise UnauthorizedException('The current user does not own link ID `{link_id}`'.format(
             link_id=link_id,
         ))

@@ -14,3 +14,8 @@ class UserAccountURI(URI):
 class UserAddURI(URI):
     methods = ['PUT']
     path = URI.api_uri('/user/add')
+
+
+class UserDeactivationURI(URI):
+    methods = ['DELETE']
+    path = URI.api_uri('/user/delete')

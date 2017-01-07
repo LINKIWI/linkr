@@ -197,6 +197,7 @@ class Admin extends React.Component {
               title={'You must be logged in to view the admin page.'}
               message={
                 <span>
+                  Click&nbsp;
                   <Link
                     className="sans-serif bold"
                     to={{
@@ -206,7 +207,7 @@ class Admin extends React.Component {
                       }
                     }}
                   >
-                    Click here
+                    here
                   </Link> to log in.
                 </span>
               }
