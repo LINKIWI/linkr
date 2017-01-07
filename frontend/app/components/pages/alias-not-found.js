@@ -14,7 +14,7 @@ import context from '../../util/context';
  */
 const AliasNotFound = () => (
   <div>
-    <Helmet title="Linkr - Not Found" />
+    <Helmet title="Not Found - Linkr" />
     <Header />
 
     <Container>

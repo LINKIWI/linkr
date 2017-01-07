@@ -43,7 +43,7 @@ export default class AliasPassword extends React.Component {
 
     return (
       <div>
-        <Helmet title="Linkr - Password Protected Link" />
+        <Helmet title="Password Protected Link - Linkr" />
         {isLoading && <LoadingBar />}
         <Header />
 

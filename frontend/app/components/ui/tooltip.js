@@ -4,8 +4,6 @@ import clone from 'clone';
 import extend from 'deep-extend';
 import React from 'react';
 
-import DisplayUtil from '../../util/display';
-
 export const GRACE_TIMEOUT_INTERVAL = 150;
 
 /**
@@ -77,11 +75,11 @@ export default class Tooltip extends React.Component {
         </div>
 
         {
-          DisplayUtil.displayIf(contents, () => (
+          contents && (
             <span className={`tooltip transition ${tooltipClassName}`} style={style}>
               {contents}
             </span>
-          ))
+          )
         }
       </div>
     );
