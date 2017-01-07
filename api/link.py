@@ -84,6 +84,7 @@ def api_increment_link_hits(data):
 
 @app.route(LinkAddURI.path, methods=LinkAddURI.methods)
 @require_form_args(['alias', 'outgoing_url'])
+@optional_login_api
 def api_add_link(data):
     """
     Add a new link (alias <-> outgoing URL association).
@@ -317,6 +318,7 @@ def validate_link_password(link_id, password):
 
     :param link_id: ID of the link to check.
     :param password: The attempted password for this link.
+    :return: The models.Link instance referenced by this check.
     :raises NonexistentLinkException: If the link does not exist.
     :raises InvalidAuthenticationException: If the supplied password is incorrect.
     """
@@ -327,8 +329,11 @@ def validate_link_password(link_id, password):
         ))
 
     is_admin = current_user.is_authenticated and current_user.is_admin
-    if not link.validate_password(password or '') and not is_admin:
+    is_owner = current_user.is_authenticated and link.user_id == current_user.user_id
+    if not link.validate_password(password or '') and not is_admin and not is_owner:
         raise InvalidAuthenticationException('The supplied password is incorrect')
+
+    return link
 
 
 def validate_link_ownership(link_id):
@@ -337,6 +342,7 @@ def validate_link_ownership(link_id):
     owned by the user, or the user is an admin.
 
     :param link_id: ID of the link to check.
+    :return: The models.Link instance referenced by this check.
     :raises NonexistentLinkException: If the link does not exist.
     :raises UnauthorizedException: If the user is not allowed to access the link.
     """
@@ -350,3 +356,5 @@ def validate_link_ownership(link_id):
         raise UnauthorizedException('The current user does not own link ID `{link_id}`'.format(
             link_id=link_id,
         ))
+
+    return link
