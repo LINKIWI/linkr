@@ -13,6 +13,7 @@ export default class LinkTooltip extends React.Component {
     tooltipClassName: React.PropTypes.string,
     linkClassName: React.PropTypes.string,
     href: React.PropTypes.string,
+    text: React.PropTypes.string,
     onTransition: React.PropTypes.func
   };
   static defaultProps = {
@@ -44,6 +45,7 @@ export default class LinkTooltip extends React.Component {
   render() {
     const {
       href,
+      text,
       textBeforeTransition,
       textAfterTransition,
       tooltipClassName,
@@ -61,7 +63,7 @@ export default class LinkTooltip extends React.Component {
         }
       >
         <a className={linkClassName} href={href} onClick={this.handleLinkClick.bind(this)}>
-          {href}
+          {text || href}
         </a>
       </Tooltip>
     );

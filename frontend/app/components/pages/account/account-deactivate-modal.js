@@ -11,7 +11,7 @@ import Modal from '../../ui/modal';
 import browser from '../../../util/browser';
 import context from '../../../util/context';
 
-class LinkDeactivateModal extends React.Component {
+class AccountDeactivateModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -116,4 +116,4 @@ class LinkDeactivateModal extends React.Component {
   }
 }
 
-export default LoadingHOC(LinkDeactivateModal);
+export default LoadingHOC(AccountDeactivateModal);
