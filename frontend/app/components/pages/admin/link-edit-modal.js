@@ -2,19 +2,19 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
-import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from './alert';
+import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../../alert';
 
-import Button from './ui/button';
-import LoadingBar from './ui/loading-bar';
-import Modal from './ui/modal';
-import TextField from './ui/text-field';
+import Button from '../../ui/button';
+import LoadingBar from '../../ui/loading-bar';
+import Modal from '../../ui/modal';
+import TextField from '../../ui/text-field';
 
-import context from '../util/context';
+import context from '../../../util/context';
 
 /**
  * Modal used for updating a link's alias and/or outgoing URL.
  */
-class EditLinkModal extends React.Component {
+class LinkEditModal extends React.Component {
   static propTypes = {
     linkID: React.PropTypes.number,
     alias: React.PropTypes.string,
@@ -182,4 +182,4 @@ class EditLinkModal extends React.Component {
   }
 }
 
-export default LoadingHOC(EditLinkModal);
+export default LoadingHOC(LinkEditModal);

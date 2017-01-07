@@ -6,22 +6,22 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
-import Container from '../container';
-import DeactivateModal from '../deactivate-modal';
-import EditLinkModal from '../edit-link-modal';
-import Footer from '../footer';
-import Header from '../header';
-import InfoTable from '../info-table';
-import LinkTooltip from '../link-tooltip';
-import RemoveLinkPasswordModal from '../remove-link-password-modal';
-import SetLinkPasswordModal from '../set-link-password-modal';
-import Table from '../table';
+import Container from '../../container';
+import Footer from '../../footer';
+import Header from '../../header';
+import InfoTable from '../../info-table';
+import LinkDeactivateModal from './link-deactivate-modal';
+import LinkEditModal from './link-edit-modal';
+import LinkRemovePasswordModal from './link-remove-password-modal';
+import LinkSetPasswordModal from './link-set-password-modal';
+import LinkTooltip from '../../link-tooltip';
+import Table from '../../table';
 
-import BackNav from '../ui/back-nav';
-import Button from '../ui/button';
-import LoadingBar from '../ui/loading-bar';
+import BackNav from '../../ui/back-nav';
+import Button from '../../ui/button';
+import LoadingBar from '../../ui/loading-bar';
 
-import context from '../../util/context';
+import context from '../../../util/context';
 
 /**
  * Interface showing admin details for a single link.
@@ -225,7 +225,7 @@ class AdminLinkDetails extends React.Component {
                   Deactivate this link permanently.
                 </span>
 
-                <DeactivateModal
+                <LinkDeactivateModal
                   ref={(elem) => {
                     this.deactivateModal = elem;
                   }}
@@ -248,7 +248,7 @@ class AdminLinkDetails extends React.Component {
                   Edit the alias or outgoing URL of this link.
                 </span>
 
-                <EditLinkModal
+                <LinkEditModal
                   ref={(elem) => {
                     this.editLinkModal = elem;
                   }}
@@ -276,7 +276,7 @@ class AdminLinkDetails extends React.Component {
                   }
                 </span>
 
-                <SetLinkPasswordModal
+                <LinkSetPasswordModal
                   ref={(elem) => {
                     this.setPasswordModal = elem;
                   }}
@@ -304,7 +304,7 @@ class AdminLinkDetails extends React.Component {
                 )
               }
 
-              <RemoveLinkPasswordModal
+              <LinkRemovePasswordModal
                 ref={(elem) => {
                   this.removePasswordModal = elem;
                 }}

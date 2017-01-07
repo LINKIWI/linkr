@@ -10,19 +10,19 @@ import request from 'browser-request';
 import truncate from 'lodash.truncate';
 import url from 'url';
 
-import AuthenticationHOC from '../hoc/authentication-hoc';
-import Alert, {ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../alert';
-import Container from '../container';
-import Footer from '../footer';
-import Header from '../header';
-import InfoTable from '../info-table';
-import Table from '../table';
+import AuthenticationHOC from '../../hoc/authentication-hoc';
+import Alert, {ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../../alert';
+import Container from '../../container';
+import Footer from '../../footer';
+import Header from '../../header';
+import InfoTable from '../../info-table';
+import Table from '../../table';
 
-import Button from '../ui/button';
-import LoadingBar from '../ui/loading-bar';
-import Tooltip from '../ui/tooltip';
+import Button from '../../ui/button';
+import LoadingBar from '../../ui/loading-bar';
+import Tooltip from '../../ui/tooltip';
 
-import context from '../../util/context';
+import context from '../../../util/context';
 
 /**
  * Main admin interface.

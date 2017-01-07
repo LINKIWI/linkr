@@ -4,8 +4,8 @@ import {Route} from 'react-router';
 import AppRoot from './components/app-root';
 
 import Account from './components/pages/account';
-import Admin from './components/pages/admin';
-import AdminLinkDetails from './components/pages/admin-link-details';
+import Admin from './components/pages/admin/admin';
+import AdminLinkDetails from './components/pages/admin/admin-link-details';
 import Alias from './components/pages/alias';
 import Login from './components/pages/login';
 import Register from './components/pages/register';

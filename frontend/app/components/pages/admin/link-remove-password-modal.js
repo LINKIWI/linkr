@@ -3,18 +3,18 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
-import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from './alert';
+import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../../alert';
 
-import Button from './ui/button';
-import LoadingBar from './ui/loading-bar';
-import Modal from './ui/modal';
+import Button from '../../ui/button';
+import LoadingBar from '../../ui/loading-bar';
+import Modal from '../../ui/modal';
 
-import context from '../util/context';
+import context from '../../../util/context';
 
 /**
  * Modal used for removing a link's password.
  */
-class RemoveLinkPasswordModal extends React.Component {
+class LinkRemovePasswordModal extends React.Component {
   static propTypes = {
     linkID: React.PropTypes.number,
     alias: React.PropTypes.string,
@@ -148,4 +148,4 @@ class RemoveLinkPasswordModal extends React.Component {
   }
 }
 
-export default LoadingHOC(RemoveLinkPasswordModal);
+export default LoadingHOC(LinkRemovePasswordModal);
