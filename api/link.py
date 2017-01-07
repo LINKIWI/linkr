@@ -4,6 +4,7 @@ from linkr import app
 from uri.link import *
 from util.decorators import *
 from util.exception import *
+from webpreview import web_preview
 
 
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
@@ -305,6 +306,42 @@ def api_recent_links(data):
         return util.response.success({
             'links': [link.as_dict() for link in links]
         })
+    except:
+        return util.response.undefined_error()
+
+
+@app.route(LinkPreviewURI.path, methods=LinkPreviewURI.methods)
+@require_form_args(['link_id'])
+@require_login_api()
+def link_preview(data):
+    """
+    Preview the metadata of a link's outgoing URL.
+    """
+    try:
+        link = validate_link_ownership(data['link_id'])
+
+        title, description, image = web_preview(link.outgoing_url)
+
+        return util.response.success({
+            'link_id': link.link_id,
+            'preview': {
+                'title': title,
+                'description': description,
+                'image': image,
+            },
+        })
+    except NonexistentLinkException:
+        return util.response.error(
+            status_code=404,
+            message='The requested link ID does not exist.',
+            failure='failure_nonexistent_link',
+        )
+    except UnauthorizedException:
+        return util.response.error(
+            status_code=403,
+            message='You may only preview links created by you.',
+            failure='failure_unauth',
+        )
     except:
         return util.response.undefined_error()
 

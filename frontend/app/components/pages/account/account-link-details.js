@@ -24,7 +24,10 @@ class AccountLinkDetails extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {details: {}};
+    this.state = {
+      details: {},
+      preview: {}
+    };
   }
 
   componentDidMount() {
@@ -40,7 +43,22 @@ class AccountLinkDetails extends React.Component {
     }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
       const details = dottie.get(json, 'details', {});
       this.setState({details});
-      return done();
+
+      request.post({
+        url: context.uris.LinkPreviewURI,
+        json: {
+          /* eslint-disable camelcase */
+          link_id: details.link_id
+          /* eslint-enable camelcase */
+        }
+      }, (previewErr, previewResp, previewJSON) => {
+        if (!previewErr || previewResp.statusCode !== 200) {
+          const preview = dottie.get(previewJSON, 'preview', {});
+          this.setState({preview});
+        }
+
+        return done();
+      });
     }));
   }
 
@@ -89,14 +107,31 @@ class AccountLinkDetails extends React.Component {
   }
 
   renderLinkPreview() {
+    const {preview} = this.state;
+
+    if (!preview.title && !preview.description) {
+      return null;
+    }
+
     return (
       <div className="margin-huge--bottom">
         <p className="sans-serif bold text-gray-70 gamma margin-small--bottom">PREVIEW</p>
-        {(
-          <InfoTable
-            entries={[]}
-          />
-        )}
+        <InfoTable
+          entries={[
+            {
+              key: 'Title',
+              value: preview.title || 'Unknown'
+            },
+            {
+              key: 'Description',
+              value: preview.description || 'Unknown'
+            },
+            {
+              key: preview.image && 'Image',
+              value: <img className="link-preview-image margin-tiny--top" src={preview.image} />
+            }
+          ]}
+        />
       </div>
     );
   }

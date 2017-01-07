@@ -28,11 +28,14 @@ export default class InfoTable extends React.Component {
               <tr key={`entry_${idx}`}>
                 <td className="sans-serif bold text-gray-60 iota" style={{
                   height: '20px',
-                  paddingRight: '30px'
+                  paddingRight: '30px',
+                  verticalAlign: 'top'
                 }}>
                   {entry.key}
                 </td>
-                <td className="sans-serif text-gray-60 iota">
+                <td className="sans-serif text-gray-60 iota" style={{
+                  verticalAlign: 'top'
+                }}>
                   {entry.value}
                 </td>
               </tr>
