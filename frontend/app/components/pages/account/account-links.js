@@ -1,10 +1,12 @@
+import copy from 'copy-to-clipboard';
 import dottie from 'dottie';
 import humanize from 'humanize';
-import {Link} from 'react-router';
 import React from 'react';
 import request from 'browser-request';
 import truncate from 'lodash.truncate';
 
+import AccountLinkActions from './account-link-actions';
+import LinkTooltip from '../../link-tooltip';
 import Table from '../../table';
 
 import Button from '../../ui/button';
@@ -75,7 +77,7 @@ export default class AccountLinks extends React.Component {
       <div className="margin-huge--bottom">
         <p className="text--section-header">Links</p>
         <p className="text--section-caption">
-          These are links the links you've created while logged in.
+          These are links you've created while logged in.
         </p>
 
         <Table
@@ -84,19 +86,30 @@ export default class AccountLinks extends React.Component {
           header={[
             'ALIAS',
             'OUTGOING URL',
-            'CREATED'
+            'CREATED',
+            'PASSWORD',
+            'ACTIONS'
           ]}
           entries={userLinks.map((link) => [
-            // Alias link directing to the link details page
-            <Link to={'TODO'}>
-              {link.alias}
-            </Link>,
+            // Link with tooltip for copying to clipboard
+            <LinkTooltip
+              tooltipClassName="kilo"
+              textBeforeTransition={'Click to copy to your clipboard.'}
+              textAfterTransition={'Done! Link is copied to your clipboard. Click again to follow through.'}
+              onTransition={() => copy(link.full_alias)}
+              href={link.full_alias}
+              text={link.alias}
+            />,
             // Link to the outgoing URL
             <a href={link.outgoing_url}>
               {truncate(link.outgoing_url, {length: 80})}
             </a>,
             // Relative creation time description
-            humanize.relativeTime(link.submit_time)
+            humanize.relativeTime(link.submit_time),
+            // Password protection state
+            link.is_password_protected ? 'Yes' : 'No',
+            // Row of available actions for each link
+            <AccountLinkActions link={link} />
           ])}
         />
 

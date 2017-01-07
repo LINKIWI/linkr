@@ -53,7 +53,7 @@ class Account extends React.Component {
     return (
       <div>
         <Helmet title="Account - Linkr" />
-        {isLoading && <LoadingBar />}
+        <LoadingBar show={isLoading} />
         <Header />
 
         <Container className={isLoading ? 'fade' : ''}>

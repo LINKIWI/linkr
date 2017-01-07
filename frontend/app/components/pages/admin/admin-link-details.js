@@ -129,9 +129,7 @@ class AdminLinkDetails extends React.Component {
     return (
       <div>
         <Helmet title="Link Details - Admin - Linkr"/>
-
-        {isLoading && <LoadingBar />}
-
+        <LoadingBar show={isLoading} />
         <Header selectIndex={1}/>
 
         <Container className={isLoading ? 'fade' : ''}>

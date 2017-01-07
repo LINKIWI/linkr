@@ -10,6 +10,13 @@ export const BOUNCE_INTERVAL = 1200;
  * Describes a globally-positioned loading bar animation.
  */
 export default class LoadingBar extends React.Component {
+  static propTypes = {
+    show: React.PropTypes.bool
+  };
+  static defaultProps = {
+    show: true
+  };
+
   constructor(props) {
     super(props);
 
@@ -42,10 +49,11 @@ export default class LoadingBar extends React.Component {
   }
 
   render() {
+    const {show} = this.props;
     const {position} = this.state;
     const offset = position === POSITION_LEFT ? -POSITION_RIGHT : POSITION_LEFT;
 
-    return (
+    return show && (
       <div className="loading-bar-container">
         <div className="loading-bar" style={{
           marginLeft: `calc(${position}% + ${offset}px)`

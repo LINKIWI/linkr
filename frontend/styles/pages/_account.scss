@@ -1,0 +1,12 @@
+@import '../universal/spacing';
+
+.link-action-icon {
+  cursor: pointer;
+  height: 18px;
+  margin-right: $spacing-small;
+  width: 18px;
+}
+
+.link-action-icon:hover {
+  opacity: 0.7;
+}

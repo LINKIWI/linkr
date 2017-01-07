@@ -4,6 +4,7 @@ import {Route} from 'react-router';
 import AppRoot from './components/app-root';
 
 import Account from './components/pages/account/account';
+import AccountLinkDetails from './components/pages/account/account-link-details';
 import Admin from './components/pages/admin/admin';
 import AdminLinkDetails from './components/pages/admin/admin-link-details';
 import Alias from './components/pages/alias';
@@ -21,6 +22,7 @@ const routes = (
     <Route path={context.uris.UserRegistrationURI} component={Register} />
     <Route path={context.uris.LinkAliasURI} component={Alias} />
     <Route path={context.uris.UserAccountURI} component={Account} />
+    <Route path={context.uris.UserAccountLinkDetailsURI} component={AccountLinkDetails} />
     <Route path="*" component={Shorten} />
   </Route>
 );

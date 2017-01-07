@@ -4,6 +4,9 @@ import AccountDeactivateModal from './account-deactivate-modal';
 
 import Button from '../../ui/button';
 
+/**
+ * Section of the Account interface allowing the user to deactivate his or her account.
+ */
 export default class AccountDeactivation extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +14,14 @@ export default class AccountDeactivation extends React.Component {
     this.state = {displayConfirm: false};
   }
 
+  /**
+   * When the user clicks the account deactivation button, the action that occurs depends on the
+   * current state: on first click, component state is updated to reflect a confirmation message
+   * in the UI; on the second click, the deactivation modal is shown.
+   *
+   * @param {Object} evt DOM click event.
+   * @returns {*} Return value is unused.
+   */
   handleDeactivateAccount(evt) {
     evt.preventDefault();
 

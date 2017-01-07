@@ -11,6 +11,11 @@ class UserAccountURI(URI):
     path = URI.view_uri('/account')
 
 
+class UserAccountLinkDetailsURI(URI):
+    methods = ['GET']
+    path = URI.view_uri('/account/link/:alias')
+
+
 class UserAddURI(URI):
     methods = ['PUT']
     path = URI.api_uri('/user/add')
