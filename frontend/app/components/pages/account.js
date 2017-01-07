@@ -20,14 +20,15 @@ import LoadingBar from '../ui/loading-bar';
 import context from '../../util/context';
 
 /**
- * TODO
+ * User account control panel page.
  */
 class Account extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      userLinks: []
+      userLinks: [],
+      userLinksPageNum: 0
     };
   }
 
@@ -39,10 +40,16 @@ class Account extends React.Component {
 
   loadUserLinks(cb) {
     const {loading} = this.props;
+    const {userLinksPageNum} = this.state;
 
     loading((done) => request.post({
       url: context.uris.LinksForUserURI,
-      json: {}
+      json: {
+        /* eslint-disable camelcase */
+        page_num: userLinksPageNum,
+        num_per_page: 10
+        /* eslint-enable camelcase */
+      }
     }, (err, resp, json) => {
       cb(err, json);
       return done();
@@ -51,6 +58,22 @@ class Account extends React.Component {
 
   handleLoadMoreUserLinks(evt) {
     evt.preventDefault();
+
+    const {userLinks, userLinksPageNum} = this.state;
+
+    this.setState({
+      userLinksPageNum: userLinksPageNum + 1
+    }, () => {
+      this.loadUserLinks((err, moreLinks) => {
+        if (err || !dottie.get(moreLinks, 'links', [null]).length) {
+          return this.setState({userLinksPageNum});
+        }
+
+        return this.setState({
+          userLinks: userLinks.concat(moreLinks.links)
+        });
+      });
+    });
   }
 
   renderUserLinks() {

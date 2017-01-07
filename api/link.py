@@ -7,7 +7,7 @@ from util.exception import *
 
 
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
-@require_form_args([])
+@require_form_args()
 @optional_login_api
 def api_link_details(data):
     """
@@ -261,7 +261,11 @@ def api_links_for_user(data):
         user_id = data.get('user_id', current_user.user_id)
 
         if user_id == current_user.user_id or current_user.is_admin:
-            links = database.link.get_links_for_user(user_id)
+            links = database.link.get_links_for_user(
+                user_id=user_id,
+                page_num=data.get('page_num'),
+                num_per_page=data.get('num_per_page'),
+            )
             return util.response.success({
                 'links': [link.as_dict() for link in links],
             })
@@ -270,6 +274,12 @@ def api_links_for_user(data):
             status_code=403,
             message='You may only view links created by yourself.',
             failure='failure_unauth',
+        )
+    except NonexistentUserException:
+        return util.response.error(
+            status_code=404,
+            message='No user exists with the specified user ID.',
+            failure='failure_nonexistent_user',
         )
     except:
         return util.response.undefined_error()

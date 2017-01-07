@@ -2,6 +2,7 @@ import database.link
 import util.cryptography
 from test.backend.factory import LinkFactory
 from test.backend.factory import LinkHitFactory
+from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
 from util.exception import *
 
@@ -270,14 +271,34 @@ class TestLink(LinkrTestCase):
 
         self.assertEqual(queried_link, link)
 
+    def test_get_links_for_user_nonexistent(self):
+        self.assertRaises(
+            NonexistentUserException,
+            database.link.get_links_for_user,
+            user_id=-1,
+        )
+
     def test_get_links_for_user(self):
+        user = UserFactory.generate()
         links = [
-            LinkFactory.generate(user_id=1)
+            LinkFactory.generate(user_id=user.user_id)
+            for _ in xrange(5)
+        ]
+
+        self.assertEqual(database.link.get_links_for_user(user.user_id), links)
+
+    def test_get_links_for_user_pagination(self):
+        user = UserFactory.generate()
+        links = [
+            LinkFactory.generate(user_id=user.user_id)
             for _ in xrange(10)
         ]
 
-        self.assertEqual(database.link.get_links_for_user(0), [])
-        self.assertEqual(database.link.get_links_for_user(1), links)
+        queried_links = database.link.get_links_for_user(user.user_id, page_num=0, num_per_page=5)
+        self.assertEqual(queried_links, links[:5])
+
+        queried_links = database.link.get_links_for_user(user.user_id, page_num=1, num_per_page=5)
+        self.assertEqual(queried_links, links[5:])
 
     def test_get_recent_links(self):
         links = [

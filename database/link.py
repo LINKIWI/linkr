@@ -186,14 +186,29 @@ def get_link_by_alias(alias):
     return models.Link.query.filter_by(alias=alias).first()
 
 
-def get_links_for_user(user_id):
+def get_links_for_user(user_id, page_num=0, num_per_page=100):
     """
-    Retrieve all links created by a user.
+    Retrieve a paginated listing of all links created by a user.
 
     :param user_id: The ID of the user for which links should be retrieved.
+    :param page_num: The page number to use in the pagination, zero-indexed.
+    :param num_per_page: The number of links to retrieve per page.
     :return: A list of models.Link objects describing the links created by the specified user.
     """
-    return models.Link.query.filter_by(user_id=user_id).all()
+    if not models.User.query.filter_by(user_id=user_id).scalar():
+        raise NonexistentUserException('No user exists with user_id `{user_id}`'.format(
+            user_id=user_id,
+        ))
+
+    return models.Link.query.filter_by(
+        user_id=user_id
+    ).order_by(
+        models.Link.link_id.asc()
+    ).offset(
+        page_num * num_per_page
+    ).limit(
+        num_per_page
+    ).all()
 
 
 def get_recent_links(page_num=0, num_per_page=100):
