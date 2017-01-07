@@ -2,6 +2,7 @@ import random
 import types
 
 import database.link
+import database.user
 
 
 def random_alphanumeric_string(length=16):
@@ -87,4 +88,25 @@ class LinkHitFactory(Factory):
             remote_ip=cls.random_or_specified_value(remote_ip),
             referer=cls.random_or_specified_value(referer),
             user_agent=cls.random_or_specified_value(user_agent),
+        )
+
+
+class UserFactory(Factory):
+    """
+    Test factory for creating a user.
+    """
+
+    @classmethod
+    def generate(
+        cls,
+        username=random_alphanumeric_string,
+        password=random_alphanumeric_string,
+        signup_up='127.0.0.1',
+        is_admin=False,
+    ):
+        return database.user.add_user(
+            username=cls.random_or_specified_value(username),
+            password=cls.random_or_specified_value(password),
+            signup_ip=cls.random_or_specified_value(signup_up),
+            is_admin=cls.random_or_specified_value(is_admin),
         )
