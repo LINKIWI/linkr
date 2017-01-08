@@ -43,7 +43,9 @@ class AdminLinkDetails extends React.Component {
 
   componentDidMount() {
     this.loadLinkDetails();
-    this.loadLinkHits();
+    this.loadLinkHits((_, resp, json) => this.setState({
+      hits: dottie.get(json, 'hits', [])
+    }));
   }
 
   /**
@@ -68,7 +70,7 @@ class AdminLinkDetails extends React.Component {
   /**
    * Load link hits for this link ID and set component state accordingly on completion.
    */
-  loadLinkHits() {
+  loadLinkHits(cb) {
     const linkID = this.props.params.link_id;
     const {hitsPageNum} = this.state;
 
@@ -81,10 +83,8 @@ class AdminLinkDetails extends React.Component {
         num_per_page: 10
         /* eslint-enable camelcase */
       }
-    }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
-      this.setState({
-        hits: dottie.get(json, 'hits', [])
-      });
+    }, (err, resp, json) => {
+      cb(err, resp, json);
       return done();
     }));
   }
@@ -97,14 +97,14 @@ class AdminLinkDetails extends React.Component {
       hitsPageNum: hitsPageNum + 1
     }, () => {
       // Append the new hit details onto the existing hits.
-      this.loadLinkHits((err, moreHits) => {
-        if (err || !dottie.get(moreHits, 'hits', [null]).length) {
+      this.loadLinkHits((err, resp, json) => {
+        if (err || !dottie.get(json, 'hits', [null]).length) {
           // Reset the page number to the existing (non-incremented) index.
           return this.setState({hitsPageNum});
         }
 
         return this.setState({
-          hits: hits.concat(moreHits.hits)
+          hits: hits.concat(json.hits)
         });
       });
     });
