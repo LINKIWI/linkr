@@ -1,5 +1,3 @@
-/* global window */
-
 import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import humanize from 'humanize';
@@ -8,7 +6,6 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 import truncate from 'lodash.truncate';
-import url from 'url';
 
 import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Alert, {ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../../alert';
@@ -22,6 +19,7 @@ import Button from '../../ui/button';
 import LoadingBar from '../../ui/loading-bar';
 import Tooltip from '../../ui/tooltip';
 
+import browser from '../../../util/browser';
 import context from '../../../util/context';
 
 /**
@@ -203,7 +201,7 @@ class Admin extends React.Component {
                     to={{
                       pathname: context.uris.LoginURI,
                       query: {
-                        redirect: url.parse(window.location.href).pathname
+                        redirect: browser.parseURL().pathname
                       }
                     }}
                   >
@@ -221,9 +219,7 @@ class Admin extends React.Component {
     return (
       <div>
         <Helmet title="Admin - Linkr" />
-
-        {isLoading && <LoadingBar />}
-
+        <LoadingBar show={isLoading} />
         <Header selectIndex={1} />
 
         <Container className={isLoading ? 'fade' : ''}>

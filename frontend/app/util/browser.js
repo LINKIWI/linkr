@@ -1,18 +1,19 @@
 /* global window, setTimeout */
 
 import {browserHistory} from 'react-router';
+import url from 'url';
 
 /**
  * Load the specified URL after a delay.
  *
- * @param {String} url The URL to load.
+ * @param {String} location The URL to load.
  * @param {Number=} delay Milliseconds to delay the page load.
  */
-function go(url, delay) {
+function go(location, delay) {
   if (!delay || delay <= 0) {
-    window.location.href = url;
+    window.location.href = location;
   } else {
-    setTimeout(() => go(url, 0), delay);
+    setTimeout(() => go(location, 0), delay);
   }
 }
 
@@ -30,7 +31,17 @@ function push(path, delay) {
   }
 }
 
+/**
+ * Parse the current window URL.
+ *
+ * @returns {Object} Parsed URL object.
+ */
+function parseURL() {
+  return url.parse(window.location.href);
+}
+
 export default {
   go,
-  push
+  push,
+  parseURL
 };

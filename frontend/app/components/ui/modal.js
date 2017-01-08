@@ -51,7 +51,7 @@ export default class Modal extends React.Component {
       style: {
         opacity: 1
       }
-    }), 1));
+    }), 10));
 
     this.setState({isVisible: true});
   }
