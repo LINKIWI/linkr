@@ -29,11 +29,13 @@ test('Checkbox toggles on click events', (t) => {
   );
 
   t.notOk(check.instance().isChecked(), 'Checkbox defaults to not checked');
-  check.find('.check-container').simulate('click');
+  check.find('.checkbox').simulate('click');
   t.ok(check.instance().isChecked(), 'Checkbox is checked after click');
-  check.find('.check-container').simulate('click');
+  check.find('.checkbox').simulate('click');
   t.notOk(check.instance().isChecked(), 'Checkbox transitions back to unchecked state');
-  check.find('.check-container').simulate('mouseOut');
+  check.find('.checkbox-text').simulate('click');
+  t.ok(check.instance().isChecked(), 'Checkbox can be checked by the text caption');
+  check.find('.checkbox').simulate('mouseOut');
 
   t.end();
 });
@@ -44,23 +46,23 @@ test('Checkbox toggles on keyboard events', (t) => {
   );
 
   t.notOk(check.instance().isChecked(), 'Checkbox defaults to not checked');
-  check.find('.check-container').simulate('keyDown', {
+  check.find('.checkbox').simulate('keyDown', {
     keyCode: 13
   });
   t.ok(check.instance().isChecked(), 'Checkbox is checked after enter key');
-  check.find('.check-container').simulate('keyDown', {
+  check.find('.checkbox').simulate('keyDown', {
     keyCode: 27
   });
   t.notOk(check.instance().isChecked(), 'Checkbox is unchecked after escape key');
-  check.find('.check-container').simulate('keyDown', {
+  check.find('.checkbox').simulate('keyDown', {
     keyCode: 32
   });
   t.ok(check.instance().isChecked(), 'Checkbox is checked after space key');
-  check.find('.check-container').simulate('keyDown', {
+  check.find('.checkbox').simulate('keyDown', {
     keyCode: 5
   });
   t.ok(check.instance().isChecked(), 'Unknown key code does not change checked state');
-  check.find('.check-container').simulate('keyDown', {
+  check.find('.checkbox').simulate('keyDown', {
     keyCode: 32
   });
   t.notOk(check.instance().isChecked(), 'Space can toggle the current check state');

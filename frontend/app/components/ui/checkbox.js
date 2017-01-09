@@ -104,21 +104,26 @@ export default class Checkbox extends React.Component {
     const {isChecked} = this.state;
 
     return (
-      <div className={className} style={style} draggable="false">
+      <div className={className} style={style}>
         <span
-          ref={(elem) => {
-            this.container = elem;
-          }}
           className="check-container transition"
           onClick={this.handleClick.bind(this)}
-          onMouseOut={this.handleMouseOut.bind(this)}
-          onKeyDown={this.handleKeyDown.bind(this)}
-          tabIndex={0}
+          draggable="false"
         >
-          <Check className={`check ${isChecked ? 'visible' : 'hidden'} transition`} />
-        </span>
-        <span className="checkbox-text margin-small--left sans-serif iota text-gray-60">
-          {text}
+          <span
+            ref={(elem) => {
+              this.container = elem;
+            }}
+            className="checkbox transition"
+            onMouseOut={this.handleMouseOut.bind(this)}
+            onKeyDown={this.handleKeyDown.bind(this)}
+            tabIndex={0}
+          >
+            <Check className={`check ${isChecked ? 'visible' : 'hidden'} transition`} />
+          </span>
+          <span className="checkbox-text margin-small--left sans-serif iota text-gray-60">
+            {text}
+          </span>
         </span>
       </div>
     );
