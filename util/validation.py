@@ -25,7 +25,7 @@ def is_alias_reserved(alias):
     reserved_aliases = [
         'linkr',
     ]
-    return alias in reserved_aliases
+    return alias.lower() in reserved_aliases
 
 
 def is_url_valid(url):
@@ -46,5 +46,5 @@ def is_username_valid(username):
     :param username: The username to validate.
     :return: True if the username is valid; False otherwise.
     """
-    valid_username_regex = re.compile('^[a-zA-Z0-9]+$')
+    valid_username_regex = re.compile('^[a-zA-Z0-9\-_]+$')
     return bool(re.match(valid_username_regex, username))
