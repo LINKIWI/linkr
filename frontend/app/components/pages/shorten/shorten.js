@@ -33,9 +33,10 @@ class Shorten extends React.Component {
   submit(evt) {
     evt.preventDefault();
 
-    this.setState({
-      submitStatus: {}
-    });
+    this.setState({submitStatus: {}});
+
+    const rawOutgoingURL = this.outgoingURLInput.getValue();
+    const outgoingURL = url.parse(rawOutgoingURL).protocol ? rawOutgoingURL : `http://${rawOutgoingURL}`;
 
     this.props.loading((done) => {
       request.put({
@@ -43,7 +44,7 @@ class Shorten extends React.Component {
         json: {
           /* eslint-disable camelcase */
           alias: this.aliasInput.getValue() || this.randomAlias,
-          outgoing_url: this.outgoingURLInput.getValue(),
+          outgoing_url: outgoingURL,
           password: this.passwordProtectCheck.isChecked() ? this.passwordProtectInput.getValue() : null
           /* eslint-enable camelcase */
         }
