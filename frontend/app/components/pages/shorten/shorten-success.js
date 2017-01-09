@@ -81,7 +81,7 @@ class ShortenSuccess extends React.Component {
                   textAfterTransition={'Done! Link is copied to your clipboard. Click again to follow through.'}
                   linkClassName="shorten-field sans-serif"
                   onTransition={() => copy(details.full_alias)}
-                  href={details.alias}
+                  href={`/${details.alias}`}
                   text={details.full_alias}
                 />
               </div>

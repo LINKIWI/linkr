@@ -87,13 +87,10 @@ export default class AliasPassword extends React.Component {
               />
 
               <Button
-                className="sans-serif bold gamma text-white margin-large--top"
+                className="sans-serif bold iota text-white margin-large--top"
                 text="Submit"
                 disabled={isLoading}
                 onClick={this.submitPassword.bind(this)}
-                style={{
-                  padding: '15px 30px'
-                }}
               />
             </form>
           </div>

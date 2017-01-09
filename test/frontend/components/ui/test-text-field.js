@@ -6,7 +6,6 @@ import test from 'tape';
 import TextField from '../../../../frontend/app/components/ui/text-field';
 
 test('Rendering default TextField', (t) => {
-  const onChangeSpy = sinon.spy();
   const field = mount(
     <TextField />
   );

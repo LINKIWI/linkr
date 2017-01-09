@@ -34,8 +34,7 @@ class Shorten extends React.Component {
     evt.preventDefault();
 
     this.setState({
-      submitStatus: {},
-      passwordProtect: false
+      submitStatus: {}
     });
 
     this.props.loading((done) => {
