@@ -7,7 +7,7 @@ import querystring from 'querystring';
 import request from 'browser-request';
 import url from 'url';
 
-import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
+import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../alert';
 import Container from '../container';
 import Header from '../header';
 import Footer from '../footer';
@@ -18,6 +18,7 @@ import LoadingBar from '../ui/loading-bar';
 import TextField from '../ui/text-field';
 
 import authentication from '../../util/authentication';
+import browser from '../../util/browser';
 import context from '../../util/context';
 import DisplayUtil from '../../util/display';
 
@@ -129,6 +130,27 @@ export default class Login extends React.Component {
     return null;
   }
 
+  renderLoginRedirectReason() {
+    const reason = browser.parseURL().query.reason;
+
+    const message = (() => {
+      switch (reason) {
+        case 'require_login_to_create':
+          return 'The server administrator has required that users be signed in to create new links.';
+        default:
+          return null;
+      }
+    })();
+
+    return message && (
+      <Alert
+        type={ALERT_TYPE_WARN}
+        title={'You must log in first.'}
+        message={message}
+      />
+    );
+  }
+
   parseRedirectURL() {
     const parsed = querystring.parse(url.parse(window.location.href).query);
     return parsed.redirect;
@@ -146,6 +168,7 @@ export default class Login extends React.Component {
         <Header selectIndex={1}/>
 
         <Container className={isLoading ? 'fade' : ''}>
+          {this.renderLoginRedirectReason()}
           {this.renderLoginSuccess()}
           {this.renderLoginError()}
           {this.renderAlreadyLoggedIn()}

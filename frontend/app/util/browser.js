@@ -3,6 +3,8 @@
 import {browserHistory} from 'react-router';
 import url from 'url';
 
+import context from './context';
+
 /**
  * Load the specified URL after a delay.
  *
@@ -32,16 +34,32 @@ function push(path, delay) {
 }
 
 /**
+ * Redirect to the login interface, passing a reason code as a querystring parameter.
+ *
+ * @param {String} reason A reason code describing why the user was redirected to login.
+ */
+function loginRedirect(reason) {
+  browserHistory.push({
+    pathname: context.uris.LoginURI,
+    query: {
+      redirect: parseURL().pathname,
+      reason: reason
+    }
+  });
+}
+
+/**
  * Parse the current window URL.
  *
  * @returns {Object} Parsed URL object.
  */
 function parseURL() {
-  return url.parse(window.location.href);
+  return url.parse(window.location.href, true);
 }
 
 export default {
   go,
   push,
-  parseURL
+  parseURL,
+  loginRedirect
 };

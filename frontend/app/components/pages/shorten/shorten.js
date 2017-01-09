@@ -6,6 +6,7 @@ import request from 'browser-request';
 import url from 'url';
 
 import Alert, {ALERT_TYPE_ERROR} from '../../alert';
+import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
 import Header from '../../header';
 import Footer from '../../footer';
@@ -69,7 +70,7 @@ class Shorten extends React.Component {
     const {passwordProtect} = this.state;
 
     return (
-      <div>
+      <div className="margin-large--top margin-large--bottom">
         <p className="sans-serif bold gamma text-gray-60 margin-small--bottom">SHORTEN</p>
         <form>
           <TextField
@@ -170,11 +171,15 @@ class Shorten extends React.Component {
   }
 
   render() {
-    const {isLoading} = this.props;
+    const {isLoading, isLoggedIn} = this.props;
     const {submitStatus} = this.state;
 
     if (submitStatus.success === true) {
       browser.push(`/linkr/success/${submitStatus.alias}`);
+    }
+
+    if (isLoggedIn === false && context.config.REQUIRE_LOGIN_TO_CREATE) {
+      browser.loginRedirect('require_login_to_create');
     }
 
     return (
@@ -185,10 +190,7 @@ class Shorten extends React.Component {
 
         <Container className={isLoading ? 'fade' : ''}>
           {(submitStatus.success === false) && this.renderErrorAlert()}
-
-          <div className="margin-large--top margin-large--bottom">
-            {this.renderShorten()}
-          </div>
+          {this.renderShorten()}
         </Container>
 
         <Footer />
@@ -197,4 +199,4 @@ class Shorten extends React.Component {
   }
 }
 
-export default LoadingHOC(Shorten);
+export default AuthenticationHOC(LoadingHOC(Shorten));
