@@ -138,7 +138,7 @@ export default class Login extends React.Component {
         case 'require_login_to_create':
           return 'The server administrator has required that users be signed in to create new links.';
         case 'admin_only':
-          return 'You must be logged in as an admin to view that page.';
+          return 'Only admins are allowed to view this page.';
         default:
           return null;
       }
@@ -147,7 +147,7 @@ export default class Login extends React.Component {
     return message && (
       <Alert
         type={ALERT_TYPE_WARN}
-        title={'You must log in first.'}
+        title={'Please log in to continue.'}
         message={message}
       />
     );

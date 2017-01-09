@@ -6,7 +6,7 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
-import Alert, {ALERT_TYPE_WARN, ALERT_TYPE_ERROR} from '../../alert';
+import Alert, {ALERT_TYPE_ERROR} from '../../alert';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
 import Footer from '../../footer';
@@ -322,39 +322,19 @@ class AdminLinkDetails extends React.Component {
   render() {
     const {isLoading, isLoggedIn, user} = this.props;
 
-    const content = (() => {
-      switch (isLoggedIn) {
-        case true:
-          return user.is_admin ? this.renderAdmin() : (
-            <Alert
-              type={ALERT_TYPE_ERROR}
-              title={'You are not allowed to view this page.'}
-              message={'This page is only accessible by admin users.'}
-            />
-          );
-        case false:
-          return (
-            <Alert
-              type={ALERT_TYPE_WARN}
-              title={'You must be logged in to view the admin page.'}
-              message={
-                <span>
-                  Click&nbsp;
-                  <a
-                    href="#"
-                    className="sans-serif bold"
-                    onClick={this.handleLoginRedirect.bind(this)}
-                  >
-                    here
-                  </a> to log in.
-                </span>
-              }
-            />
-          );
-        default:
-          return null;
-      }
-    })();
+    if (isLoggedIn === false) {
+      browser.loginRedirect('admin_only');
+    }
+
+    const content = isLoggedIn && (
+      user.is_admin ? this.renderAdmin() : (
+        <Alert
+          type={ALERT_TYPE_ERROR}
+          title={'You are not allowed to view this page.'}
+          message={'This page is only accessible by admin users.'}
+        />
+      )
+    );
 
     return (
       <div>
