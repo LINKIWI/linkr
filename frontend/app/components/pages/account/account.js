@@ -5,6 +5,7 @@ import React from 'react';
 
 import AccountDeactivation from './account-deactivation';
 import AccountLinks from './account-links';
+import AccountUpdatePassword from './account-update-password';
 import Alert, {ALERT_TYPE_WARN} from '../../alert';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
@@ -30,6 +31,7 @@ class Account extends React.Component {
               <p className="text--page-title">Account</p>
 
               <AccountLinks {...this.props} />
+              <AccountUpdatePassword {...this.props} />
               <AccountDeactivation {...this.props} />
             </div>
           );
