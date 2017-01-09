@@ -10,12 +10,14 @@ import AdminLinkDetails from './components/pages/admin/admin-link-details';
 import Alias from './components/pages/alias';
 import Login from './components/pages/login';
 import Register from './components/pages/register';
-import Shorten from './components/pages/shorten';
+import Shorten from './components/pages/shorten/shorten';
+import ShortenSuccess from './components/pages/shorten/shorten-success';
 
 import context from './util/context';
 
 const routes = (
   <Route path="" component={AppRoot}>
+    <Route path={context.uris.LinkShortenSuccessURI} component={ShortenSuccess} />
     <Route path={context.uris.AdminURI} component={Admin} />
     <Route path={context.uris.AdminLinkDetailsURI} component={AdminLinkDetails} />
     <Route path={context.uris.LoginURI} component={Login} />

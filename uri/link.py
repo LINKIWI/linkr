@@ -11,9 +11,9 @@ class LinkAliasURI(URI):
     path = '/:alias'
 
 
-class LinkNotFoundURI(URI):
+class LinkShortenSuccessURI(URI):
     methods = ['GET']
-    path = URI.view_uri('/not-found')
+    path = URI.view_uri('/success/:alias')
 
 
 class LinkDetailsURI(URI):

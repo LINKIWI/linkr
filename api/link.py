@@ -1,10 +1,12 @@
+from webpreview import web_preview
+
+import config.options
 import database.link
 import util.response
 from linkr import app
 from uri.link import *
 from util.decorators import *
 from util.exception import *
-from webpreview import web_preview
 
 
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
@@ -85,6 +87,7 @@ def api_increment_link_hits(data):
 
 @app.route(LinkAddURI.path, methods=LinkAddURI.methods)
 @require_form_args(['alias', 'outgoing_url'])
+@require_login_api(only_if=config.options.REQUIRE_LOGIN_TO_CREATE)
 @optional_login_api
 def api_add_link(data):
     """
