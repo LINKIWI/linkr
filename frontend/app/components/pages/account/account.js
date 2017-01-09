@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 
+import AccountAPIKey from './account-api-key';
 import AccountDeactivation from './account-deactivation';
 import AccountLinks from './account-links';
 import AccountUpdatePassword from './account-update-password';
@@ -32,6 +33,7 @@ class Account extends React.Component {
 
               <AccountLinks {...this.props} />
               <AccountUpdatePassword {...this.props} />
+              <AccountAPIKey {...this.props} />
               <AccountDeactivation {...this.props} />
             </div>
           );

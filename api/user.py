@@ -111,3 +111,31 @@ def api_update_user_password(data):
         )
     except:
         return util.response.undefined_error()
+
+
+@app.route(UserRegenerateAPIKeyURI.path, methods=UserRegenerateAPIKeyURI.methods)
+@require_form_args(['password'])
+@require_login_api()
+def api_regenerate_user_api_key(data):
+    try:
+        database.user.validate_user_credentials(current_user.username, data['password'])
+
+        database.user.generate_new_api_key(user_id=current_user.user_id)
+
+        return util.response.success({
+            'user_id': current_user.user_id,
+        })
+    except NonexistentUserException:
+        return util.response.error(
+            status_code=404,
+            message='No user exists with the specified user ID.',
+            failure='failure_nonexistent_user',
+        )
+    except InvalidAuthenticationException:
+        return util.response.error(
+            status_code=401,
+            message='Your account password is incorrect. Please try again.',
+            failure='failure_invalid_auth',
+        )
+    except:
+        return util.response.undefined_error()

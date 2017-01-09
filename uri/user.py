@@ -29,3 +29,8 @@ class UserDeactivationURI(URI):
 class UserUpdatePasswordURI(URI):
     methods = ['POST']
     path = URI.api_uri('/user/update-password')
+
+
+class UserRegenerateAPIKeyURI(URI):
+    methods = ['POST']
+    path = URI.api_uri('/user/regenerate-api-key')
