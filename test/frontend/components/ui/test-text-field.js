@@ -11,13 +11,8 @@ test('Rendering default TextField', (t) => {
     <TextField />
   );
 
-  t.equal(field.props().className, '', 'Empty default class name');
-  t.equal(field.props().type, 'text', 'Defaults to text input type');
-  t.deepEquals(field.props().style, {}, 'Empty default style override');
-
-  t.notOk(onChangeSpy.called, 'Change handler is not called');
-  field.simulate('change', {target: {value: 'text'}});
-  t.notOk(onChangeSpy.called, 'Default change handler is a noop');
+  t.equal(field.find('input').length, 1, 'Contains an input element');
+  t.equal(field.find('input').props().className, 'text-field ', 'Default class is applied');
 
   t.end();
 });
