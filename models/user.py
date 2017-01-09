@@ -54,6 +54,14 @@ class User(db.Model):
         """
         return util.cryptography.secure_hash(password) == self.password_hash
 
+    def update_password(self, new_password):
+        """
+        Set a new password for the user.
+
+        :param new_password: The new plain-text password.
+        """
+        self.password_hash = util.cryptography.secure_hash(new_password)
+
     def generate_new_api_key(self):
         """
         Generate a new API key for this user.

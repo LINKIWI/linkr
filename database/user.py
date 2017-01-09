@@ -70,10 +70,35 @@ def generate_new_api_key(user_id):
 
     :param user_id: The ID of the user for which a new API key should be generated.
     :return: The modified models.User instance.
+    :raises NonexistentUserException: If the user does not exist.
     """
     user = get_user_by_id(user_id)
+    if not user:
+        raise NonexistentUserException('User ID `{user_id}` does not exist'.format(user_id=user_id))
+
     user.generate_new_api_key()
     db.session.add(user)
+
+    return user
+
+
+@db_txn
+def update_user_password(user_id, new_password):
+    """
+    Update the password for the specified user.
+
+    :param user_id: The ID of the user for which the password should be updated.
+    :param new_password: The new, plain-text password to set on the account.
+    :return: The modified models.User instance.
+    :raises NonexistentUserException: If the user does not exist.
+    """
+    user = get_user_by_id(user_id)
+    if not user:
+        raise NonexistentUserException('User ID `{user_id}` does not exist'.format(user_id=user_id))
+
+    user.update_password(new_password)
+    db.session.add(user)
+
     return user
 
 
