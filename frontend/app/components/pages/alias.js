@@ -33,6 +33,10 @@ class Alias extends React.Component {
     this.loadLinkDetails(this.props.params.alias, null, (_, resp, data) => this.setState({data}));
   }
 
+  componentWillUnmount() {
+    browser.clearTimeout(this.timeout);
+  }
+
   /**
    * Load details for a particular alias into component state.
    *
@@ -48,7 +52,7 @@ class Alias extends React.Component {
       }, (err, resp, json) => {
         if (json.success) {
           // Redirect the user to the outgoing URL
-          browser.go(dottie.get(json, 'details.outgoing_url'), 1500);
+          this.timeout = browser.go(dottie.get(json, 'details.outgoing_url'), 1500);
 
           return request.post({
             url: context.uris.LinkIncrementHitsURI,

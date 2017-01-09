@@ -1,4 +1,4 @@
-/* global window, setTimeout */
+/* global window */
 
 import {browserHistory} from 'react-router';
 import url from 'url';
@@ -10,13 +10,15 @@ import context from './context';
  *
  * @param {String} location The URL to load.
  * @param {Number=} delay Milliseconds to delay the page load.
+ * @returns {Number} Timeout ID of the setTimeout delay, if applicable.
  */
 function go(location, delay) {
   if (!delay || delay <= 0) {
     window.location.href = location;
-  } else {
-    setTimeout(() => go(location, 0), delay);
+    return -1;
   }
+
+  return window.setTimeout(() => go(location, 0), delay);
 }
 
 /**
@@ -24,13 +26,24 @@ function go(location, delay) {
  *
  * @param {String} path The path to push.
  * @param {Number=} delay Milliseconds to delay the push.
+ * @returns {Number} Timeout ID of the setTimeout delay, if applicable.
  */
 function push(path, delay) {
   if (!delay || delay <= 0) {
     browserHistory.push(path);
-  } else {
-    setTimeout(() => push(path, 0), delay);
+    return -1;
   }
+
+  return window.setTimeout(() => push(path, 0), delay);
+}
+
+/**
+ * Replicates windows.clearTimeout's functionality.
+ *
+ * @param {Number} timeoutID ID of the timeout to clear.
+ */
+function clearTimeout(timeoutID) {
+  window.clearTimeout(timeoutID);
 }
 
 /**
@@ -60,6 +73,7 @@ function parseURL() {
 export default {
   go,
   push,
+  clearTimeout,
   parseURL,
   loginRedirect
 };
