@@ -137,6 +137,8 @@ export default class Login extends React.Component {
       switch (reason) {
         case 'require_login_to_create':
           return 'The server administrator has required that users be signed in to create new links.';
+        case 'admin_only':
+          return 'You must be logged in as an admin to view that page.';
         default:
           return null;
       }
@@ -151,6 +153,7 @@ export default class Login extends React.Component {
     );
   }
 
+  // TODO get rid of this and use browser.parseURL()
   parseRedirectURL() {
     const parsed = querystring.parse(url.parse(window.location.href).query);
     return parsed.redirect;

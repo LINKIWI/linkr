@@ -2,7 +2,6 @@ import copy from 'copy-to-clipboard';
 import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import humanize from 'humanize';
-import {Link} from 'react-router';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
@@ -108,6 +107,12 @@ class AdminLinkDetails extends React.Component {
         });
       });
     });
+  }
+
+  handleLoginRedirect(evt) {
+    evt.preventDefault();
+
+    browser.loginRedirect('admin_only');
   }
 
   handleDeactivateClick() {
@@ -335,17 +340,13 @@ class AdminLinkDetails extends React.Component {
               message={
                 <span>
                   Click&nbsp;
-                  <Link
+                  <a
+                    href="#"
                     className="sans-serif bold"
-                    to={{
-                      pathname: context.uris.LoginURI,
-                      query: {
-                        redirect: browser.parseURL().pathname
-                      }
-                    }}
+                    onClick={this.handleLoginRedirect.bind(this)}
                   >
                     here
-                  </Link> to log in.
+                  </a> to log in.
                 </span>
               }
             />

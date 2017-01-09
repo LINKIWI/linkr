@@ -97,6 +97,12 @@ class Admin extends React.Component {
     });
   }
 
+  handleLoginRedirect(evt) {
+    evt.preventDefault();
+
+    browser.loginRedirect('admin_only');
+  }
+
   renderRecentLinks() {
     const {recentLinks} = this.state;
 
@@ -196,17 +202,13 @@ class Admin extends React.Component {
               message={
                 <span>
                   Click&nbsp;
-                  <Link
+                  <a
+                    href="#"
                     className="sans-serif bold"
-                    to={{
-                      pathname: context.uris.LoginURI,
-                      query: {
-                        redirect: browser.parseURL().pathname
-                      }
-                    }}
+                    onClick={this.handleLoginRedirect.bind(this)}
                   >
                     here
-                  </Link> to log in.
+                  </a> to log in.
                 </span>
               }
             />
