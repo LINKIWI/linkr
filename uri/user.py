@@ -24,3 +24,8 @@ class UserAddURI(URI):
 class UserDeactivationURI(URI):
     methods = ['DELETE']
     path = URI.api_uri('/user/delete')
+
+
+class UserUpdatePasswordURI(URI):
+    methods = ['POST']
+    path = URI.api_uri('/user/update-password')

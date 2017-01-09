@@ -1,4 +1,5 @@
 from flask_login import logout_user
+from flask_login import current_user
 
 import config.options
 import database.user
@@ -76,6 +77,37 @@ def api_deactivate_user(data):
             status_code=404,
             message='No user exists with the specified user ID.',
             failure='failure_nonexistent_user',
+        )
+    except:
+        return util.response.undefined_error()
+
+
+@app.route(UserUpdatePasswordURI.path, methods=UserUpdatePasswordURI.methods)
+@require_form_args(['current_password', 'new_password'])
+@require_login_api()
+def api_update_user_password(data):
+    try:
+        database.user.validate_user_credentials(current_user.username, data['current_password'])
+
+        database.user.update_user_password(
+            user_id=current_user.user_id,
+            new_password=data['new_password'],
+        )
+
+        return util.response.success({
+            'user_id': current_user.user_id,
+        })
+    except NonexistentUserException:
+        return util.response.error(
+            status_code=404,
+            message='No user exists with the specified user ID.',
+            failure='failure_nonexistent_user',
+        )
+    except InvalidAuthenticationException:
+        return util.response.error(
+            status_code=401,
+            message='The supplied current account password is incorrect.',
+            failure='failure_invalid_auth',
         )
     except:
         return util.response.undefined_error()
