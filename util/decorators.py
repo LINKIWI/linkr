@@ -54,7 +54,7 @@ def require_form_args(form_args=tuple([]), allow_blank_values=False, strict_para
     return decorator
 
 
-def require_login_api(admin_only=False):
+def require_login_api(admin_only=False, only_if=None):
     """
     A custom implementation of Flask-login's built-in @login_required decorator.
     This decorator will allow usage of the API endpoint if the user is either currently logged in
@@ -73,11 +73,19 @@ def require_login_api(admin_only=False):
 
     :param admin_only: True to only allow admin users to access this endpoint; False to allow any
                        authenticated user.
+    :param only_if: Optional boolean parameter to denote that login is only required if the
+                    expression is true in value.
     """
     def decorator(func):
         @wraps(func)
         def validate_auth(data, *args, **kwargs):
+            # Allow access if the user is authenticated (or in the case of admin_only, only if the
+            # user is also an admin).
             if current_user.is_authenticated and (not admin_only or current_user.is_admin):
+                return func(data, *args, **kwargs)
+
+            # If a condition is set, allow access if the condition is false in value.
+            if only_if is not None and not only_if:
                 return func(data, *args, **kwargs)
 
             api_key = request.headers.get('X-Linkr-Key') or data.get('api_key')
@@ -93,7 +101,8 @@ def require_login_api(admin_only=False):
                 # Log the user in before servicing the request, passing along the input data to
                 # the API endpoint, excluding sensitive information (API key).
                 login_user(user)
-                del data['api_key']
+                if data.get('api_key'):
+                    del data['api_key']
                 return func(data, *args, **kwargs)
             elif not user:
                 return util.response.error(
@@ -137,11 +146,13 @@ def optional_login_api(func):
         if current_user.is_authenticated:
             return func(data, *args, **kwargs)
 
-        if data.get('api_key'):
-            user = database.user.get_user_by_api_key(data['api_key'])
+        api_key = request.headers.get('X-Linkr-Key') or data.get('api_key')
+        if api_key:
+            user = database.user.get_user_by_api_key(api_key)
             if user:
                 login_user(user)
-                del data['api_key']
+                if data.get('api_key'):
+                    del data['api_key']
 
         return func(data, *args, **kwargs)
 
