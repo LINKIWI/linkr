@@ -1,3 +1,4 @@
+import extend from 'deep-extend';
 import React from 'react';
 
 /**
@@ -5,7 +6,9 @@ import React from 'react';
  */
 export default class TextField extends React.Component {
   static propTypes = {
-    className: React.PropTypes.string
+    className: React.PropTypes.string,
+    icon: React.PropTypes.element,
+    iconSpacing: React.PropTypes.string
   };
   static defaultProps = {
     className: ''
@@ -30,17 +33,29 @@ export default class TextField extends React.Component {
   }
 
   render() {
-    const {className, ...props} = this.props;
+    const {className, style, icon, iconSpacing, ...props} = this.props;
 
     return (
-      <input
-        ref={(elem) => {
-          this.input = elem;
-        }}
-        className={`text-field ${className}`}
-        autoComplete="off"
-        {...props}
-      />
+      <div className="text-field-container transition">
+        <input
+          ref={(elem) => {
+            this.input = elem;
+          }}
+          className={`text-field transition ${className}`}
+          autoComplete="off"
+          style={extend({
+            paddingLeft: icon ? iconSpacing : null
+          }, style)}
+          {...props}
+        />
+        {
+          icon && (
+            <span className="text-field-icon">
+              {icon}
+            </span>
+          )
+        }
+      </div>
     );
   }
 }

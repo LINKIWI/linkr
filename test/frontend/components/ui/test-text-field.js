@@ -11,7 +11,7 @@ test('Rendering default TextField', (t) => {
   );
 
   t.equal(field.find('input').length, 1, 'Contains an input element');
-  t.equal(field.find('input').props().className, 'text-field ', 'Default class is applied');
+  t.equal(field.find('input').props().className, 'text-field transition ', 'Default class is applied');
 
   t.end();
 });
@@ -25,7 +25,7 @@ test('TextField change handler', (t) => {
   );
 
   t.notOk(onChangeSpy.called, 'Change handler is not called');
-  field.simulate('change', {target: {value: 'text'}});
+  field.find('input').simulate('change', {target: {value: 'text'}});
   t.ok(onChangeSpy.called, 'Change handler is triggered');
 
   t.end();

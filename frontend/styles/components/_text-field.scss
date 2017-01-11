@@ -1,22 +1,31 @@
 @import '../universal/colors';
 
+.text-field-container {
+  position: relative;
+  opacity: 0.7;
+}
+
+.text-field-container:hover {
+  opacity: 0.9;
+}
+
+.text-field-container:focus {
+  opacity: 1;
+}
+
 .text-field {
-  transition: all 0.15s ease-out;
   border: none;
   border-bottom: 1px solid $light-orange;
   padding: 3px 1px;
   color: $gray-70;
-  opacity: .7;
 }
 
 .text-field:hover {
   border-bottom: 1px solid $orange;
-  opacity: .9;
 }
 
 .text-field:focus {
   border-bottom: 2px solid $orange;
-  opacity: 1;
 }
 
 .text-field::selection {
@@ -25,4 +34,11 @@
 
 .text-field::-moz-selection {
   background: $light-orange;
+}
+
+.text-field-icon {
+  position: absolute;
+  left: 0;
+  color: $gray-70;
+  opacity: 0.5;
 }
