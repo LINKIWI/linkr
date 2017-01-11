@@ -354,8 +354,14 @@ def api_link_preview(data):
 @require_login_api(admin_only=True)
 def api_link_alias_search(data):
     try:
-        links = database.link.get_links_like_alias(data['alias'])
+        expect_args = {'alias', 'page_num', 'num_per_page'}
+        filtered_data = {
+            key: value
+            for key, value in data.items()
+            if key in expect_args
+        }
 
+        links = database.link.get_links_like_alias(**filtered_data)
         return util.response.success({
             'links': [link.as_dict() for link in links],
         })
