@@ -186,6 +186,18 @@ def get_link_by_alias(alias):
     return models.Link.query.filter_by(alias=alias).first()
 
 
+def get_links_like_alias(partial_alias):
+    """
+    Retrieve links whose aliases contain the input.
+
+    :param partial_alias: A substring of an actual alias.
+    :return: All models.Link instances whose aliases is a superstring of the input.
+    """
+    return models.Link.query.filter(
+        models.Link.alias.like('%{partial_alias}%'.format(partial_alias=partial_alias))
+    ).all()
+
+
 def get_links_for_user(user_id, page_num=0, num_per_page=100):
     """
     Retrieve a paginated listing of all links created by a user.

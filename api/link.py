@@ -316,7 +316,7 @@ def api_recent_links(data):
 @app.route(LinkPreviewURI.path, methods=LinkPreviewURI.methods)
 @require_form_args(['link_id'])
 @require_login_api()
-def link_preview(data):
+def api_link_preview(data):
     """
     Preview the metadata of a link's outgoing URL.
     """
@@ -345,6 +345,20 @@ def link_preview(data):
             message='You may only preview links created by you.',
             failure='failure_unauth',
         )
+    except:
+        return util.response.undefined_error()
+
+
+@app.route(LinkAliasSearchURI.path, methods=LinkAliasSearchURI.methods)
+@require_form_args(['alias'])
+@require_login_api(admin_only=True)
+def api_link_alias_search(data):
+    try:
+        links = database.link.get_links_like_alias(data['alias'])
+
+        return util.response.success({
+            'links': [link.as_dict() for link in links],
+        })
     except:
         return util.response.undefined_error()
 

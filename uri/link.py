@@ -21,6 +21,11 @@ class LinkDetailsURI(URI):
     path = URI.api_uri('/link/details')
 
 
+class LinkAliasSearchURI(URI):
+    methods = ['GET', 'POST']
+    path = URI.api_uri('/link/search')
+
+
 class LinkAddURI(URI):
     methods = ['PUT']
     path = URI.api_uri('/link/add')

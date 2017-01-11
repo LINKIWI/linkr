@@ -271,6 +271,17 @@ class TestLink(LinkrTestCase):
 
         self.assertEqual(queried_link, link)
 
+    def test_get_links_like_alias(self):
+        valid = [
+            LinkFactory.generate(alias='test'),
+            LinkFactory.generate(alias='es'),
+        ]
+        LinkFactory.generate('aaa')
+
+        queried_links = database.link.get_links_like_alias('es')
+
+        self.assertEqual(queried_links, valid)
+
     def test_get_links_for_user_nonexistent(self):
         self.assertRaises(
             NonexistentUserException,
