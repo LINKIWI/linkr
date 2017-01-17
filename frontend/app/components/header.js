@@ -54,6 +54,10 @@ export default class Header extends React.Component {
       {
         name: 'API',
         url: context.uris.APIDocumentationURI
+      },
+      {
+        name: 'LOGIN',
+        url: context.uris.LoginURI
       }
     ];
 
@@ -81,7 +85,7 @@ export default class Header extends React.Component {
           opacity: this.state.isMenuOpen ? 1 : 0
         }}>
           {
-            range.range(0, 3).map((idx) => {
+            range.range(0, linkItems.length).map((idx) => {
               const link = linkItems[idx];
               return (
                 <Link

@@ -126,7 +126,7 @@ class Login extends React.Component {
       <div>
         <Helmet title="Login - Linkr"/>
         <LoadingBar show={isLoading} />
-        <Header selectIndex={1}/>
+        <Header selectIndex={3}/>
 
         <Container className={isLoading ? 'fade' : ''}>
           {this.renderLoginRedirectReason()}

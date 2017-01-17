@@ -116,10 +116,8 @@ class Register extends React.Component {
     return (
       <div>
         <Helmet title="Register - Linkr"/>
-
-        {isLoading && <LoadingBar />}
-
-        <Header selectIndex={1}/>
+        <LoadingBar show={isLoading} />
+        <Header selectIndex={3}/>
 
         <Container className={isLoading ? 'fade' : ''}>
           {this.renderRegisterError()}
