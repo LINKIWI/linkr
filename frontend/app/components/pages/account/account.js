@@ -22,7 +22,7 @@ import context from '../../../util/context';
  */
 class Account extends React.Component {
   render() {
-    const {isLoggedIn, isLoading} = this.props;
+    const {isLoading, isLoggedIn, user} = this.props;
 
     const content = (() => {
       switch (isLoggedIn) {
@@ -64,7 +64,7 @@ class Account extends React.Component {
           {content}
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }

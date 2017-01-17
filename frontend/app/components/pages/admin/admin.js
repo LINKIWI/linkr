@@ -53,7 +53,7 @@ const Admin = (props) => {
         {content}
       </Container>
 
-      <Footer />
+      <Footer user={user} />
     </div>
   );
 };

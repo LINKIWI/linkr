@@ -171,7 +171,7 @@ class Shorten extends React.Component {
   }
 
   render() {
-    const {isLoading, isLoggedIn} = this.props;
+    const {isLoading, isLoggedIn, user} = this.props;
     const {submitStatus} = this.state;
 
     if (submitStatus.success === true) {
@@ -193,7 +193,7 @@ class Shorten extends React.Component {
           {this.renderShorten()}
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }

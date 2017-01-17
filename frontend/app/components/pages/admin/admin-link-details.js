@@ -346,7 +346,7 @@ class AdminLinkDetails extends React.Component {
           {content}
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }

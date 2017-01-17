@@ -6,6 +6,7 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
 
+import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
 import Footer from '../../footer';
 import Header from '../../header';
@@ -137,7 +138,7 @@ class AccountLinkDetails extends React.Component {
   }
 
   render() {
-    const {isLoading} = this.props;
+    const {isLoading, user} = this.props;
 
     return (
       <div>
@@ -156,10 +157,10 @@ class AccountLinkDetails extends React.Component {
           </div>
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }
 }
 
-export default LoadingHOC(AccountLinkDetails);
+export default AuthenticationHOC(LoadingHOC(AccountLinkDetails));

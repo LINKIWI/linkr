@@ -120,7 +120,7 @@ class Login extends React.Component {
   }
 
   render() {
-    const {isLoading} = this.props;
+    const {isLoading, user} = this.props;
 
     return (
       <div>
@@ -177,7 +177,7 @@ class Login extends React.Component {
           </div>
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }

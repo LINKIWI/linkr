@@ -111,7 +111,7 @@ class Register extends React.Component {
   }
 
   render() {
-    const {isLoading} = this.props;
+    const {isLoading, user} = this.props;
 
     return (
       <div>
@@ -193,7 +193,7 @@ class Register extends React.Component {
           }
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }

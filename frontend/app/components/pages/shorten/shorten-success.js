@@ -8,6 +8,7 @@ import request from 'browser-request';
 import url from 'url';
 
 import Alert, {ALERT_TYPE_ERROR} from '../../alert';
+import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
 import Footer from '../../footer';
 import Header from '../../header';
@@ -43,7 +44,7 @@ class ShortenSuccess extends React.Component {
   }
 
   render() {
-    const {isLoading, params} = this.props;
+    const {isLoading, params, user} = this.props;
     const {data} = this.state;
 
     const details = dottie.get(data, 'details', {
@@ -131,10 +132,10 @@ class ShortenSuccess extends React.Component {
           {content}
         </Container>
 
-        <Footer />
+        <Footer user={user} />
       </div>
     );
   }
 }
 
-export default LoadingHOC(ShortenSuccess);
+export default AuthenticationHOC(LoadingHOC(ShortenSuccess));

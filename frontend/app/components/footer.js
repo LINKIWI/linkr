@@ -1,8 +1,4 @@
-/* global window */
-
 import AccountCircle from 'react-icons/lib/md/account-circle';
-import {browserHistory} from 'react-router';
-import dottie from 'dottie';
 import LoadingHOC from 'react-loading-hoc';
 import MediaQuery from 'react-responsive';
 import React from 'react';
@@ -11,52 +7,45 @@ import Button from './ui/button';
 import LoadingBar from './ui/loading-bar';
 
 import authentication from '../util/authentication';
+import browser from '../util/browser';
 import context from '../util/context';
 
+/**
+ * Footer showing account details.
+ */
 class Footer extends React.Component {
+  static propTypes = {
+    user: React.PropTypes.object
+  };
+
   constructor(props) {
     super(props);
 
     this.state = {};
   }
 
-  componentDidMount() {
-    this.checkAuthStatus();
-  }
-
-  checkAuthStatus() {
-    authentication.check((user) => {
-      this.setState({
-        username: dottie.get(user, 'username')
-      });
-    });
-  }
-
   handleAccountClick(evt) {
     evt.preventDefault();
 
-    browserHistory.push(context.uris.UserAccountURI);
+    browser.push(context.uris.UserAccountURI);
   }
 
   handleLogoutClick(evt) {
     evt.preventDefault();
 
-    this.props.loading(() => authentication.logout(() => {
-      window.location.href = context.uris.HomeURI;
-    }));
+    this.props.loading(() => authentication.logout(() => browser.go(context.uris.HomeURI)));
   }
 
   render() {
-    const {isLoading} = this.props;
-    const {username} = this.state;
+    const {isLoading, user} = this.props;
 
-    if (!username) {
+    if (!user.username) {
       return null;
     }
 
     return (
       <div className={`footer-container transition ${isLoading && 'fade'}`}>
-        {isLoading && <LoadingBar />}
+        <LoadingBar show={isLoading} />
 
         <div className="footer bg-gray-80 text-gray-10 sans-serif link-alt">
           <div style={{
@@ -80,7 +69,7 @@ class Footer extends React.Component {
                 />
               </span>
               <span className="sans-serif bold text-gray-10 kilo margin-tiny--bottom">
-                {username.toUpperCase()}
+                {user.username.toUpperCase()}
               </span>
             </div>
 

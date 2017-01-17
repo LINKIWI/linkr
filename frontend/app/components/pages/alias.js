@@ -7,7 +7,9 @@ import request from 'browser-request';
 import Alert, {ALERT_TYPE_SUCCESS} from '../alert';
 import AliasNotFound from './alias-not-found';
 import AliasPassword from './alias-password';
+import AuthenticationHOC from '../hoc/authentication-hoc';
 import Container from '../container';
+import Footer from '../footer';
 import Header from '../header';
 
 import LoadingBar from '../ui/loading-bar';
@@ -92,7 +94,7 @@ class Alias extends React.Component {
   }
 
   render() {
-    const {isLoading} = this.props;
+    const {isLoading, user} = this.props;
     const {data} = this.state;
 
     if (data.failure === 'failure_nonexistent_link') {
@@ -117,9 +119,11 @@ class Alias extends React.Component {
         <Container className={isLoading ? 'fade' : ''}>
           {this.renderContents()}
         </Container>
+
+        <Footer user={user} />
       </div>
     );
   }
 }
 
-export default LoadingHOC(Alias);
+export default AuthenticationHOC(LoadingHOC(Alias));
