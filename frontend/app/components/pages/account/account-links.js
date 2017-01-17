@@ -14,7 +14,7 @@ import Button from '../../ui/button';
 import context from '../../../util/context';
 
 /**
- * TODO
+ * Table of links created under this user account.
  */
 export default class AccountLinks extends React.Component {
   constructor(props) {
@@ -97,7 +97,7 @@ export default class AccountLinks extends React.Component {
               textBeforeTransition={'Click to copy to your clipboard.'}
               textAfterTransition={'Done! Link is copied to your clipboard. Click again to follow through.'}
               onTransition={() => copy(link.full_alias)}
-              href={link.full_alias}
+              href={`/${link.alias}`}
               text={link.alias}
             />,
             // Link to the outgoing URL
