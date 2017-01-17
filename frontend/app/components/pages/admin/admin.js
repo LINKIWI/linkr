@@ -4,6 +4,7 @@ import React from 'react';
 
 import AdminConfig from './admin-config';
 import AdminRecentLinks from './admin-recent-links';
+import AdminUsers from './admin-users';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Alert, {ALERT_TYPE_ERROR} from '../../alert';
 import Container from '../../container';
@@ -30,6 +31,7 @@ const Admin = (props) => {
         <p className="text--page-title">Admin</p>
 
         <AdminRecentLinks {...props} />
+        <AdminUsers {...props} />
         <AdminConfig {...props} />
       </div>
     ) : (

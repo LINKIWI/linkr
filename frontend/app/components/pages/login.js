@@ -1,13 +1,11 @@
-/* global window, setTimeout */
-
-import {browserHistory, Link} from 'react-router';
+import {Link} from 'react-router';
+import LoadingHOC from 'react-loading-hoc';
 import Helmet from 'react-helmet';
 import React from 'react';
-import querystring from 'querystring';
 import request from 'browser-request';
-import url from 'url';
 
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../alert';
+import AuthenticationHOC from '../hoc/authentication-hoc';
 import Container from '../container';
 import Header from '../header';
 import Footer from '../footer';
@@ -17,56 +15,35 @@ import Checkbox from '../ui/checkbox';
 import LoadingBar from '../ui/loading-bar';
 import TextField from '../ui/text-field';
 
-import authentication from '../../util/authentication';
 import browser from '../../util/browser';
 import context from '../../util/context';
-import DisplayUtil from '../../util/display';
 
 /**
  * Login page for user authentication.
  */
-export default class Login extends React.Component {
+class Login extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      isLoading: true,
-      loginStatus: {},
-      authCheckStatus: false
-    };
-  }
-
-  componentDidMount() {
-    // On page load, first make a request to the authentication check endpoint to check if the user
-    // is already authenticated.
-    authentication.check((authCheckStatus) => {
-      this.setState({
-        isLoading: false,
-        authCheckStatus
-      });
-    });
+    this.state = {loginStatus: {}};
   }
 
   submitLogin(evt) {
     evt.preventDefault();
 
-    this.setState({
-      isLoading: true
-    });
-
-    request.post({
-      url: context.uris.AuthLoginURI,
-      json: {
-        /* eslint-disable camelcase */
-        username: this.usernameInput.getValue(),
-        password: this.passwordInput.getValue(),
-        remember_me: this.rememberMeCheck.isChecked()
-        /* eslint-enable camelcase */
-      }
-    }, (err, resp, json) => {  // eslint-disable-line handle-callback-err
-      this.setState({
-        isLoading: false,
-        loginStatus: json
+    this.props.loading((done) => {
+      request.post({
+        url: context.uris.AuthLoginURI,
+        json: {
+          /* eslint-disable camelcase */
+          username: this.usernameInput.getValue(),
+          password: this.passwordInput.getValue(),
+          remember_me: this.rememberMeCheck.isChecked()
+          /* eslint-enable camelcase */
+        }
+      }, (err, resp, loginStatus) => {  // eslint-disable-line handle-callback-err
+        this.setState({loginStatus});
+        return done();
       });
     });
   }
@@ -74,31 +51,28 @@ export default class Login extends React.Component {
   renderLoginError() {
     const {loginStatus} = this.state;
 
-    if (DisplayUtil.isDefined(loginStatus.success) && !loginStatus.success) {
-      return (
-        <Alert
-          type={ALERT_TYPE_ERROR}
-          title={'There was an error logging you in.'}
-          message={loginStatus.message}
-          failure={loginStatus.failure}
-          failureMessages={{
-            /* eslint-disable camelcase */
-            failure_incomplete_params: 'You must supply both username and password to login.'
-            /* eslint-enable camelcase */
-          }}
-        />
-      );
-    }
-
-    return null;
+    return loginStatus.success === false && (
+      <Alert
+        type={ALERT_TYPE_ERROR}
+        title={'There was an error logging you in.'}
+        message={loginStatus.message}
+        failure={loginStatus.failure}
+        failureMessages={{
+          /* eslint-disable camelcase */
+          failure_incomplete_params: 'You must supply both username and password to login.'
+          /* eslint-enable camelcase */
+        }}
+      />
+    );
   }
 
   renderLoginSuccess() {
     const {loginStatus} = this.state;
+    const redirect = browser.parseURL().query.redirect || context.uris.HomeURI;
 
-    if (DisplayUtil.isDefined(loginStatus.success) && loginStatus.success) {
-      const redirect = this.parseRedirectURL() || context.uris.HomeURI;
-      setTimeout(() => browserHistory.push(redirect), 1500);
+    if (loginStatus.success === true) {
+      browser.push(redirect, 1000);
+
       return (
         <Alert
           type={ALERT_TYPE_SUCCESS}
@@ -112,62 +86,46 @@ export default class Login extends React.Component {
   }
 
   renderAlreadyLoggedIn() {
-    const {authCheckStatus} = this.state;
+    const {isLoggedIn} = this.props;
 
-    if (authCheckStatus) {
-      return (
-        <Alert
-          title={'You are already logged in.'}
-          message={
-            <span>
-              Click <Link className="sans-serif bold" to="/">here</Link> to return to the homepage.
-            </span>
-          }
-        />
-      );
-    }
-
-    return null;
+    return isLoggedIn && (
+      <Alert
+        title={'You are already logged in.'}
+        message={
+          <span>
+            Click <Link className="sans-serif bold" to={context.uris.HomeURI}>here</Link> to return to the homepage.
+          </span>
+        }
+      />
+    );
   }
 
   renderLoginRedirectReason() {
     const reason = browser.parseURL().query.reason;
 
-    const message = (() => {
-      switch (reason) {
-        case 'require_login_to_create':
-          return 'The server administrator has required that users be signed in to create new links.';
-        case 'admin_only':
-          return 'Only admins are allowed to view this page.';
-        default:
-          return null;
-      }
-    })();
+    const messages = {
+      /* eslint-disable camelcase */
+      require_login_to_create: 'The server administrator has required that users be signed in to create new links.',
+      admin_only: 'Only admins are allowed to view this page.'
+      /* eslint-enable camelcase */
+    };
 
-    return message && (
+    return messages[reason] && (
       <Alert
         type={ALERT_TYPE_WARN}
         title={'Please log in to continue.'}
-        message={message}
+        message={messages[reason]}
       />
     );
   }
 
-  // TODO get rid of this and use browser.parseURL()
-  parseRedirectURL() {
-    const parsed = querystring.parse(url.parse(window.location.href).query);
-    return parsed.redirect;
-  }
-
   render() {
-    const {isLoading} = this.state;
+    const {isLoading} = this.props;
 
     return (
       <div>
         <Helmet title="Login - Linkr"/>
-
-        {DisplayUtil.displayIf(isLoading, () => <LoadingBar />)}
-
+        <LoadingBar show={isLoading} />
         <Header selectIndex={1}/>
 
         <Container className={isLoading ? 'fade' : ''}>
@@ -224,3 +182,5 @@ export default class Login extends React.Component {
     );
   }
 }
+
+export default AuthenticationHOC(LoadingHOC(Login));
