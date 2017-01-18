@@ -15,7 +15,7 @@ class LinkrTestCase(TestCase):
         Initializes the test Flask application by setting the app config parameters appropriately.
         """
         app.config['TESTING'] = True
-        app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_TEST_DATABASE_URI']
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
 
         return app
 
