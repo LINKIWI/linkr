@@ -29,7 +29,7 @@ function authenticationHOC(Component) {
 
     checkAuth() {
       authentication.check((user) => this.setState({
-        isLoggedIn: user !== false,
+        isLoggedIn: Boolean(user.username),
         user
       }));
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * TODO
+ * Generic two-column table visually mapping keys to values.
  */
 export default class InfoTable extends React.Component {
   static propTypes = {
@@ -18,10 +18,10 @@ export default class InfoTable extends React.Component {
   };
 
   render() {
-    const {entries} = this.props;
+    const {entries, ...props} = this.props;
 
     return (
-      <table>
+      <table {...props}>
         <tbody>
           {
             entries.map((entry, idx) => (
