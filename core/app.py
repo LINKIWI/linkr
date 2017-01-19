@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from raven.contrib.flask import Sentry
 
 import config.options
+import config.secrets
 
 template_directory = os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
@@ -14,7 +15,7 @@ template_directory = os.path.join(
 static_directory = '../frontend/static'
 
 app = Flask(__name__, template_folder=template_directory, static_folder=static_directory)
-app.config.from_object('config.flask_config')
+app.config.from_object('config.flask')
 
 
 def init_db():
@@ -45,6 +46,6 @@ def init_sentry():
 
     :return: A Sentry instance used universally for capturing uncaught exceptions.
     """
-    sentry = Sentry(dsn=config.options.SENTRY_DSN)
+    sentry = Sentry(dsn=config.secrets.SENTRY_DSN)
     sentry.init_app(app)
     return sentry
