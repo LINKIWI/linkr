@@ -4,10 +4,12 @@ $gray-80: #333;
 $gray-70: #4d4d4d;
 $gray-60: #666;
 $gray-50: #808080;
+$gray-40: #999;
 $gray-30: #b3b3b3;
 $gray-20: #ccc;
 $gray-10: #e6e6e6;
 $gray-5: #f2f2f2;
+$gray-2: #fafafa;
 $white: #fff;
 
 $light-green: #e8f5e9;
@@ -17,6 +19,7 @@ $red: #d32f2f;
 $light-blue: #d6ecf5;
 $blue: #3eb8f0;
 $dark-blue: #036996;
+$darker-blue: #20252d;
 $light-orange: #e69f97;
 $orange: #e74c3c;
 $yellow: #b49b5c;
@@ -85,6 +88,10 @@ $transparent: rgba(0, 0, 0, 0.4);
 
 .text-gray-50 {
   color: $gray-50 !important;
+}
+
+.text-gray-40 {
+  color: $gray-40 !important;
 }
 
 .text-gray-30 {

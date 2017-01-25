@@ -282,6 +282,23 @@ class TestLink(LinkrTestCase):
 
         self.assertEqual(queried_links, valid)
 
+    def test_get_links_like_alias_pagination(self):
+        links = [
+            LinkFactory.generate(alias='1'),
+            LinkFactory.generate(alias='12'),
+            LinkFactory.generate(alias='123'),
+            LinkFactory.generate(alias='1234'),
+            LinkFactory.generate(alias='12345'),
+            LinkFactory.generate(alias='123456'),
+            LinkFactory.generate(alias='1234567'),
+        ]
+
+        queried_links = database.link.get_links_like_alias(alias='1', page_num=0, num_per_page=5)
+        self.assertEqual(queried_links, links[:5])
+
+        queried_links = database.link.get_links_like_alias(alias='1', page_num=1, num_per_page=5)
+        self.assertEqual(queried_links, links[5:])
+
     def test_get_links_for_user_nonexistent(self):
         self.assertRaises(
             NonexistentUserException,

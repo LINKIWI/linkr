@@ -198,7 +198,7 @@ class AdminLinkDetails extends React.Component {
             entries={hits.map((hit) => [
               <a href={`https://freegeoip.net/?q=${hit.remote_ip}`}>{hit.remote_ip}</a>,
               humanize.date('F j, Y g:i:s A', hit.timestamp),
-              (hit.referer && <a href={hit.referer}>{hit.referer}</a>) || 'Unknown',
+              hit.referer ? <a href={hit.referer}>{hit.referer}</a> : 'Unknown',
               hit.user_agent
             ])}
           />
