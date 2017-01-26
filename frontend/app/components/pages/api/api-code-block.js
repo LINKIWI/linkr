@@ -12,11 +12,11 @@ const APICodeBlock = ({caption, children}) => {
   return (
     <div className="api-code-container">
       {caption && (
-        <div className="api-caption sans-serif bold text-gray-30 margin--bottom">
+        <div className="api-caption sans-serif bold iota text-gray-30 margin--bottom">
           {caption}
         </div>
       )}
-      <pre className="monospace bold iota text-gray-20">
+      <pre className="text-gray-20">
         <div className="api-code">
           {children}
         </div>
