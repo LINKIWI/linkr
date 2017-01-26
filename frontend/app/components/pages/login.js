@@ -106,7 +106,8 @@ class Login extends React.Component {
     const messages = {
       /* eslint-disable camelcase */
       require_login_to_create: 'The server administrator has required that users be signed in to create new links.',
-      admin_only: 'Only admins are allowed to view this page.'
+      admin_only: 'Only admins are allowed to view this page.',
+      account: 'You must be logged in to manage account details.'
       /* eslint-enable camelcase */
     };
 
