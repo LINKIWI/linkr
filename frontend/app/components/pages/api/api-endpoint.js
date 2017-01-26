@@ -10,7 +10,7 @@ import Table from '../../table';
 import context from '../../../util/context';
 
 /**
- * TODO
+ * Full details for a single API endpoint.
  */
 export default class APIEndpoint extends React.Component {
   static propTypes = {

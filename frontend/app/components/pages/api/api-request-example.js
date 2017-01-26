@@ -8,6 +8,16 @@ import templates from './api-code-templates';
 
 import context from '../../../util/context';
 
+/**
+ * Example API request code.
+ *
+ * @param {String} language The currently selected example language.
+ * @param {String} method The HTTP method for this endpoint.
+ * @param {String} endpoint The URI of the endpoint.
+ * @param {Object} data Example request data.
+ * @returns {XML} React element.
+ * @constructor
+ */
 const APIRequestExample = ({language, method, endpoint, data}) => {
   const formattedCode = format(templates[language], {
     method: language === 'curl' ? method : method.toLowerCase(),

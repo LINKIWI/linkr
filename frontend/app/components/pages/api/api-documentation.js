@@ -14,7 +14,7 @@ import LoadingBar from '../../ui/loading-bar';
 import apiData from '../../../../resources/api';
 
 /**
- * TODO
+ * API documentation page. Shows API information overview and details for each individual endpoint.
  */
 class APIDocumentation extends React.Component {
   constructor(props) {

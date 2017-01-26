@@ -13,6 +13,13 @@ function inlineCode(code) {
   return <span className="monospace bold">{code}</span>;
 }
 
+/**
+ * API overview details.
+ *
+ * @param {String} language The currently selected language.
+ * @param {Object} props Proxied props.
+ * @constructor
+ */
 const APIInformation = ({language, ...props}) => (
   <div {...props}>
     <div className="margin--bottom">

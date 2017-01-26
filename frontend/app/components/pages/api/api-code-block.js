@@ -1,5 +1,13 @@
 import React from 'react';
 
+/**
+ * Generate a right-aligned code block.
+ *
+ * @param {String} caption Optional code block caption/header.
+ * @param {XML} children Nested children are the code block contents.
+ * @returns {XML} React element.
+ * @constructor
+ */
 const APICodeBlock = ({caption, children}) => {
   return (
     <div className="api-code-container">
