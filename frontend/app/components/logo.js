@@ -12,7 +12,7 @@ const Logo = () => (
       browserHistory.push(context.uris.HomeURI);
     }}
   >
-    <span className="logo sans-serif bold text-orange">linkr</span>
+    <span className="logo sans-serif bold text-primary">linkr</span>
   </span>
 );
 

@@ -81,7 +81,7 @@ export default class Header extends React.Component {
           </div>
         </div>
 
-        <div className="sans-serif bold iota text-orange margin--top transition" style={{
+        <div className="sans-serif bold iota text-primary margin--top transition" style={{
           opacity: this.state.isMenuOpen ? 1 : 0
         }}>
           {

@@ -98,7 +98,7 @@ class AccountLinkDeactivateModal extends React.Component {
             </p>
             <p className="sans-serif text-gray-60 iota">
               This will deactivate the link with alias&nbsp;
-              <span className="sans-serif bold text-orange">{alias}</span>.
+              <span className="sans-serif bold text-primary">{alias}</span>.
               All future requests to <Link to={fullAlias}>{fullAlias}</Link> will no longer redirect.
             </p>
           </div>

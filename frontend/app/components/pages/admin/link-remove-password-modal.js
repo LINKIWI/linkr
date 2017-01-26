@@ -122,7 +122,7 @@ class LinkRemovePasswordModal extends React.Component {
             </p>
             <p className="sans-serif text-gray-60 iota">
               This will remove the existing password from the link with the alias&nbsp;
-              <span className="sans-serif bold text-orange">{alias}</span>.
+              <span className="sans-serif bold text-primary">{alias}</span>.
               All future requests to <Link to={fullAlias}>{fullAlias}</Link> will redirect
               without prompting for a password.
             </p>

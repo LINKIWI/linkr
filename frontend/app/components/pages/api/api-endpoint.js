@@ -68,7 +68,7 @@ export default class APIEndpoint extends React.Component {
           <p className="sans-serif bold text-gray-70 epsilon margin-tiny--bottom">
             {title}
           </p>
-          <span className="sans-serif bold iota text-orange margin--left" style={{float: 'right'}}>
+          <span className="sans-serif bold iota text-primary margin--left" style={{float: 'right'}}>
             {authenticationTypes[authentication]}
           </span>
           <p className="sans-serif bold text-gray-40 iota">

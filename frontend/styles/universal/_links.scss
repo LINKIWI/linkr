@@ -1,7 +1,7 @@
 @import 'colors';
 
 a {
-  color: $orange;
+  color: $primary;
   transition: all .1s ease-out;
 }
 
@@ -13,7 +13,7 @@ a:active {
 }
 
 a:hover {
-  border-bottom: 2px solid $orange;
+  border-bottom: 2px solid $primary;
   opacity: .7;
 }
 
@@ -37,5 +37,5 @@ a:hover {
 }
 
 .link-selected {
-  border-bottom: 2px solid $orange;
+  border-bottom: 2px solid $primary;
 }

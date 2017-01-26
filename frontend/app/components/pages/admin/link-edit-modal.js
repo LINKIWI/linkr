@@ -122,7 +122,7 @@ class LinkEditModal extends React.Component {
             </p>
             <p className="sans-serif text-gray-60 iota">
               Edit the alias and outgoing URL for the link with alias&nbsp;
-              <span className="sans-serif bold text-orange">{alias}</span>.
+              <span className="sans-serif bold text-primary">{alias}</span>.
             </p>
           </div>
 

@@ -15,25 +15,25 @@
 
 .text-field {
   border: none;
-  border-bottom: 1px solid $light-orange;
+  border-bottom: 1px solid $primary-light;
   padding: 3px 1px;
   color: $gray-70;
 }
 
 .text-field:hover {
-  border-bottom: 1px solid $orange;
+  border-bottom: 1px solid $primary;
 }
 
 .text-field:focus {
-  border-bottom: 2px solid $orange;
+  border-bottom: 2px solid $primary;
 }
 
 .text-field::selection {
-  background: $light-orange;
+  background: $primary-light;
 }
 
 .text-field::-moz-selection {
-  background: $light-orange;
+  background: $primary-light;
 }
 
 .text-field-icon {

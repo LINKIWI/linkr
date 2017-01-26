@@ -8,7 +8,7 @@ import React from 'react';
  */
 const BackNav = () => (
   <div
-    className="back-nav margin--bottom text-orange transition"
+    className="back-nav margin--bottom text-primary transition"
     onClick={browserHistory.goBack}
   >
     <KeyboardBackspace className="margin--right" />

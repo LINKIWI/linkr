@@ -132,7 +132,7 @@ class LinkSetPasswordModal extends React.Component {
             </p>
             <p className="sans-serif text-gray-60 iota">
               Set a new password for the link with the alias&nbsp;
-              <span className="sans-serif bold text-orange">{alias}</span>.
+              <span className="sans-serif bold text-primary">{alias}</span>.
             </p>
           </div>
 

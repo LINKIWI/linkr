@@ -26,6 +26,9 @@ $yellow: #b49b5c;
 $light-yellow: #fcf8e3;
 $transparent: rgba(0, 0, 0, 0.4);
 
+$primary: $orange;
+$primary-light: $light-orange;
+
 .bg-black {
   background-color: $black !important;
 }
@@ -110,6 +113,10 @@ $transparent: rgba(0, 0, 0, 0.4);
   color: $white !important;
 }
 
+.text-primary {
+  color: $primary !important;
+}
+
 .text-green {
   color: $green !important;
 
@@ -160,8 +167,24 @@ $transparent: rgba(0, 0, 0, 0.4);
 
 .text-dark-blue {
   color: $dark-blue !important;
+
+  a {
+    color: $dark-blue;
+  }
+
+  a:hover {
+    border-bottom: 2px solid $dark-blue;
+  }
 }
 
 .text-orange {
   color: $orange !important;
+
+  a {
+    color: $orange;
+  }
+
+  a:hover {
+    border-bottom: 2px solid $orange;
+  }
 }
