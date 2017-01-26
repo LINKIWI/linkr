@@ -84,6 +84,8 @@ class APIDocumentation extends React.Component {
                     uri={entry.endpoint.uri}
                     parameters={entry.endpoint.parameters}
                     response={entry.endpoint.response}
+                    errors={entry.endpoint.errors}
+                    {...this.props}
                   />
                 ))
               }

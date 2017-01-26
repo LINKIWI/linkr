@@ -15,14 +15,16 @@ import context from '../../../util/context';
  * @param {String} method The HTTP method for this endpoint.
  * @param {String} endpoint The URI of the endpoint.
  * @param {Object} data Example request data.
+ * @param apiKey
  * @returns {XML} React element.
  * @constructor
  */
-const APIRequestExample = ({language, method, endpoint, data}) => {
+const APIRequestExample = ({language, method, endpoint, data, apiKey}) => {
   const formattedCode = format(templates[language], {
     method: language === 'curl' ? method : method.toLowerCase(),
     url: `${context.config.LINKR_URL}${endpoint}`,
-    data: stringify(data, {maxLength: Infinity})
+    data: stringify(data, {maxLength: Infinity}),
+    apiKey: apiKey ? apiKey : 'YOUR_API_KEY'
   });
 
   return (

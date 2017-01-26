@@ -1,3 +1,11 @@
+/* eslint-disable camelcase */
+
+import context from '../app/util/context';
+
+const AUTHENTICATION_REQUIRED = 'required';
+const AUTHENTICATION_OPTIONAL = 'optional';
+const AUTHENTICATION_NOT_REQUIRED = 'none';
+
 const data = {
   endpoints: [
     {
@@ -7,7 +15,7 @@ const data = {
         description: 'Create a new link (association between an alias and an outgoing URL). The ' +
           'new link will be tied to your user account if you make an authenticated request to ' +
           'this endpoint.',
-        authentication: 'optional'
+        authentication: AUTHENTICATION_OPTIONAL
       },
       endpoint: {
         method: 'PUT',
@@ -47,6 +55,125 @@ const data = {
             type: 'string',
             description: 'The outgoing URL of the new link.',
             example: 'https://google.com'
+          }
+        ],
+        errors: [
+          {
+            failure: 'failure_invalid_alias',
+            description: 'The requested alias is not URL-safe, is too long, or otherwise does ' +
+              'not meet alias validity requirements.'
+          },
+          {
+            failure: 'failure_reserved_alias',
+            description: 'The requested alias is reserved by either the administrator or ' +
+              'application itself and cannot be used.'
+          },
+          {
+            failure: 'failure_invalid_url',
+            description: 'The requested URL is not valid.'
+          },
+          {
+            failure: 'failure_unavailable_alias',
+            description: 'The alias is already taken.'
+          }
+        ]
+      }
+    },
+    {
+      meta: {
+        title: 'View link details',
+        subtitle: 'Retrieve metadata about an existing link',
+        description: 'Retrieve information about a link, including its alias, outgoing URL, and ' +
+          'other miscellaneous metadata. For password-protected links, you must either supply ' +
+          'the link password, or authenticate the request as the user who created the link.',
+        authentication: AUTHENTICATION_OPTIONAL
+      },
+      endpoint: {
+        method: 'POST',
+        uri: 'LinkDetailsURI',
+        parameters: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The link ID. You may supply either the link ID or the alias.',
+            required: true
+          },
+          {
+            key: 'alias',
+            type: 'string',
+            description: 'The link alias. You may supply either the link ID or the alias.',
+            example: 'alias',
+            required: true
+          },
+          {
+            key: 'password',
+            type: 'string',
+            description: 'The link password, if applicable. This is required only when accessing ' +
+              'password-protected links while not authenticated as the user who created the link.',
+            required: false
+          }
+        ],
+        response: [
+          {
+            key: 'details',
+            type: 'object',
+            description: 'An object with all link details. The schema for this object is ' +
+              'provided below.',
+            example: {
+              link_id: 1,
+              user_id: 1,
+              submit_time: 1485442297,
+              alias: 'alias',
+              full_alias: `${context.config.LINKR_URL}/alias`,
+              outgoing_url: 'https://google.com',
+              is_password_protected: false
+            }
+          },
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The link ID.'
+          },
+          {
+            key: 'user_id',
+            type: 'number',
+            description: 'The ID of the user who created the link.'
+          },
+          {
+            key: 'submit_time',
+            type: 'number',
+            description: 'The Unix timestamp at which the link was submitted.'
+          },
+          {
+            key: 'alias',
+            type: 'string',
+            description: 'The link alias.'
+          },
+          {
+            key: 'full_alias',
+            type: 'string',
+            description: 'The fully qualified link alias (e.g. including the URL).'
+          },
+          {
+            key: 'outgoing_url',
+            type: 'string',
+            description: 'The link\'s outgoing URL.'
+          },
+          {
+            key: 'is_password_protected',
+            type: 'boolean',
+            description: 'True if the link is password-protected; false otherwise.'
+          }
+        ],
+        errors: [
+          {
+            failure: 'failure_nonexistent_link',
+            description: 'No such link exists with the provided link ID or alias.'
+          },
+          {
+            failure: 'failure_incorrect_link_password',
+            description: 'For password-protected links only. Either no password was supplied ' +
+              'when one is required, or the supplied password is incorrect.'
           }
         ]
       }

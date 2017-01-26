@@ -25,19 +25,30 @@ export default class APIEndpoint extends React.Component {
       key: React.PropTypes.string,
       type: React.PropTypes.string,
       description: React.PropTypes.string,
-      example: React.PropTypes.string,
+      example: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.object
+      ]),
       required: React.PropTypes.bool
     })),
     response: React.PropTypes.arrayOf(React.PropTypes.shape({
       key: React.PropTypes.string,
       type: React.PropTypes.string,
       description: React.PropTypes.string,
-      example: React.PropTypes.string
+      example: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.object
+      ])
+    })),
+    errors: React.PropTypes.arrayOf(React.PropTypes.shape({
+      failure: React.PropTypes.string,
+      description: React.PropTypes.string
     }))
   };
 
   render() {
     const {
+      user,
       title,
       subtitle,
       description,
@@ -46,7 +57,8 @@ export default class APIEndpoint extends React.Component {
       method,
       uri,
       parameters,
-      response
+      response,
+      errors
     } = this.props;
 
     const exampleJSON = parameters.reduce((json, parameter) => {
@@ -86,6 +98,7 @@ export default class APIEndpoint extends React.Component {
             method={method}
             endpoint={context.uris[uri]}
             data={exampleJSON}
+            apiKey={user.api_key}
           />
         </APICodeBlock>
 
@@ -140,6 +153,19 @@ export default class APIEndpoint extends React.Component {
               parameter.key,
               <span className="monospace">{parameter.type}</span>,
               parameter.description
+            ])}
+          />
+        </div>
+
+        <div>
+          <p className="text--section-header">Errors</p>
+          <Table
+            className="sans-serif text-gray-60 iota"
+            headerClassName="sans-serif bold"
+            header={['FAILURE CODE', 'DESCRIPTION']}
+            entries={errors.map((error) => [
+              error.failure,
+              error.description
             ])}
           />
         </div>
