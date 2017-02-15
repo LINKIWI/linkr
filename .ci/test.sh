@@ -15,7 +15,6 @@ mysql -u root < .ci/db-init.sql
 
 # Install step
 pip install -r requirements.txt
-gem install sass
 npm install
 
 # Frontend tests
