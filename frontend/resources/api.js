@@ -130,37 +130,37 @@ const data = {
             }
           },
           {
-            key: 'link_id',
+            key: 'details.link_id',
             type: 'number',
             description: 'The link ID.'
           },
           {
-            key: 'user_id',
+            key: 'details.user_id',
             type: 'number',
             description: 'The ID of the user who created the link.'
           },
           {
-            key: 'submit_time',
+            key: 'details.submit_time',
             type: 'number',
             description: 'The Unix timestamp at which the link was submitted.'
           },
           {
-            key: 'alias',
+            key: 'details.alias',
             type: 'string',
             description: 'The link alias.'
           },
           {
-            key: 'full_alias',
+            key: 'details.full_alias',
             type: 'string',
             description: 'The fully qualified link alias (e.g. including the URL).'
           },
           {
-            key: 'outgoing_url',
+            key: 'details.outgoing_url',
             type: 'string',
             description: 'The link\'s outgoing URL.'
           },
           {
-            key: 'is_password_protected',
+            key: 'details.is_password_protected',
             type: 'boolean',
             description: 'True if the link is password-protected; false otherwise.'
           }
