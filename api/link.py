@@ -226,6 +226,12 @@ def api_delete_link(data):
             'The requested alias does not exist.',
             'failure_nonexistent_alias',
         )
+    except UnauthorizedException:
+        return util.response.error(
+            status_code=403,
+            message='You may only delete links created by you.',
+            failure='failure_unauth',
+        )
     except:
         return util.response.undefined_error()
 

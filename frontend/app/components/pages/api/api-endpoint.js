@@ -27,6 +27,7 @@ export default class APIEndpoint extends React.Component {
       description: React.PropTypes.string,
       example: React.PropTypes.oneOfType([
         React.PropTypes.string,
+        React.PropTypes.number,
         React.PropTypes.object
       ]),
       required: React.PropTypes.bool
@@ -37,6 +38,7 @@ export default class APIEndpoint extends React.Component {
       description: React.PropTypes.string,
       example: React.PropTypes.oneOfType([
         React.PropTypes.string,
+        React.PropTypes.number,
         React.PropTypes.object
       ])
     })),

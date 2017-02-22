@@ -177,6 +177,48 @@ const data = {
           }
         ]
       }
+    },
+    {
+      meta: {
+        title: 'Delete a link',
+        subtitle: 'Delete an existing link',
+        description: 'Delete a link created by an authenticated user. Access to this endpoint is ' +
+          'permitted if the authenticated user owns the link to delete, or if the authenticated ' +
+          'user is an admin.',
+        authentication: AUTHENTICATION_REQUIRED
+      },
+      endpoint: {
+        method: 'DELETE',
+        uri: 'LinkDeleteURI',
+        parameters: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The link ID to delete.',
+            example: 1,
+            required: true
+          }
+        ],
+        response: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The former ID of the link that was successfully deleted.',
+            example: 1
+          }
+        ],
+        errors: [
+          {
+            failure: 'failure_nonexistent_link',
+            description: 'No such link exists with the provided link ID or alias.'
+          },
+          {
+            failure: 'failure_unauth',
+            description: 'This link ID for which deletion was requested is owned by a user ID ' +
+              'that disagrees with that of the authenticated user.'
+          }
+        ]
+      }
     }
   ]
 };
