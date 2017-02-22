@@ -8,31 +8,6 @@ $gamma: 18px;
 $iota: 14px;
 $kilo: 12px;
 
-@font-face {
-  font-family: 'karla-regular';
-  src: url('/static/fonts/karla-regular.ttf');
-}
-
-@font-face {
-  font-family: 'karla-italic';
-  src: url('/static/fonts/karla-italic.ttf');
-}
-
-@font-face {
-  font-family: 'karla-bold';
-  src: url('/static/fonts/karla-bold.ttf');
-}
-
-@font-face {
-  font-family: 'source-code-pro-regular';
-  src: url('/static/fonts/source-code-pro-regular.ttf');
-}
-
-@font-face {
-  font-family: 'source-code-pro-medium';
-  src: url('/static/fonts/source-code-pro-medium.ttf');
-}
-
 .sans-serif {
   font-family: karla-regular, sans-serif !important;
 

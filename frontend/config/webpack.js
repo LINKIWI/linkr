@@ -26,6 +26,11 @@ module.exports = {
         test: /frontend\/.+\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader'
+      },
+      {
+        test: /\.txt$/,
+        exclude: /node_modules/,
+        loader: 'raw-loader'
       }
     ]
   },
