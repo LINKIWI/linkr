@@ -10,4 +10,12 @@ from views import *
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', threaded=True, debug=True)
+    app.run(
+        host='0.0.0.0',
+        threaded=True,
+        debug=True,
+        extra_files=[
+            'frontend/static/dist/bundle.js',
+            'frontend/static/dist/main.css',
+        ],
+    )

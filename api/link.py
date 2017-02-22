@@ -148,13 +148,14 @@ def api_edit_link(data):
             outgoing_url=data['outgoing_url'],
         )
         return util.response.success({
+            'link_id': modified_link.link_id,
             'alias': modified_link.alias,
             'outgoing_url': modified_link.outgoing_url,
         })
     except NonexistentLinkException:
         return util.response.error(
             status_code=404,
-            message='The requested link alias does not exist.',
+            message='The requested link ID does not exist.',
             failure='failure_nonexistent_link',
         )
     except UnauthorizedException:

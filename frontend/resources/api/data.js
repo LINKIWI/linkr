@@ -219,6 +219,157 @@ const data = {
           }
         ]
       }
+    },
+    {
+      meta: {
+        title: 'Edit a link',
+        subtitle: 'Edit an existing link',
+        description: 'Edit a link created by an authenticated user. Access to this endpoint is ' +
+          'permitted if the authenticated user owns the link to edit, or if the authenticated ' +
+          'user is an admin.',
+        authentication: AUTHENTICATION_REQUIRED
+      },
+      endpoint: {
+        method: 'POST',
+        uri: 'LinkEditURI',
+        parameters: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The link ID to edit.',
+            example: 1,
+            required: true
+          },
+          {
+            key: 'alias',
+            type: 'string',
+            description: 'The new alias for this link. Omit or leave blank to leave it unchanged.',
+            example: 'new-alias',
+            required: false
+          },
+          {
+            key: 'outgoing_url',
+            type: 'string',
+            description: 'The new outgoing URL for this link. Omit or leave blank to leave it ' +
+              'unchanged.',
+            example: 'https://google.com',
+            required: false
+          }
+        ],
+        response: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The ID of the link that was successfully edited.',
+            example: 1
+          },
+          {
+            key: 'alias',
+            type: 'string',
+            description: 'The now-edited link\'s alias.',
+            example: 'new-alias'
+          },
+          {
+            key: 'outgoing_url',
+            type: 'string',
+            description: 'The now-edited link\'s outgoing URL.',
+            example: 'https://google.com'
+          }
+        ],
+        errors: [
+          {
+            failure: 'failure_nonexistent_link',
+            description: 'No such link exists with the provided link ID.'
+          },
+          {
+            failure: 'failure_unauth',
+            description: 'This link ID for which editing was requested is owned by a user ID ' +
+              'that disagrees with that of the authenticated user.'
+          },
+          {
+            failure: 'failure_invalid_alias',
+            description: 'The requested new alias is invalid because it is either not URL-safe ' +
+              'or is too long.'
+          },
+          {
+            failure: 'failure_invalid_url',
+            description: 'The requested new outgoing URL is invalid. Please ensure that it is a ' +
+              'valid, parsable URL.'
+          }
+        ]
+      }
+    },
+    {
+      meta: {
+        title: 'Preview a link',
+        subtitle: 'Preview metadata about a link',
+        description: 'Preview metadata about the outgoing URL associated with a link, including ' +
+          'the document title, description, and an image on the page. Access to this endpoint is ' +
+          'permitted if the authenticated user owns the link to preview, or if the authenticated ' +
+          'user is an admin.',
+        authentication: AUTHENTICATION_REQUIRED
+      },
+      endpoint: {
+        method: 'POST',
+        uri: 'LinkPreviewURI',
+        parameters: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The link ID to preview.',
+            example: 1,
+            required: true
+          }
+        ],
+        response: [
+          {
+            key: 'link_id',
+            type: 'number',
+            description: 'The ID of the link whose preview was requested.',
+            example: 1
+          },
+          {
+            key: 'preview',
+            type: 'object',
+            description: 'An object describing metadata about the link\'s outgoing URL. ' +
+              'Descriptions of each of its fields appear below.',
+            example: {
+              title: 'Breaking News, World News & Multimedia',
+              description: 'The New York Times: Find breaking news, multimedia, reviews & ' +
+                'opinion on Washington, business, sports, movies, travel, books, jobs, ' +
+                'education, real estate, cars & more at nytimes.com.',
+              image: 'https://static01.nyt.com/images/icons/t_logo_291_black.png'
+            }
+          },
+          {
+            key: 'preview.title',
+            type: 'string|null',
+            description: 'The page title, if available.'
+          },
+          {
+            key: 'preview.description',
+            type: 'string|null',
+            description: 'The page description, if available.'
+          },
+          {
+            key: 'preview.image',
+            type: 'string|null',
+            description: 'URL to the primary image on the page, if available.'
+          }
+        ],
+        errors: [
+          {
+            failure: 'failure_nonexistent_link',
+            description: 'No such link exists with the provided link ID.'
+          },
+          {
+            failure: 'failure_unauth',
+            description: 'This link ID for which a preview was requested is owned by a user ID ' +
+              'that disagrees with that of the authenticated user. For security reasons, you may ' +
+              'only preview links that you create.'
+          }
+        ]
+      }
     }
   ]
 };

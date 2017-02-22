@@ -29,7 +29,7 @@ def alias_route(data, alias):
     if not link:
         if request.method == 'GET':
             # For GET requests (likely from a browser), direct to the frontend interface
-            return render_template('index.html')
+            return frontend()
         elif request.method == 'POST':
             # For POST requests (likely programmatic), send a JSON response with an appropriate
             # status code
@@ -42,7 +42,7 @@ def alias_route(data, alias):
     # Redirect to the frontend interface to handle authentication for password-protected links
     if link.is_password_protected() and not link.validate_password(data.get('password', '')):
         if request.method == 'GET':
-            return render_template('index.html')
+            return frontend()
         elif request.method == 'POST':
             return util.response.error(
                 status_code=401,
@@ -62,7 +62,7 @@ def alias_route(data, alias):
 
 @app.route(HomeURI.path, defaults={'path': ''}, methods=HomeURI.methods)
 @app.route(DefaultURI.path, methods=DefaultURI.methods)
-def frontend(path):
+def frontend(path=''):
     """
     Serve the frontend application. All rendering logic is handled client-side.
     """
