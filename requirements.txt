@@ -12,6 +12,7 @@ Flask==0.12
 Flask-Login==0.4.0
 Flask-SQLAlchemy==2.1
 Flask-Testing==0.6.1
+htmlmin==0.1.10
 itsdangerous==0.24
 Jinja2==2.8
 MarkupSafe==0.23
@@ -25,4 +26,3 @@ requests==2.8.1
 SQLAlchemy==1.1.4
 webpreview==1.1.0
 Werkzeug==0.11.11
-wheel==0.26.0

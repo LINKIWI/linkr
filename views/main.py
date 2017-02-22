@@ -1,3 +1,4 @@
+import htmlmin
 from flask import redirect
 from flask import render_template
 from flask import request
@@ -8,6 +9,9 @@ from linkr import app
 from uri.link import *
 from uri.main import *
 from util.decorators import require_form_args
+
+# Server-side cache of rendered templates whose contents are persistent across requests.
+template_cache = {}
 
 
 @app.route(LinkAliasRedirectURI.path, methods=LinkAliasRedirectURI.methods)
@@ -62,4 +66,12 @@ def frontend(path):
     """
     Serve the frontend application. All rendering logic is handled client-side.
     """
-    return render_template('index.html')
+    if template_cache.get('main'):
+        return template_cache['main']
+
+    bundle = open('frontend/static/dist/bundle.js').read().decode('utf-8')
+    styles = open('frontend/static/dist/main.css').read().decode('utf-8')
+    rendered_template = render_template('index.html', bundle=bundle, styles=styles)
+    template_cache['main'] = htmlmin.minify(rendered_template)
+
+    return frontend(path)
