@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 
-import context from '../app/util/context';
+import context from '../../app/util/context';
 
 const AUTHENTICATION_REQUIRED = 'required';
 const AUTHENTICATION_OPTIONAL = 'optional';

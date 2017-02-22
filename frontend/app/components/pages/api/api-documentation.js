@@ -11,7 +11,7 @@ import Header from '../../header';
 
 import LoadingBar from '../../ui/loading-bar';
 
-import apiData from '../../../../resources/api';
+import apiData from '../../../../resources/api/data';
 
 /**
  * API documentation page. Shows API information overview and details for each individual endpoint.
