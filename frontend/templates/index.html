@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico">
 
-    <style type="text/css">
-      {{ styles | safe }}
-    </style>
+    <style type="text/css">{{ styles | safe }}</style>
 </head>
 <body>
     <div id="app"></div>
@@ -28,8 +26,6 @@
         {% endfor %}
     </div>
 
-    <script type="text/javascript">
-      {{ bundle | safe }}
-    </script>
+    <script type="text/javascript">{{ bundle | safe }}</script>
 </body>
 </html>
