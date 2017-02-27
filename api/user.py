@@ -162,3 +162,23 @@ def api_recent_users(data):
         })
     except:
         return util.response.undefined_error()
+
+
+@app.route(UserSearchURI.path, methods=UserSearchURI.methods)
+@require_form_args(['username'])
+@require_login_api(admin_only=True)
+def api_user_search(data):
+    try:
+        expect_args = {'username', 'page_num', 'num_per_page'}
+        filtered_data = {
+            key: value
+            for key, value in data.items()
+            if key in expect_args
+        }
+
+        users = database.user.get_users_like_username(**filtered_data)
+        return util.response.success({
+            'users': [user.as_dict() for user in users],
+        })
+    except:
+        return util.response.undefined_error()

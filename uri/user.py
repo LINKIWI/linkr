@@ -36,6 +36,11 @@ class UserRegenerateAPIKeyURI(URI):
     path = URI.api_uri('/user/regenerate-api-key')
 
 
+class UserSearchURI(URI):
+    methods = ['POST']
+    path = URI.api_uri('/user/search')
+
+
 class RecentUsersURI(URI):
     methods = ['GET', 'POST']
     path = URI.api_uri('/user/recent')

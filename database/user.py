@@ -155,6 +155,24 @@ def get_user_by_api_key(api_key):
     return models.User.query.filter_by(api_key=api_key).first()
 
 
+def get_users_like_username(username, page_num=0, num_per_page=100):
+    """
+    Retrieve users whose usernames contain the input.
+
+    :param username: A substring of an actual username.
+    :param page_num: The page number to use in the pagination, zero-indexed.
+    :param num_per_page: The number of links to retrieve per page.
+    :return: All models.User instances whose username is a superstring of the input.
+    """
+    return models.User.query.filter(
+        models.User.username.like('%{username}%'.format(username=username))
+    ).offset(
+        page_num * num_per_page
+    ).limit(
+        num_per_page
+    ).all()
+
+
 def get_recent_users(page_num=0, num_per_page=100):
     """
     Retrieve a paginated listing of recently created users.
