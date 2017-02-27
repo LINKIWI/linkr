@@ -111,7 +111,7 @@ export default class APIEndpoint extends React.Component {
           </div>
         </div>
 
-        <div className="api-description margin--bottom">
+        <div className="margin--bottom">
           <p className="text--section-header">Parameters</p>
           <Table
             className="sans-serif text-gray-60 iota"

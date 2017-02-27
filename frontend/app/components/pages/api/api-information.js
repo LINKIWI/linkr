@@ -54,8 +54,8 @@ const APIInformation = ({language, ...props}) => (
       <p className="sans-serif iota text-gray-70 margin-small--bottom">
         All API endpoints accept as input {inlineCode('application/json')}-MIME type JSON in the
         request body, and return {inlineCode('application/json')}-MIME type JSON in the response
-        body. It is suggested that requests specify {inlineCode('Content-Type: application/json')}
-        explicitly.
+        body. It is suggested that requests
+        specify {inlineCode('Content-Type: application/json')} explicitly.
       </p>
       <p className="sans-serif iota text-gray-70 margin-small--bottom">
         All API responses return JSON data in the same shape, regardless of whether the request was

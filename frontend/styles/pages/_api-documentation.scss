@@ -2,24 +2,43 @@
 @import '../universal/fonts';
 @import '../universal/spacing';
 
-.api-description-container {
-  width: 55%;
+$compact-threshold: 1000px;
 
-  .api-description {
-    padding-right: 100px;
+.api-description-container {
+  @media (min-width: $compact-threshold) {
+    width: 55%;
+
+    .api-description {
+      padding-right: 100px;
+    }
   }
 }
 
 .api-code-container {
-  position: absolute;
-  right: 0;
-  width: 45%;
+  @media (min-width: $compact-threshold) {
+    position: absolute;
+    right: 0;
+    width: 45%;
+  }
 
   .api-code {
-    padding: 0 $spacing-large;
+    @media (min-width: $compact-threshold) {
+      padding: 0 $spacing-large;
+    }
+
+    @media (max-width: $compact-threshold) {
+      background-color: $darker-blue;
+      padding: $spacing-default;
+      margin-bottom: $spacing-default;
+    }
+
     overflow-x: auto;
 
     pre {
+      @media (max-width: $compact-threshold) {
+        overflow-x: unset !important;
+      }
+
       background-color: inherit !important;
       padding-left: 0 !important;
       padding-top: 0 !important;
@@ -32,7 +51,14 @@
   }
 
   .api-caption {
-    padding: 0 $spacing-large;
+    @media (min-width: $compact-threshold) {
+      padding: 0 $spacing-large;
+    }
+
+    @media (max-width: $compact-threshold) {
+      color: $gray-60 !important;
+    }
+
     overflow-x: auto;
   }
 }
@@ -46,15 +72,22 @@
 }
 
 .api-code-column {
+  @media (min-width: $compact-threshold) {
+    width: 45%;
+  }
+
   background-color: $darker-blue;
   position: fixed;
   top: 0;
   right: 0;
-  width: 45%;
   height: 100%;
 }
 
 .api-language-selector {
+  @media (max-width: $compact-threshold) {
+    display: none;
+  }
+
   background-color: $darker-blue;
   position: fixed;
   top: 0;

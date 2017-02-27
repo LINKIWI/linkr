@@ -49,9 +49,9 @@ class APIDocumentation extends React.Component {
       <div>
         <Helmet title="API Documentation - Linkr" />
         <LoadingBar show={isLoading} />
-        <Header />
+        <Header selectIndex={2} />
 
-        <Container className={isLoading ? 'fade' : ''} style={{paddingRight: 0}}>
+        <Container className={isLoading ? 'fade' : ''}>
           <div className="api-description-container margin-large--top margin-large--bottom">
             <div className="api-description">
               <p className="text--page-title">API Documentation</p>
