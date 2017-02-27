@@ -12,11 +12,14 @@ from util.exception import *
 
 @app.route(UserAddURI.path, methods=UserAddURI.methods)
 @require_form_args(['username', 'password'])
+@optional_login_api
 def api_add_user(data):
     """
     Add a new user.
     """
     try:
+        is_admin = data.get('is_admin')
+
         if not config.options.ALLOW_OPEN_REGISTRATION:
             return util.response.error(
                 403,
@@ -24,7 +27,19 @@ def api_add_user(data):
                 'failure_open_registration_disabled',
             )
 
-        new_user = database.user.add_user(data['username'], data['password'], request.remote_addr)
+        if is_admin and (not current_user.is_authenticated or not current_user.is_admin):
+            return util.response.error(
+                status_code=403,
+                message='Only admin users may create more admin users.',
+                failure='failure_unauth',
+            )
+
+        new_user = database.user.add_user(
+            username=data['username'],
+            password=data['password'],
+            signup_ip=request.remote_addr,
+            is_admin=is_admin and current_user.is_authenticated and current_user.is_admin,
+        )
         return util.response.success({
             'username': new_user.username,
         })
