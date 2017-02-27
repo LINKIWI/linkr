@@ -7,6 +7,7 @@ import APICodeBlock from './api-code-block';
 import APIRequestExample from './api-request-example';
 import Table from '../../table';
 
+import browser from '../../../util/browser';
 import context from '../../../util/context';
 
 /**
@@ -48,6 +49,24 @@ export default class APIEndpoint extends React.Component {
     }))
   };
 
+  constructor() {
+    super();
+
+    this.state = {displayAnchor: false};
+  }
+
+  setDisplayAnchor(display) {
+    this.setState({displayAnchor: display});
+  }
+
+  gotoAnchor(text) {
+    browser.hash(this.anchorLink(text));
+  }
+
+  anchorLink(text) {
+    return text.toLowerCase().replace(/\s/g, '-');
+  }
+
   render() {
     const {
       user,
@@ -62,6 +81,7 @@ export default class APIEndpoint extends React.Component {
       response,
       errors
     } = this.props;
+    const {displayAnchor} = this.state;
 
     const exampleJSON = parameters.reduce((json, parameter) => {
       if (parameter.example) {
@@ -79,7 +99,20 @@ export default class APIEndpoint extends React.Component {
     return (
       <div className="margin-huge--bottom">
         <div className="margin--bottom">
-          <p className="sans-serif bold text-gray-70 epsilon margin-tiny--bottom">
+          <span
+            className="title-anchor sans-serif text-gray-20 epsilon transition"
+            style={{opacity: displayAnchor ? 1 : 0}}
+          >
+            #
+          </span>
+          <p
+            id={this.anchorLink(title)}
+            className="sans-serif bold text-gray-70 epsilon margin-tiny--bottom"
+            onMouseOver={this.setDisplayAnchor.bind(this, true)}
+            onMouseOut={this.setDisplayAnchor.bind(this, false)}
+            onClick={this.gotoAnchor.bind(this, title)}
+            style={{cursor: 'pointer'}}
+          >
             {title}
           </p>
           <span className="sans-serif bold iota text-primary margin--left" style={{float: 'right'}}>

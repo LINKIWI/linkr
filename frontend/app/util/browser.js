@@ -38,6 +38,15 @@ function push(path, delay) {
 }
 
 /**
+ * Set the current hash anchor in the URL.
+ *
+ * @param {String} anchor String to use as the hash anchor.
+ */
+function hash(anchor) {
+  window.location.hash = anchor;
+}
+
+/**
  * Replicates windows.clearTimeout's functionality.
  *
  * @param {Number} timeoutID ID of the timeout to clear.
@@ -73,6 +82,7 @@ function parseURL() {
 export default {
   go,
   push,
+  hash,
   clearTimeout,
   parseURL,
   loginRedirect
