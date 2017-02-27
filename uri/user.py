@@ -34,3 +34,8 @@ class UserUpdatePasswordURI(URI):
 class UserRegenerateAPIKeyURI(URI):
     methods = ['POST']
     path = URI.api_uri('/user/regenerate-api-key')
+
+
+class RecentUsersURI(URI):
+    methods = ['GET', 'POST']
+    path = URI.api_uri('/user/recent')

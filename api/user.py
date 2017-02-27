@@ -139,3 +139,26 @@ def api_regenerate_user_api_key(data):
         )
     except:
         return util.response.undefined_error()
+
+
+@app.route(RecentUsersURI.path, methods=RecentUsersURI.methods)
+@require_form_args()
+@require_login_api(admin_only=True)
+def api_recent_users(data):
+    """
+    Retrieve a paginated list of all recently created users.
+    """
+    expect_args = {'page_num', 'num_per_page'}
+    filtered_data = {
+        key: value
+        for key, value in data.items()
+        if key in expect_args
+    }
+
+    try:
+        users = database.user.get_recent_users(**filtered_data)
+        return util.response.success({
+            'users': [user.as_dict() for user in users]
+        })
+    except:
+        return util.response.undefined_error()

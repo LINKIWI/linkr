@@ -153,3 +153,20 @@ def get_user_by_api_key(api_key):
              the specified API key.
     """
     return models.User.query.filter_by(api_key=api_key).first()
+
+
+def get_recent_users(page_num=0, num_per_page=100):
+    """
+    Retrieve a paginated listing of recently created users.
+
+    :param page_num: The page number to use in the pagination, zero-indexed.
+    :param num_per_page: The number of links to retrieve per page.
+    :return: A list of models.User instances describing recent users, ordered by ID.
+    """
+    return models.User.query.order_by(
+        models.User.user_id.desc()
+    ).offset(
+        page_num * num_per_page
+    ).limit(
+        num_per_page
+    ).all()
