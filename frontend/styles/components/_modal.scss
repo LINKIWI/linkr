@@ -1,5 +1,8 @@
 @import '../universal/colors';
 
+$compact-horizontal-threshold: 600px;
+$compact-vertical-threshold: 450px;
+
 .modal-container {
   width: 100%;
   height: 100%;
@@ -11,7 +14,14 @@
 }
 
 .modal {
-  max-width: 450px;
+  @media (min-width: $compact-horizontal-threshold) and (min-height: $compact-vertical-threshold) {
+    max-width: 450px;
+  }
+
+  @media (max-width: $compact-horizontal-threshold), (max-height: $compact-vertical-threshold) {
+    width: 100%;
+  }
+
   background-color: $white;
   position: fixed;
   top: 50%;
