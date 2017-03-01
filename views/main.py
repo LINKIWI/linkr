@@ -66,8 +66,9 @@ def frontend(path=''):
     """
     Serve the frontend application. All rendering logic is handled client-side.
     """
-    if template_cache.get('main'):
-        return template_cache['main']
+    cached_template = template_cache.get('main')
+    if cached_template:
+        return cached_template
 
     bundle = open('frontend/static/dist/bundle.js').read().decode('utf-8')
     styles = open('frontend/static/dist/main.css').read().decode('utf-8')

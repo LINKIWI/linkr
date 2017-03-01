@@ -8,6 +8,8 @@ sentry = core.app.init_sentry()
 import models
 from views import *
 
+warm_template_cache(app)
+
 
 if __name__ == '__main__':
     app.run(
