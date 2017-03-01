@@ -101,6 +101,9 @@ def api_deactivate_user(data):
 @require_form_args(['current_password', 'new_password'])
 @require_login_api()
 def api_update_user_password(data):
+    """
+    Update the password for the currently logged in user.
+    """
     try:
         database.user.validate_user_credentials(current_user.username, data['current_password'])
 
@@ -132,6 +135,9 @@ def api_update_user_password(data):
 @require_form_args(['password'])
 @require_login_api()
 def api_regenerate_user_api_key(data):
+    """
+    Regenerate the API key for the currently logged in user.
+    """
     try:
         database.user.validate_user_credentials(current_user.username, data['password'])
 
@@ -183,6 +189,9 @@ def api_recent_users(data):
 @require_form_args(['username'])
 @require_login_api(admin_only=True)
 def api_user_search(data):
+    """
+    Search for users by username.
+    """
     try:
         expect_args = {'username', 'page_num', 'num_per_page'}
         filtered_data = {
