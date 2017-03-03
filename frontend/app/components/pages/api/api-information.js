@@ -1,4 +1,4 @@
-import {atomOneDark} from 'react-syntax-highlighter/dist/styles';
+import atomOneDark from 'react-syntax-highlighter/dist/styles/atom-one-dark';
 import {Link} from 'react-router';
 import React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/light';

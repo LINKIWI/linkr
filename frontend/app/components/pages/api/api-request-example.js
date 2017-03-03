@@ -1,4 +1,4 @@
-import {atomOneDark} from 'react-syntax-highlighter/dist/styles';
+import atomOneDark from 'react-syntax-highlighter/dist/styles/atom-one-dark';
 import format from 'string-template';
 import React from 'react';
 import stringify from 'json-stringify-pretty-compact';
