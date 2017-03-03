@@ -49,6 +49,8 @@
     "json-stringify-pretty-compact": "^1.0.2",
     "lodash.truncate": "^4.4.2",
     "morgan": "^1.7.0",
+    "preact": "^7.2.0",
+    "preact-compat": "^3.13.1",
     "pug": "^2.0.0-beta4",
     "randomstring": "^1.1.5",
     "range": "0.0.3",

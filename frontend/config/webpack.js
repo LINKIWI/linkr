@@ -34,5 +34,11 @@ module.exports = {
       }
     ]
   },
-  plugins: plugins
+  plugins: plugins,
+  resolve: {
+    alias: {
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat'
+    }
+  }
 };
