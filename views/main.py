@@ -30,7 +30,7 @@ def alias_route(data, alias):
         if request.method == 'GET':
             # For GET requests (likely from a browser), direct to the frontend interface
             return frontend()
-        elif request.method == 'POST':
+        if request.method == 'POST':
             # For POST requests (likely programmatic), send a JSON response with an appropriate
             # status code
             return util.response.error(
@@ -43,11 +43,23 @@ def alias_route(data, alias):
     if link.is_password_protected() and not link.validate_password(data.get('password', '')):
         if request.method == 'GET':
             return frontend()
-        elif request.method == 'POST':
+        if request.method == 'POST':
             return util.response.error(
                 status_code=401,
                 message='The supplied link password is incorrect.',
                 failure='failure_incorrect_link_password',
+            )
+
+    # Redirect to the frontend interface for links that require human verification
+    if link.require_recaptcha:
+        if request.method == 'GET':
+            return frontend()
+        if request.method == 'POST':
+            return util.response.error(
+                status_code=401,
+                message='This link requires human verification, and can only be accessed '
+                        'interactively via a browser.',
+                failure='failure_invalid_recaptcha',
             )
 
     database.link.add_link_hit(

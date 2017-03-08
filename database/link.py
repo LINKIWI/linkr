@@ -6,7 +6,7 @@ from util.exception import *
 
 
 @db_txn
-def add_link(alias, outgoing_url, password=None, user_id=None):
+def add_link(alias, outgoing_url, password=None, user_id=None, require_recaptcha=False):
     """
     Add a new link to the database after performing necessary input validation.
 
@@ -14,6 +14,7 @@ def add_link(alias, outgoing_url, password=None, user_id=None):
     :param outgoing_url: The associated outgoing URL.
     :param password: Plain-text password associated with this link, if applicable.
     :param user_id: ID of the user to associate with this link, if applicable.
+    :param require_recaptcha: True to require ReCAPTCHA for accessing this link; False otherwise.
     :return: An instance of models.Link representing the new entry.
     :raises InvalidAliasException: If the alias is invalid.
     :raises ReservedAliasException: If the alias is reserved.
@@ -34,6 +35,7 @@ def add_link(alias, outgoing_url, password=None, user_id=None):
         outgoing_url=outgoing_url,
         password=password,
         user_id=user_id,
+        require_recaptcha=require_recaptcha,
     )
     db.session.add(new_link)
 

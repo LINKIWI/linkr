@@ -15,9 +15,10 @@ class Link(db.Model):
     link_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, index=True, default=None)
     submit_time = db.Column(db.Integer)
-    password_hash = db.Column(db.Text, default=None)
     alias = db.Column(db.String(32), index=True, unique=True)
     outgoing_url = db.Column(db.Text)
+    password_hash = db.Column(db.Text, default=None)
+    require_recaptcha = db.Column(db.Boolean, default=False)
 
     def __init__(
         self,
@@ -25,6 +26,7 @@ class Link(db.Model):
         outgoing_url,
         password=None,
         user_id=None,
+        require_recaptcha=False,
     ):
         """
         Create a new link entry.
@@ -39,6 +41,7 @@ class Link(db.Model):
         self.outgoing_url = outgoing_url
         self.password_hash = util.cryptography.secure_hash(password) if password else None
         self.user_id = user_id
+        self.require_recaptcha = require_recaptcha
 
     def edit(self, alias=None, outgoing_url=None):
         """
@@ -88,6 +91,7 @@ class Link(db.Model):
             'full_alias': '{base}/{alias}'.format(base=config.options.LINKR_URL, alias=self.alias),
             'outgoing_url': self.outgoing_url,
             'is_password_protected': self.is_password_protected(),
+            'require_recaptcha': self.require_recaptcha,
         }
 
     def is_password_protected(self):

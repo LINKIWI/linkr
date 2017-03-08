@@ -2,6 +2,7 @@ from webpreview import web_preview
 
 import config.options
 import database.link
+import util.recaptcha
 import util.response
 from linkr import app
 from uri.link import *
@@ -27,6 +28,10 @@ def api_link_details(data):
         # included as a request parameter and is correct before serving the details to the client.
         validate_link_password(link.link_id, data.get('password'))
 
+        # If the link requires human verification, we should validate the ReCAPTCHA response against
+        # the upstream server.
+        validate_recaptcha(link.link_id, data.get('recaptcha'))
+
         return util.response.success({
             'details': link.as_dict(),
         })
@@ -42,6 +47,12 @@ def api_link_details(data):
             status_code=401,
             message='The supplied link password is incorrect.',
             failure='failure_incorrect_link_password',
+        )
+    except InvalidRecaptchaException:
+        return util.response.error(
+            status_code=401,
+            message='ReCAPTCHA validation failed.',
+            failure='failure_invalid_recaptcha',
         )
     except:
         return util.response.undefined_error()
@@ -97,8 +108,9 @@ def api_add_link(data):
         new_link = database.link.add_link(
             alias=data['alias'],
             outgoing_url=data['outgoing_url'],
-            password=data.get('password'),
-            user_id=current_user.user_id if current_user.is_authenticated else None
+            password=data.get('password', None),
+            user_id=current_user.user_id if current_user.is_authenticated else None,
+            require_recaptcha=data.get('require_recaptcha', False),
         )
         return util.response.success({
             'alias': new_link.alias,
@@ -360,6 +372,9 @@ def api_link_preview(data):
 @require_form_args(['alias'])
 @require_login_api(admin_only=True)
 def api_link_alias_search(data):
+    """
+    Search for links by alias.
+    """
     try:
         expect_args = {'alias', 'page_num', 'num_per_page'}
         filtered_data = {
@@ -412,8 +427,10 @@ def validate_link_ownership(link_id):
     :return: The models.Link instance referenced by this check.
     :raises NonexistentLinkException: If the link does not exist.
     :raises UnauthorizedException: If the user is not allowed to access the link.
+    :return: The Link instance for this ID.
     """
     link = database.link.get_link_by_id(link_id)
+
     if not link:
         raise NonexistentLinkException('No link exists with link ID `{link_id}`'.format(
             link_id=link_id,
@@ -423,5 +440,27 @@ def validate_link_ownership(link_id):
         raise UnauthorizedException('The current user does not own link ID `{link_id}`'.format(
             link_id=link_id,
         ))
+
+    return link
+
+
+def validate_recaptcha(link_id, recaptcha):
+    """
+    Validate a client-side supplied ReCAPTCHA response code.
+
+    :param link_id: ID of the link for which a ReCAPTCHA check should be performed.
+    :param recaptcha: Client-side supplied ReCAPTCHA response code, as a string.
+    :return: The Link instance for this ID.
+    """
+    link = database.link.get_link_by_id(link_id)
+
+    if not link:
+        raise NonexistentLinkException('No link exists with link ID `{link_id}`'.format(
+            link_id=link_id,
+        ))
+
+    remote_ip = request.remote_addr
+    if link.require_recaptcha and not util.recaptcha.validate_recaptcha(recaptcha, remote_ip):
+        raise InvalidRecaptchaException('Upstream ReCAPTCHA validation failed.')
 
     return link

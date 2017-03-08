@@ -68,3 +68,10 @@ class UnauthorizedException(Exception):
     Raised when the user is not allowed to perform an action.
     """
     pass
+
+
+class InvalidRecaptchaException(Exception):
+    """
+    Raised when a ReCAPTCHA validation fails.
+    """
+    pass

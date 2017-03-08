@@ -1,21 +1,20 @@
 import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import React from 'react';
+import Recaptcha from 'react-google-recaptcha';
 
 import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
 import Container from '../container';
 import Footer from '../footer';
 import Header from '../header';
 
-import Button from '../ui/button';
 import LoadingBar from '../ui/loading-bar';
-import TextField from '../ui/text-field';
 
 /**
- * Page providing an interface for the user to interactively enter a password to access a
- * password-protected link.
+ * Page providing an interface for the user to interactively perform human verification with a
+ * ReCAPTCHA widget.
  */
-export default class AliasPassword extends React.Component {
+export default class AliasHumanVerification extends React.Component {
   constructor(props) {
     super(props);
 
@@ -23,16 +22,14 @@ export default class AliasPassword extends React.Component {
   }
 
   /**
-   * Submit a password check on the current link.
+   * Submit another link details fetch request, augmented by a ReCAPTCHA response string.
    *
-   * @param {Object} evt DOM event triggered by form submit.
+   * @param {String} recaptcha ReCAPTCHA response string as supplied by the ReCAPTCHA widget.
    */
-  submitPassword(evt) {
-    evt.preventDefault();
-
+  submitHumanVerification(recaptcha) {
     const {setLinkAccessParams, loadLinkDetails} = this.props;
 
-    return setLinkAccessParams({password: this.linkPasswordInput.getValue()},
+    return setLinkAccessParams({recaptcha},
       () => loadLinkDetails((_, resp, data) => this.setState({data})));
   }
 
@@ -43,7 +40,7 @@ export default class AliasPassword extends React.Component {
 
     return (
       <div>
-        <Helmet title="Password Protected Link - Linkr" />
+        <Helmet title="Human Verification - Linkr" />
         {isLoading && <LoadingBar />}
         <Header />
 
@@ -51,7 +48,7 @@ export default class AliasPassword extends React.Component {
           {data.failure && data.failure === 'failure_incorrect_link_password' && (
             <Alert
               type={ALERT_TYPE_ERROR}
-              title={'The submitted password was not correct.'}
+              title={'The submitted ReCAPTCHA was invalid.'}
               message={'Please try again.'}
             />
           )}
@@ -65,35 +62,25 @@ export default class AliasPassword extends React.Component {
           )}
 
           <div className="margin-large--top margin-large--bottom">
-            <p className="sans-serif bold gamma text-gray-70 margin-small--bottom">PASSWORD PROTECTED LINK</p>
+            <p className="sans-serif bold gamma text-gray-70 margin-small--bottom">
+              HUMAN VERIFICATION
+            </p>
             <p className="not-found-text sans-serif bold text-gray-70 margin-large--bottom transition">
-              This link is password protected.
+              This link requires human verification.
             </p>
 
-            <p className="sans-serif gamma text-gray-70 margin--top margin-small--bottom">
-              Enter the link password below to
+            <p className="sans-serif gamma text-gray-70 margin--top margin-huge--bottom">
+              Please complete the ReCAPTCHA below to
               access <span className="sans-serif bold text-orange">{params.alias}</span>.
             </p>
 
-            <form>
-              <TextField
-                ref={(elem) => {
-                  this.linkPasswordInput = elem;
-                }}
-                type="password"
-                className="shorten-field sans-serif light margin--bottom"
-                style={{
-                  width: '100%'
-                }}
-              />
-
-              <Button
-                className="sans-serif bold iota text-white margin-large--top"
-                text="Submit"
-                disabled={isLoading}
-                onClick={this.submitPassword.bind(this)}
-              />
-            </form>
+            <Recaptcha
+              ref={(elem) => {
+                this.recaptcha = elem;
+              }}
+              sitekey="6LdV4RcUAAAAAHQP6YYsiCv91dtiPBeej2XYSRLh"
+              onChange={this.submitHumanVerification.bind(this)}
+            />
           </div>
         </Container>
 

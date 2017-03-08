@@ -99,14 +99,11 @@ class ShortenSuccess extends React.Component {
                   </div>
                 ) : (
                   <div>
-                    <p className="sans-serif gamma text-gray-70 margin--top margin-small--bottom">
+                    <p className="sans-serif gamma text-gray-70 margin--top margin-large--bottom">
                       has been created.
                     </p>
-                    <p className="sans-serif gamma text-gray-70 margin--top margin-tiny--bottom">
-                      Sadly, we can't show you the destination URL here because this new link is password-protected.
-                    </p>
                     <p className="sans-serif gamma text-gray-70">
-                      Click on the above link to visit the site after entering the link password.
+                      Click on the above link to visit the site.
                     </p>
                   </div>
                 )

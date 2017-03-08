@@ -45,7 +45,8 @@ class Shorten extends React.Component {
           /* eslint-disable camelcase */
           alias: this.aliasInput.getValue() || this.randomAlias,
           outgoing_url: outgoingURL,
-          password: this.passwordProtectCheck.isChecked() ? this.passwordProtectInput.getValue() : null
+          password: this.passwordProtectCheck.isChecked() ? this.passwordProtectInput.getValue() : null,
+          require_recaptcha: this.recaptchaCheck.isChecked()
           /* eslint-enable camelcase */
         }
       }, (err, resp, submitStatus) => {
@@ -111,9 +112,17 @@ class Shorten extends React.Component {
 
           <Checkbox
             ref={(elem) => {
-              this.passwordProtectCheck = elem;
+              this.recaptchaCheck = elem;
             }}
             className="margin-large--top"
+            text="Require human verification"
+          />
+
+          <Checkbox
+            ref={(elem) => {
+              this.passwordProtectCheck = elem;
+            }}
+            className="margin-small--top"
             text="Password protect this link"
             onCheck={() => this.setState({passwordProtect: true})}
             onUncheck={() => this.setState({passwordProtect: false})}
