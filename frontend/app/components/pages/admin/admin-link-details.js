@@ -177,6 +177,10 @@ class AdminLinkDetails extends React.Component {
                 {
                   key: 'Password protected',
                   value: details.is_password_protected ? 'Yes' : 'No'
+                },
+                {
+                  key: 'Human verification',
+                  value: details.require_recaptcha ? 'On' : 'Off'
                 }
               ]}
             />
@@ -217,9 +221,7 @@ class AdminLinkDetails extends React.Component {
             <Button
               className="sans-serif bold iota text-white margin-small--top margin-large--right"
               text="Deactivate"
-              style={{
-                width: '170px'
-              }}
+              style={{width: '175px'}}
               onClick={this.handleDeactivateClick.bind(this)}
             />
             <span className="sans-serif iota text-gray-60">
@@ -240,9 +242,7 @@ class AdminLinkDetails extends React.Component {
             <Button
               className="sans-serif bold iota text-white margin-small--top margin-large--right"
               text="Modify"
-              style={{
-                width: '170px'
-              }}
+              style={{width: '175px'}}
               onClick={this.handleEditLinkClick.bind(this)}
             />
             <span className="sans-serif iota text-gray-60">
@@ -264,9 +264,7 @@ class AdminLinkDetails extends React.Component {
             <Button
               className="sans-serif bold iota text-white margin-small--top margin-large--right"
               text={details.is_password_protected ? 'Update Password' : 'Set Password'}
-              style={{
-                width: '170px'
-              }}
+              style={{width: '175px'}}
               onClick={this.handleSetPasswordClick.bind(this)}
             />
             <span className="sans-serif iota text-gray-60">
@@ -293,9 +291,7 @@ class AdminLinkDetails extends React.Component {
                 <Button
                   className="sans-serif bold iota text-white margin-small--top margin-large--right"
                   text="Remove Password"
-                  style={{
-                    width: '170px'
-                  }}
+                  style={{width: '175px'}}
                   onClick={this.handleRemovePasswordClick.bind(this)}
                 />
                 <span className="sans-serif iota text-gray-60">

@@ -99,6 +99,10 @@ class AccountLinkDetails extends React.Component {
               {
                 key: 'Password protected',
                 value: details.is_password_protected ? 'Yes' : 'No'
+              },
+              {
+                key: 'Human verification',
+                value: details.require_recaptcha ? 'On' : 'Off'
               }
             ]}
           />
