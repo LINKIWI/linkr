@@ -15,7 +15,7 @@ mysql -u root < .ci/db-init.sql
 
 # Install step
 pip install -r requirements.txt
-npm install
+npm-s3 install
 
 # Frontend tests
 npm run lint-backend
