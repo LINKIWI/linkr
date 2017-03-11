@@ -4,6 +4,7 @@ import React from 'react';
 
 import AccountAPIKey from './account-api-key';
 import AccountDeactivation from './account-deactivation';
+import AccountDetails from './account-details';
 import AccountLinks from './account-links';
 import AccountUpdatePassword from './account-update-password';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
@@ -29,6 +30,7 @@ const Account = (props) => {
     <div className="margin-large--top margin-large--bottom">
       <p className="text--page-title">Account</p>
 
+      <AccountDetails {...props} />
       <AccountLinks {...props} />
       <AccountUpdatePassword {...props} />
       <AccountAPIKey {...props} />

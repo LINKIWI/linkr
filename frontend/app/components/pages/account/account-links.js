@@ -88,6 +88,7 @@ export default class AccountLinks extends React.Component {
             'OUTGOING URL',
             'CREATED',
             'PASSWORD',
+            'RECAPTCHA',
             'ACTIONS'
           ]}
           entries={userLinks.map((link) => [
@@ -108,6 +109,8 @@ export default class AccountLinks extends React.Component {
             humanize.relativeTime(link.submit_time),
             // Password protection state
             link.is_password_protected ? 'Yes' : 'No',
+            // Human verification/ReCAPTCHA state
+            link.require_recaptcha ? 'On' : 'Off',
             // Row of available actions for each link
             <AccountLinkActions link={link} />
           ])}
