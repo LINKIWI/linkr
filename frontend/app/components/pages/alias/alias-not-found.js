@@ -2,10 +2,10 @@ import Link from 'react-router/lib/Link';
 import Helmet from 'react-helmet';
 import React from 'react';
 
-import Container from '../container';
-import Header from '../header';
+import Container from '../../container';
+import Header from '../../header';
 
-import context from '../../util/context';
+import context from '../../../util/context';
 
 /**
  * Generic page for indicating that no link exists with the provided alias.

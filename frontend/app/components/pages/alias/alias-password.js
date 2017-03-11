@@ -2,14 +2,14 @@ import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import React from 'react';
 
-import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
-import Container from '../container';
-import Footer from '../footer';
-import Header from '../header';
+import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../../alert';
+import Container from '../../container';
+import Footer from '../../footer';
+import Header from '../../header';
 
-import Button from '../ui/button';
-import LoadingBar from '../ui/loading-bar';
-import TextField from '../ui/text-field';
+import Button from '../../ui/button';
+import LoadingBar from '../../ui/loading-bar';
+import TextField from '../../ui/text-field';
 
 /**
  * Page providing an interface for the user to interactively enter a password to access a

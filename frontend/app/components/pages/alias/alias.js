@@ -4,19 +4,19 @@ import Helmet from 'react-helmet';
 import React from 'react';
 import request from 'browser-request';
 
-import Alert, {ALERT_TYPE_SUCCESS} from '../alert';
+import Alert, {ALERT_TYPE_SUCCESS} from '../../alert';
 import AliasHumanVerification from './alias-human-verification';
 import AliasNotFound from './alias-not-found';
 import AliasPassword from './alias-password';
-import AuthenticationHOC from '../hoc/authentication-hoc';
-import Container from '../container';
-import Footer from '../footer';
-import Header from '../header';
+import AuthenticationHOC from '../../hoc/authentication-hoc';
+import Container from '../../container';
+import Footer from '../../footer';
+import Header from '../../header';
 
-import LoadingBar from '../ui/loading-bar';
+import LoadingBar from '../../ui/loading-bar';
 
-import browser from '../../util/browser';
-import context from '../../util/context';
+import browser from '../../../util/browser';
+import context from '../../../util/context';
 
 /**
  * Default status page for an alias, if redirected to the frontend.

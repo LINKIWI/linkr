@@ -5,12 +5,12 @@ import Helmet from 'react-helmet';
 import React from 'react';
 import Recaptcha from 'react-google-recaptcha';
 
-import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../alert';
-import Container from '../container';
-import Footer from '../footer';
-import Header from '../header';
+import Alert, {ALERT_TYPE_SUCCESS, ALERT_TYPE_ERROR} from '../../alert';
+import Container from '../../container';
+import Footer from '../../footer';
+import Header from '../../header';
 
-import LoadingBar from '../ui/loading-bar';
+import LoadingBar from '../../ui/loading-bar';
 
 /**
  * Page providing an interface for the user to interactively perform human verification with a

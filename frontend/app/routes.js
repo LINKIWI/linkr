@@ -7,7 +7,7 @@ import Account from './components/pages/account/account';
 import AccountLinkDetails from './components/pages/account/account-link-details';
 import Admin from './components/pages/admin/admin';
 import AdminLinkDetails from './components/pages/admin/admin-link-details';
-import Alias from './components/pages/alias';
+import Alias from './components/pages/alias/alias';
 import APIDocumentation from './components/pages/api/api-documentation';
 import Login from './components/pages/login';
 import Register from './components/pages/register';
