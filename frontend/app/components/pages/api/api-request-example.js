@@ -22,7 +22,7 @@ import context from '../../../util/context';
 const APIRequestExample = ({language, method, endpoint, data, apiKey}) => {
   const formattedCode = format(templates[language], {
     method: language === 'curl' ? method : method.toLowerCase(),
-    url: `${context.config.LINKR_URL}${endpoint}`,
+    url: `${context.config.linkr_url}${endpoint}`,
     data: stringify(data, {maxLength: Infinity}),
     apiKey: apiKey ? apiKey : 'YOUR_API_KEY'
   });

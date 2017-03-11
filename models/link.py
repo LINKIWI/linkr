@@ -1,6 +1,6 @@
 import time
 
-import config.options
+import config
 import util.cryptography
 from linkr import db
 
@@ -88,7 +88,10 @@ class Link(db.Model):
             'user_id': self.user_id,
             'submit_time': self.submit_time,
             'alias': self.alias,
-            'full_alias': '{base}/{alias}'.format(base=config.options.LINKR_URL, alias=self.alias),
+            'full_alias': '{base}/{alias}'.format(
+                base=config.options.server['linkr_url'],
+                alias=self.alias,
+            ),
             'outgoing_url': self.outgoing_url,
             'is_password_protected': self.is_password_protected(),
             'require_recaptcha': self.require_recaptcha,

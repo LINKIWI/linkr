@@ -125,7 +125,7 @@ class Register extends React.Component {
           {this.renderAlreadyLoggedIn()}
 
           {
-            context.config.ALLOW_OPEN_REGISTRATION ? (
+            context.config.allow_open_registration ? (
               <div className="margin-large--top margin-large--bottom">
                 <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Register</p>
 

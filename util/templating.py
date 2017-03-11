@@ -1,7 +1,7 @@
 import inspect
 import sys
 
-import config.options
+import config
 import uri
 from linkr import app
 
@@ -9,22 +9,9 @@ from linkr import app
 @app.context_processor
 def get_config():
     """
-    Expose the server-side configuration options to the templating utility. Sensitive constants
-    are deliberately excluded.
+    Expose the server-side configuration options as a templating method.
     """
-    sensitive_constants = {
-        'DATABASE_HOST',
-        'DATABASE_NAME',
-        'DATABASE_USER',
-        'DATABASE_PASSWORD',
-    }
-    return dict(config=lambda: {
-        option: getattr(config.options, option)
-        for option in filter(
-            lambda opt: not opt.startswith('__') and opt not in sensitive_constants,
-            dir(config.options),
-        )
-    })
+    return dict(config=lambda: config.options.server)
 
 
 @app.context_processor

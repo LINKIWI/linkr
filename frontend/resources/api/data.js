@@ -124,7 +124,7 @@ const data = {
               user_id: 1,
               submit_time: 1485442297,
               alias: 'alias',
-              full_alias: `${context.config.LINKR_URL}/alias`,
+              full_alias: `${context.config.linkr_url}/alias`,
               outgoing_url: 'https://google.com',
               is_password_protected: false
             }

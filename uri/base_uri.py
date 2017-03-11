@@ -1,8 +1,8 @@
-import config.options
+import config
 
 
 class URI:
-    fqdn = config.options.LINKR_URL
+    fqdn = config.options.server['linkr_url']
     path = '/'
     methods = ['GET']
 

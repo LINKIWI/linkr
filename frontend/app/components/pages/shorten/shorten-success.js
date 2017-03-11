@@ -50,7 +50,7 @@ class ShortenSuccess extends React.Component {
     const details = dottie.get(data, 'details', {
       /* eslint-disable camelcase */
       alias: params.alias,
-      full_alias: `${url.parse(context.config.LINKR_URL).href}${params.alias}`
+      full_alias: `${url.parse(context.config.linkr_url).href}${params.alias}`
       /* eslint-enable camelcase */
     });
 

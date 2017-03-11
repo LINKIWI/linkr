@@ -1,3 +1,5 @@
+/* global config */
+
 import dottie from 'dottie';
 import Helmet from 'react-helmet';
 import React from 'react';
@@ -78,7 +80,7 @@ export default class AliasHumanVerification extends React.Component {
               ref={(elem) => {
                 this.recaptcha = elem;
               }}
-              sitekey="6LdV4RcUAAAAAHQP6YYsiCv91dtiPBeej2XYSRLh"
+              sitekey={config.secrets.recaptcha_site_key}
               onChange={this.submitHumanVerification.bind(this)}
             />
           </div>

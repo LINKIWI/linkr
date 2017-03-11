@@ -139,7 +139,7 @@ export default class APIEndpoint extends React.Component {
         <div className="margin--bottom">
           <p className="text--section-header">HTTP Endpoint</p>
           <div className="api-inline-code">
-            {method.toUpperCase()} {context.config.LINKR_URL}{context.uris[uri]}
+            {method.toUpperCase()} {context.config.linkr_url}{context.uris[uri]}
           </div>
         </div>
 

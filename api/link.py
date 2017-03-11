@@ -1,6 +1,6 @@
 from webpreview import web_preview
 
-import config.options
+import config
 import database.link
 import util.recaptcha
 import util.response
@@ -98,7 +98,7 @@ def api_increment_link_hits(data):
 
 @app.route(LinkAddURI.path, methods=LinkAddURI.methods)
 @require_form_args(['alias', 'outgoing_url'])
-@require_login_api(only_if=config.options.REQUIRE_LOGIN_TO_CREATE)
+@require_login_api(only_if=config.options.server['require_login_to_create'])
 @optional_login_api
 def api_add_link(data):
     """
@@ -459,8 +459,14 @@ def validate_recaptcha(link_id, recaptcha):
             link_id=link_id,
         ))
 
-    remote_ip = request.remote_addr
-    if link.require_recaptcha and not util.recaptcha.validate_recaptcha(recaptcha, remote_ip):
+    is_admin = current_user.is_authenticated and current_user.is_admin
+    is_owner = current_user.is_authenticated and link.user_id == current_user.user_id
+    is_recaptcha_valid = link.require_recaptcha and util.recaptcha.validate_recaptcha(
+        recaptcha,
+        request.remote_addr,
+    )
+
+    if not is_recaptcha_valid and not is_admin and not is_owner:
         raise InvalidRecaptchaException('Upstream ReCAPTCHA validation failed.')
 
     return link

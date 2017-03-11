@@ -2,7 +2,7 @@ import json
 
 import requests
 
-import config.secrets
+import config
 
 
 def validate_recaptcha(recaptcha_resp, remote_ip):
@@ -16,7 +16,7 @@ def validate_recaptcha(recaptcha_resp, remote_ip):
     verify_resp = requests.post(
         url='https://www.google.com/recaptcha/api/siteverify',
         data={
-            'secret': config.secrets.RECAPTCHA_SECRET_KEY,
+            'secret': config.secrets.server['recaptcha_secret_key'],
             'response': recaptcha_resp,
             'remoteip': remote_ip,
         },

@@ -95,7 +95,7 @@ class Shorten extends React.Component {
               width: '1%',
               whiteSpace: 'nowrap'
             }}>
-              {url.parse(context.config.LINKR_URL).href}
+              {url.parse(context.config.linkr_url).href}
             </span>
             <TextField
               ref={(elem) => {
@@ -187,7 +187,7 @@ class Shorten extends React.Component {
       browser.push(`/linkr/success/${submitStatus.alias}`);
     }
 
-    if (isLoggedIn === false && context.config.REQUIRE_LOGIN_TO_CREATE) {
+    if (isLoggedIn === false && context.config.require_login_to_create) {
       browser.loginRedirect('require_login_to_create');
     }
 

@@ -14,7 +14,10 @@ env/
 *.db
 
 # User-overriden config
-config/options.py
+config/options/client.json
+config/options/server.json
+config/secrets/client.json
+config/secrets/server.json
 
 # Other
 npm-debug.log

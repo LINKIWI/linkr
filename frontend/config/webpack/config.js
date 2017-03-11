@@ -4,7 +4,8 @@
 import path from 'path';
 import webpack from 'webpack';
 
-import clientConfig from '../../../config/client';
+import clientOptions from '../../../config/options/client';
+import clientSecrets from '../../../config/secrets/client';
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -33,7 +34,10 @@ export default {
   },
   plugins: [
     new webpack.DefinePlugin({
-      config: JSON.stringify(clientConfig),
+      config: JSON.stringify({
+        options: clientOptions,
+        secrets: clientSecrets
+      }),
       ...(isProduction && {
         'process.env': {
           'NODE_ENV': JSON.stringify('production')

@@ -7,7 +7,10 @@ virtualenv env
 source env/bin/activate
 
 # Application config
-cp config/options.py.template config/options.py
+cp config/options/client.json.template config/options/client.json
+cp config/options/server.json.template config/options/server.json
+cp config/secrets/client.json.template config/secrets/client.json
+cp config/secrets/server.json.template config/secrets/server.json
 
 # Database initialization
 service mysql start

@@ -1,4 +1,4 @@
-import config.options
+import config
 import util.response
 from linkr import app
 from uri.misc import *
@@ -13,13 +13,11 @@ def api_config(data):
     Retrieve the current application configuration options.
     """
     try:
-        config_opts = {
-            opt: getattr(config.options, opt)
-            for opt in dir(config.options)
-            if not opt.startswith('__')
-        }
         return util.response.success({
-            'config': config_opts,
+            'config': {
+                'options': dict(config.options.client, **config.options.server),
+                'secrets': dict(config.secrets.client, **config.secrets.server),
+            },
         })
     except:
         return util.response.undefined_error()

@@ -1,0 +1,5 @@
+{
+  "linkr_url": "http://localhost:5000",
+  "require_login_to_create": false,
+  "allow_open_registration": true
+}

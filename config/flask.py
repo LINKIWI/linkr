@@ -1,14 +1,14 @@
 # flake8: noqa: E501
 
-import config.options
+import config
 
 
 # Flask-SQLAlchemy
 SQLALCHEMY_DATABASE_URI = 'mysql://{database_user}:{database_password}@{database_host}/{database_name}'.format(
-    database_user=config.options.DATABASE_USER,
-    database_password=config.options.DATABASE_PASSWORD,
-    database_host=config.options.DATABASE_HOST,
-    database_name=config.options.DATABASE_NAME,
+    database_user=config.secrets.server['database']['user'],
+    database_password=config.secrets.server['database']['password'],
+    database_host=config.secrets.server['database']['host'],
+    database_name=config.secrets.server['database']['name'],
 )
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 

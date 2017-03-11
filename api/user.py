@@ -1,7 +1,6 @@
 from flask_login import logout_user
-from flask_login import current_user
 
-import config.options
+import config
 import database.user
 import util.response
 from linkr import app
@@ -20,7 +19,7 @@ def api_add_user(data):
     try:
         is_admin = data.get('is_admin')
 
-        if not config.options.ALLOW_OPEN_REGISTRATION:
+        if not config.options.server['allow_open_registration']:
             return util.response.error(
                 403,
                 'The server administrator has disabled open user self-registration.',
