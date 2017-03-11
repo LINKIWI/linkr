@@ -13,6 +13,21 @@ export default class TextField extends React.Component {
     className: ''
   };
 
+  constructor() {
+    super();
+
+    this.state = {value: ''};
+  }
+
+  /**
+   * Update the text field's internal state to reflect the change in input.
+   *
+   * @param {Object} evt DOM event object.
+   */
+  handleOnChange(evt) {
+    this.setState({value: evt.target.value});
+  }
+
   /**
    * Retrieve the current value of the input field.
    *
@@ -32,7 +47,8 @@ export default class TextField extends React.Component {
   }
 
   render() {
-    const {className, style, icon, iconSpacing, ...props} = this.props;
+    const {className, style, icon, iconSpacing, onChange = () => {}, ...props} = this.props;
+    const {value} = this.state;
 
     return (
       <div className="text-field-container transition">
@@ -45,6 +61,11 @@ export default class TextField extends React.Component {
           style={{
             paddingLeft: icon ? iconSpacing : null,
             ...style
+          }}
+          value={value}
+          onChange={(evt) => {
+            this.handleOnChange(evt);
+            onChange(evt);
           }}
           {...props}
         />
