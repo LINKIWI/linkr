@@ -19,5 +19,6 @@ if __name__ == '__main__':
         extra_files=[
             'frontend/static/dist/bundle.js',
             'frontend/static/dist/main.css',
+            'frontend/templates/index.html',
         ],
     )

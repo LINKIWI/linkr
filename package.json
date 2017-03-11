@@ -4,7 +4,7 @@
   "description": "Beautiful link shortening",
   "scripts": {
     "build": "npm run build-css && npm run build-js",
-    "build-js": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack.js",
+    "build-js": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack",
     "build-css": "mkdir -p frontend/static/dist && node-sass --output-style compressed frontend/styles/main.scss frontend/static/dist/main.css",
     "build-js-watch": "npm run build-js -- --watch --colors",
     "build-css-watch": "npm run build-css -- --watch",
@@ -91,6 +91,6 @@
     "sinon": "^1.17.6",
     "tap-spec": "^4.1.1",
     "tape": "^4.6.0",
-    "webpack": "^1.13.1"
+    "webpack": "^1.14.0"
   }
 }
