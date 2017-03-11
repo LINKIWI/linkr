@@ -1,4 +1,3 @@
-import extend from 'deep-extend';
 import React from 'react';
 
 /**
@@ -43,9 +42,10 @@ export default class TextField extends React.Component {
           }}
           className={`text-field transition ${className}`}
           autoComplete="off"
-          style={extend({
-            paddingLeft: icon ? iconSpacing : null
-          }, style)}
+          style={{
+            paddingLeft: icon ? iconSpacing : null,
+            ...style
+          }}
           {...props}
         />
         {

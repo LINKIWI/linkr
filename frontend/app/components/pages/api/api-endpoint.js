@@ -1,5 +1,4 @@
 import atomOneDark from 'react-syntax-highlighter/dist/styles/atom-one-dark';
-import extend from 'deep-extend';
 import React from 'react';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/light';
 
@@ -162,18 +161,17 @@ export default class APIEndpoint extends React.Component {
         <APICodeBlock caption="Example response">
           <SyntaxHighlighter language="javascript" style={atomOneDark}>
             {
-              JSON.stringify(extend(
+              JSON.stringify(
                 {
                   success: true,
-                  message: null
-                },
-                response.reduce((json, parameter) => {
-                  if (parameter.example) {
-                    json[parameter.key] = parameter.example;
-                  }
-                  return json;
-                }, {})
-              ), null, 2)
+                  message: null,
+                  ...response.reduce((json, parameter) => {
+                    if (parameter.example) {
+                      json[parameter.key] = parameter.example;
+                    }
+                    return json;
+                  }, {})
+                }, null, 2)
             }
           </SyntaxHighlighter>
         </APICodeBlock>

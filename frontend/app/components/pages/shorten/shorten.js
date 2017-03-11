@@ -1,6 +1,6 @@
 import Helmet from 'react-helmet';
 import LoadingHOC from 'react-loading-hoc';
-import randomstring from 'randomstring';
+import range from 'range';
 import React from 'react';
 import request from 'browser-request';
 import url from 'url';
@@ -27,7 +27,7 @@ class Shorten extends React.Component {
     super(props);
 
     this.state = {submitStatus: {}};
-    this.randomAlias = randomstring.generate(10);
+    this.randomAlias = generateRandomAlias(10);
   }
 
   submit(evt) {
@@ -206,6 +206,23 @@ class Shorten extends React.Component {
       </div>
     );
   }
+}
+
+/**
+ * Generate a random alphanumeric alias.
+ *
+ * @param {Number} length Desired random alias length.
+ * @returns {String} A random alias consisting only of alphabetic and numeric characters.
+ */
+function generateRandomAlias(length) {
+  const alpha = 'abcdefghijklmnopqrstuvwxyz';
+  const nums = '0123456789';
+  const chars = (alpha.toLowerCase() + alpha.toUpperCase() + nums).split('');
+
+  return range
+    .range(0, length)
+    .map(() => chars[Math.floor(Math.random() * chars.length)])
+    .join('');
 }
 
 export default AuthenticationHOC(LoadingHOC(Shorten));

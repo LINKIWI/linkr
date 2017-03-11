@@ -1,7 +1,5 @@
 /* global setTimeout, clearInterval */
 
-import clone from 'clone';
-import extend from 'deep-extend';
 import React from 'react';
 
 export const GRACE_TIMEOUT_INTERVAL = 150;
@@ -59,10 +57,11 @@ export default class Tooltip extends React.Component {
     const {displayTooltip} = this.state;
 
     // Conditionally display the tooltip based on current state
-    const style = extend(clone(tooltipStyle), {
+    const style = {
+      ...tooltipStyle,
       opacity: displayTooltip ? 1 : 0,
       visibility: displayTooltip ? 'inherit' : 'hidden'
-    });
+    };
 
     return (
       <div

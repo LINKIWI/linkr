@@ -1,6 +1,6 @@
 /* global window */
 
-import {browserHistory} from 'react-router';
+import browserHistory from 'react-router/lib/browserHistory';
 import url from 'url';
 
 import context from './context';

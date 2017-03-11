@@ -1,6 +1,7 @@
 /* global setTimeout */
 
-import {browserHistory, Link} from 'react-router';
+import browserHistory from 'react-router/lib/browserHistory';
+import Link from 'react-router/lib/Link';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';

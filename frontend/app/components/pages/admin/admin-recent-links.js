@@ -1,6 +1,6 @@
 import dottie from 'dottie';
 import humanize from 'humanize';
-import {Link} from 'react-router';
+import Link from 'react-router/lib/Link';
 import React from 'react';
 import request from 'browser-request';
 import Search from 'react-icons/lib/md/search';

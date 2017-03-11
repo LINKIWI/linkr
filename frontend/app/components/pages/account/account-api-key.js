@@ -1,5 +1,5 @@
 import copy from 'copy-to-clipboard';
-import {Link} from 'react-router';
+import Link from 'react-router/lib/Link';
 import React from 'react';
 
 import AccountRegenerateAPIKeyModal from './account-regenerate-api-key-modal';

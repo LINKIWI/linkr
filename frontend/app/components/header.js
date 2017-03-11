@@ -1,4 +1,4 @@
-import {Link} from 'react-router';
+import Link from 'react-router/lib/Link';
 import range from 'range';
 import React from 'react';
 

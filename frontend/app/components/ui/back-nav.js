@@ -1,4 +1,4 @@
-import {browserHistory} from 'react-router';
+import browserHistory from 'react-router/lib/browserHistory';
 import KeyboardBackspace from 'react-icons/lib/md/keyboard-backspace';
 import React from 'react';
 

@@ -1,4 +1,4 @@
-import {Link} from 'react-router';
+import Link from 'react-router/lib/Link';
 import Helmet from 'react-helmet';
 import React from 'react';
 
