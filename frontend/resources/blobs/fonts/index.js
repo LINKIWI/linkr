@@ -1,14 +1,10 @@
 import karlaBold from './karla-bold.txt';
-import karlaBoldItalic from './karla-bold-italic.txt';
-import karlaItalic from './karla-italic.txt';
 import karlaRegular from './karla-regular.txt';
 import sourceCodeProMedium from './source-code-pro-medium.txt';
 import sourceCodeProRegular from './source-code-pro-regular.txt';
 
 /**
  * Factory function for generating a CSS @font-face declaration.
- *
- * TODO: inline styles migration, move this to a styles folder as a factory function on font styles
  *
  * @param {String} name Name of the font-family.
  * @param {String} data Base64-encoded font data.
@@ -28,8 +24,6 @@ function fontFaceStyle(name, data, file) {
 export default {
   fontFaceStyle,
   karlaBold,
-  karlaBoldItalic,
-  karlaItalic,
   karlaRegular,
   sourceCodeProMedium,
   sourceCodeProRegular

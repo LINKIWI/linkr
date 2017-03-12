@@ -17,11 +17,6 @@ function injectGlobalStyles() {
       file: 'karla-regular.ttf'
     },
     {
-      name: 'karla-italic',
-      data: fonts.karlaItalic,
-      file: 'karla-italic.ttf'
-    },
-    {
       name: 'karla-bold',
       data: fonts.karlaBold,
       file: 'karla-bold.ttf'
