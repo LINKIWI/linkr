@@ -5,7 +5,7 @@ import Link from 'react-router/lib/Link';
 import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 import request from 'browser-request';
-import url from 'url';
+import urlParse from 'url-parse';
 
 import Alert, {ALERT_TYPE_ERROR} from '../../alert';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
@@ -50,7 +50,7 @@ class ShortenSuccess extends React.Component {
     const details = dottie.get(data, 'details', {
       /* eslint-disable camelcase */
       alias: params.alias,
-      full_alias: `${url.parse(context.config.linkr_url).href}${params.alias}`
+      full_alias: `${urlParse(context.config.linkr_url).href}/${params.alias}`
       /* eslint-enable camelcase */
     });
 

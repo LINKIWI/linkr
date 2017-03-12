@@ -3,7 +3,7 @@ import LoadingHOC from 'react-loading-hoc';
 import range from 'range';
 import React from 'react';
 import request from 'browser-request';
-import url from 'url';
+import urlParse from 'url-parse';
 
 import Alert, {ALERT_TYPE_ERROR} from '../../alert';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
@@ -36,7 +36,8 @@ class Shorten extends React.Component {
     this.setState({submitStatus: {}});
 
     const rawOutgoingURL = this.outgoingURLInput.getValue();
-    const outgoingURL = url.parse(rawOutgoingURL).protocol ? rawOutgoingURL : `http://${rawOutgoingURL}`;
+    const outgoingURL = urlParse(rawOutgoingURL).protocol ?
+      rawOutgoingURL : `http://${rawOutgoingURL}`;
 
     this.props.loading((done) => {
       request.put({
@@ -95,7 +96,7 @@ class Shorten extends React.Component {
               width: '1%',
               whiteSpace: 'nowrap'
             }}>
-              {url.parse(context.config.linkr_url).href}
+              {urlParse(context.config.linkr_url).href}/
             </span>
             <TextField
               ref={(elem) => {

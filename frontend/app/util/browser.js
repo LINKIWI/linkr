@@ -1,7 +1,7 @@
 /* global window */
 
 import browserHistory from 'react-router/lib/browserHistory';
-import url from 'url';
+import urlParse from 'url-parse';
 
 import context from './context';
 
@@ -76,7 +76,7 @@ function loginRedirect(reason) {
  * @returns {Object} Parsed URL object.
  */
 function parseURL() {
-  return url.parse(window.location.href, true);
+  return urlParse(window.location.href, true);
 }
 
 export default {

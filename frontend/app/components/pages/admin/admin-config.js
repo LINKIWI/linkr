@@ -2,7 +2,6 @@ import dottie from 'dottie';
 import flat from 'flat';
 import React from 'react';
 import request from 'browser-request';
-import truncate from 'lodash.truncate';
 
 import InfoTable from '../../info-table';
 
@@ -47,7 +46,7 @@ export default class AdminConfig extends React.Component {
       const configValue = (flatConfig[key] === null ? 'null' : flatConfig[key]).toString();
       const value = configValue.length > valueMaxLength ? (
         <Tooltip contents={<span>{configValue}</span>}>
-          {truncate(configValue, {length: valueMaxLength})}
+          {`${configValue.substring(0, valueMaxLength)}...`}
         </Tooltip>
       ) : configValue;
 

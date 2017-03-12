@@ -4,7 +4,6 @@ import Link from 'react-router/lib/Link';
 import React from 'react';
 import request from 'browser-request';
 import Search from 'react-icons/lib/md/search';
-import truncate from 'lodash.truncate';
 
 import Table from '../../table';
 
@@ -180,7 +179,9 @@ export default class AdminRecentLinks extends React.Component {
             </Link>,
             // Link to the outgoing URL
             <a href={link.outgoing_url}>
-              {truncate(link.outgoing_url, {length: 80})}
+              {
+                `${link.outgoing_url.substring(0, 60)}${link.outgoing_url.length > 60 ? '...' : ''}`
+              }
             </a>,
             // Relative creation time description
             humanize.relativeTime(link.submit_time)

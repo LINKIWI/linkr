@@ -3,7 +3,6 @@ import dottie from 'dottie';
 import humanize from 'humanize';
 import React from 'react';
 import request from 'browser-request';
-import truncate from 'lodash.truncate';
 
 import AccountLinkActions from './account-link-actions';
 import LinkTooltip from '../../link-tooltip';
@@ -103,7 +102,9 @@ export default class AccountLinks extends React.Component {
             />,
             // Link to the outgoing URL
             <a href={link.outgoing_url}>
-              {truncate(link.outgoing_url, {length: 80})}
+              {
+                `${link.outgoing_url.substring(0, 60)}${link.outgoing_url.length > 60 ? '...' : ''}`
+              }
             </a>,
             // Relative creation time description
             humanize.relativeTime(link.submit_time),
