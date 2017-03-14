@@ -93,13 +93,14 @@ class TestLink(LinkrTestCase):
             self.assertEqual(added.outgoing_url, outgoing_url)
             self.assertIsNotNone(added.link_id)
             self.assertIsNone(added.password_hash)
+            self.assertFalse(added.require_recaptcha)
 
     def test_add_link_valid_additional_properties(self):
         added = database.link.add_link(
             alias='alias',
             outgoing_url='https://google.com',
             password='password',
-            user_id=1.
+            user_id=1,
         )
 
         self.assertEqual(added.alias, 'alias')
