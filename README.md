@@ -27,29 +27,29 @@ TODO
 * You need Python, `pip`, and the `virtualenv` package. ([Reference](https://virtualenv.pypa.io/en/stable/))
 * You need Node and `npm`. ([Reference](https://nodejs.org/en/))
 * You need a MySQL database. ([Reference](https://dev.mysql.com/doc/))
+* You need Apache, with `mod_wsgi` installed. ([Reference](https://modwsgi.readthedocs.io/en/develop/))
 * All following instructions assume Linux.
 
 #### Instructions
 
-You need to get the code, install necessary dependencies, and build all frontend resources.
+Get the code
 
 ```bash
-# The 'getting the code' part
 $ git clone https://github.com/LINKIWI/linkr.git
 $ cd linkr/
-# The installation part
+```
+
+Install dependencies
+
+```bash
+$ sudo apt-get install libmysqlclient-dev python-dev
 $ virtualenv env
 $ source env/bin/activate
 $ pip install -r requirements.txt
 $ npm install
-# The building part
-$ NODE_ENV=production npm run build
-# (Optional) Run all unit tests to make sure everything works.
-$ npm run test-backend
-$ npm run test-frontend
 ```
 
-Next, set up the MySQL database.
+Set up the MySQL database
 
 ```sql
 CREATE USER 'linkr'@'localhost' IDENTIFIED BY 'super-secret-password';
@@ -58,9 +58,20 @@ GRANT ALL ON linkr.* TO 'linkr'@'localhost';
 FLUSH PRIVILEGES;
 ```
 
-Next, copy `config/options.py.template` to `config/options.py` and modify it to your liking. Most importantly, you'll need to set `DATABASE_PASSWORD` to the password you created above for the `linkr` database user.
+Configuration options and secrets
+  * Don't skip this step! Building and running the app will fail without config files!
+  * Documentation for each available config option is in the Configuration section.
 
-Finally, run the `linkr_setup.py` script to walk you through setting up the database and creating an admin user.
+```bash
+$ cp config/options/client.json.template config/options/client.json
+$ cp config/options/server.json.template config/options/server.json
+$ cp config/secrets/client.json.template config/secrets/client.json
+$ cp config/secrets/server.json.template config/secrets/server.json
+# You can leave the options as default, or modify to your liking. Make sure the server-side secrets
+# config contains your database connection credentials.
+```
+
+Run the `linkr_setup.py` script to walk you through setting up the database and creating an admin user.
 
 ```bash
 $ python linkr_setup.py
@@ -68,23 +79,68 @@ $ python linkr_setup.py
 
 This script is used for initializing Linkr for the first time on a new deployment.
 This will create the Linkr MySQL tables and create an admin user account.
-Please ensure you have created the MySQL user and database BEFORE running this script.
-Please ensure that you have copied config/options.py.template into config/options.py and set all config options to your liking.
-It is especially important that all database configuration constants are set properly (host, name, username, password).
-Press any key to continue or ^C to quit.
-
-Configuration read successfully!
-Linkr URL: https://linkr.example.com
-Database host: localhost
-Database name: linkr
-Database username: linkr
-Database password: super-secret-password
-
-Press any key to create the Linkr database and tables.
-
-Enter the username and password for the admin user.
-Admin username: admin
-Admin password:
-Verify admin password:
-Setup complete!
+...
 ```
+
+Build the app.
+
+```bash
+$ NODE_ENV=production npm run build
+```
+
+Almost there! An Apache virtual host config sample using WSGI:
+
+```apache
+<VirtualHost *:80>
+    ServerName t.example.com
+
+    AliasMatch "^/(linkr/(?!.*api/).+)?$" /path/to/linkr/frontend/static/dist/index.html
+    Alias /static /path/to/linkr/frontend/static
+
+    WSGIScriptAlias / /path/to/linkr/linkr.wsgi
+
+    <Directory /path/to/linkr>
+        Require all granted
+    </Directory>
+</VirtualHost>
+```
+
+The service is now live at `t.example.com`!
+
+#### I am lazy and just want a prebuilt Docker image
+
+Building the application from source is highly recommended. This is because the application's configuration options are specific to your installation, and must be configured before the application can run. Also, client-side secrets are bundled directly into the application as part of the build process, so it's not possible to distribute a pre-built frontend.
+
+## Configuration
+
+#### `config/options/client.json`
+
+Nothing here for now!
+
+#### `config/options/server.json`
+
+|Key|Value|
+|---|-----|
+|`linkr_url`|The public-facing URL to your Linkr installation, including the protocol and without a trailing forward slash.|
+|`require_login_to_create`|True to require users to sign in before creating links; false to allow anonymous and signed-in users to create links.|
+|`allow_open_registration`|True to allow anyone to register; false to disallow all registration.|
+
+#### `config/secrets/client.json`
+
+Note that all of these secrets are bundled into the frontend application at build time.
+
+|Key|Value|
+|---|-----|
+|`sentry_client_dsn`|The client-side Sentry DSN key for this application. *If your production infrastructure does not make use of [Sentry](https://sentry.io) or you don't care about error reporting, leave this as null*|
+|`recaptcha_site_key`|The client-side site key for this application from the Google ReCAPTCHA admin panel. *If you don't want to enable the human verification feature for links, leave this as null*|
+
+#### `config/secrets/server.json`
+
+|Key|Value|
+|---|-----|
+|`sentry_server_dsn`|The server-side Sentry DSN key for this application. *If your production infrastructure does not make use of [Sentry](https://sentry.io) or you don't care about error reporting, leave this as null*|
+|`recaptcha_secret_key`|The server-side secret key for this application from the Google ReCAPTCHA admin panel. *If you don't want to enable the human verification feature for links, leave this as null*|
+|`database.host`|The hostname or IP of the MySQL database.|
+|`database.name`|The name of Linkr's database.|
+|`database.user`|The username of the MySQL user for accessing the above database.|
+|`database.password`|The password of the MySQL user for accessing the above database.|
