@@ -15,7 +15,10 @@ export default class Checkbox extends React.Component {
     className: React.PropTypes.string,
     style: React.PropTypes.object,
     isChecked: React.PropTypes.bool,
-    text: React.PropTypes.string,
+    text: React.PropTypes.oneOfType([
+      React.PropTypes.string,
+      React.PropTypes.element
+    ]),
     onCheck: React.PropTypes.func,
     onUncheck: React.PropTypes.func
   };

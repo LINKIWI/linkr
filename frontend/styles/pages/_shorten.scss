@@ -1,3 +1,4 @@
+@import '../universal/colors';
 @import '../universal/fonts';
 
 @media only screen and (min-width: 0px) {
@@ -28,4 +29,12 @@
   .shorten-field {
     font-size: $alpha;
   }
+}
+
+.help-icon {
+  color: $gray-20;
+  cursor: default;
+  width: 18px;
+  height: 18px;
+  vertical-align: text-bottom !important;
 }

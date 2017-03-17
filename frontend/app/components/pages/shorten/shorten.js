@@ -1,4 +1,5 @@
 import Helmet from 'react-helmet';
+import Help from 'react-icons/lib/md/help-outline';
 import LoadingHOC from 'react-loading-hoc';
 import range from 'range';
 import React from 'react';
@@ -15,6 +16,7 @@ import Button from '../../ui/button';
 import Checkbox from '../../ui/checkbox';
 import LoadingBar from '../../ui/loading-bar';
 import TextField from '../../ui/text-field';
+import Tooltip from '../../ui/tooltip';
 
 import browser from '../../../util/browser';
 import context from '../../../util/context';
@@ -116,7 +118,25 @@ class Shorten extends React.Component {
               this.recaptchaCheck = elem;
             }}
             className="margin-large--top"
-            text="Require human verification"
+            text={
+              <span>
+                Require human verification
+                <Tooltip
+                  tooltipStyle={{
+                    width: '210px',
+                    marginLeft: '-99px',
+                    cursor: 'default'
+                  }}
+                  contents={
+                    <p className="sans-serif kilo">
+                      Require users to perform a CAPTCHA verification before accessing the link.
+                    </p>
+                  }
+                >
+                  <Help className="help-icon margin-small--left" />
+                </Tooltip>
+              </span>
+            }
           />
 
           <Checkbox
