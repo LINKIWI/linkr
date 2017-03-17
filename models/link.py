@@ -74,7 +74,7 @@ class Link(db.Model):
         :return: True if the supplied password matches the link's password or if the link is not
                  password protected; False otherwise.
         """
-        return not self.password_hash or \
+        return not self.is_password_protected() or \
             util.cryptography.secure_hash(password) == self.password_hash
 
     def as_dict(self):

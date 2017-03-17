@@ -87,9 +87,6 @@ class User(db.Model):
     def is_authenticated():
         return True
 
-    def is_active(self):
-        return self.is_active
-
     @staticmethod
     def is_anonymous():
         return False
