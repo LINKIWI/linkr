@@ -12,10 +12,10 @@ class URI:
     @classmethod
     def uri(cls, **kwargs):
         """
-        TODO
+        Generate a URI with optional params and embedded params.
 
-        :param kwargs:
-        :return:
+        :param kwargs: Keyword arguments for the params and embedded params.
+        :return: Formatted URI string.
         """
         embedded_params = set([key for key in kwargs if '<{key}>'.format(key=key) in cls.path])
         params = [
@@ -36,19 +36,19 @@ class URI:
     @classmethod
     def full_uri(cls, **kwargs):
         """
-        TODO
+        Generate the full URI (including the FQDN).
 
-        :param kwargs:
-        :return:
+        :param kwargs: Optional params and embedded params.
+        :return: Formatted full URI string.
         """
         return cls.fqdn + cls.uri(**kwargs)
 
     @classmethod
     def get_path(cls):
         """
-        TODO
+        Get the path associated with this URI.
 
-        :return:
+        :return: This URI's path.
         """
         return cls.path
 
