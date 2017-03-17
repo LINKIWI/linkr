@@ -56,7 +56,7 @@ def alias_route(data, alias):
             return frontend()
         if request.method == 'POST':
             return util.response.error(
-                status_code=401,
+                status_code=403,
                 message='This link requires human verification, and can only be accessed '
                         'interactively via a browser.',
                 failure='failure_invalid_recaptcha',

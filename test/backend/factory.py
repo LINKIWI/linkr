@@ -61,12 +61,14 @@ class LinkFactory(Factory):
         outgoing_url='https://google.com',
         password=random_alphanumeric_string,
         user_id=lambda: random.getrandbits(16),
+        require_recaptcha=False,
     ):
         return database.link.add_link(
             alias=cls.random_or_specified_value(alias),
             outgoing_url=cls.random_or_specified_value(outgoing_url),
             password=cls.random_or_specified_value(password),
             user_id=cls.random_or_specified_value(user_id),
+            require_recaptcha=cls.random_or_specified_value(require_recaptcha),
         )
 
 
