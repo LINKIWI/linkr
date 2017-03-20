@@ -91,5 +91,9 @@ class User(db.Model):
     def is_anonymous():
         return False
 
+    @staticmethod
+    def is_active():
+        return True
+
     def get_id(self):
         return unicode(self.user_id)

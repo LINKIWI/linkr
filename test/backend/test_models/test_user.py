@@ -59,4 +59,7 @@ class TestUser(LinkrTestCase):
         self.assertFalse(user.is_anonymous())
 
     def test_get_id(self):
-        self.assertEqual('1', user.get_id())
+        self.assertEqual(user.get_id(), '1')
+
+    def test_is_active(self):
+        self.assertTrue(user.is_active)

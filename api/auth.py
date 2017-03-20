@@ -20,9 +20,9 @@ def api_auth_check():
             })
 
         return util.response.error(
-            401,
-            'No user is currently authenticated.',
-            'failure_unauthenticated',
+            status_code=401,
+            message='No user is currently authenticated.',
+            failure='failure_unauthenticated',
         )
     except:
         return util.response.undefined_error()
@@ -44,17 +44,17 @@ def api_auth_login(data):
         return util.response.success(resp_data)
     except InvalidAuthenticationException:
         return util.response.error(
-            401,
-            'The supplied password is incorrect.',
-            'failure_invalid_auth',
-            resp_data,
+            status_code=401,
+            message='The supplied password is incorrect.',
+            failure='failure_invalid_auth',
+            data=resp_data,
         )
     except NonexistentUserException:
         return util.response.error(
-            404,
-            'The supplied username does not exist.',
-            'failure_nonexistent_user',
-            resp_data,
+            status_code=404,
+            message='The supplied username does not exist.',
+            failure='failure_nonexistent_user',
+            data=resp_data,
         )
     except:
         return util.response.undefined_error()
