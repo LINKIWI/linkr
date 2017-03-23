@@ -13,6 +13,7 @@ Flask-Login==0.4.0
 Flask-SQLAlchemy==2.1
 Flask-Testing==0.6.1
 funcsigs==1.0.2
+gunicorn==19.7.1
 htmlmin==0.1.10
 itsdangerous==0.24
 Jinja2==2.8
