@@ -1,8 +1,11 @@
+/* global setTimeout */
+
 import csjs from 'csjs-inject';
 import Favicon from 'react-favicon';
 import React from 'react';
 
 import fonts from '../../resources/blobs/fonts';
+import Splash from './splash';
 
 /**
  * On client-side application initialization, inject global CSS styles into the document head.
@@ -38,14 +41,40 @@ function injectGlobalStyles() {
 
 injectGlobalStyles();
 
-const AppRoot = ({children}) => (
-  <div className="app-root">
-    <Favicon
-      animated={false}
-      url={['/static/img/favicon.png']}
-    />
-    {children}
-  </div>
-);
+export default class AppRoot extends React.Component {
+  constructor() {
+    super();
 
-export default AppRoot;
+    this.state = {
+      splashVisible: true
+    };
+  }
+
+  componentDidMount() {
+    this.splash.destroy();
+
+    setTimeout(() => this.setState({splashVisible: false}), 160);
+  }
+
+  render() {
+    const {children} = this.props;
+    const {splashVisible} = this.state;
+
+    return (
+      <div className="app-root">
+        <Favicon
+          animated={false}
+          url={['/static/img/favicon.png']}
+        />
+        {
+          splashVisible && (
+            <Splash ref={(elem) => {
+              this.splash = elem;
+            }} />
+          )
+        }
+        {children}
+      </div>
+    );
+  }
+}
