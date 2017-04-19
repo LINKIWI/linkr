@@ -466,7 +466,7 @@ def validate_recaptcha(link_id, recaptcha):
         request.remote_addr,
     )
 
-    if not is_recaptcha_valid and not is_admin and not is_owner:
+    if link.require_recaptcha and not is_recaptcha_valid and not is_admin and not is_owner:
         raise InvalidRecaptchaException('Upstream ReCAPTCHA validation failed.')
 
     return link
