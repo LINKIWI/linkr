@@ -19,8 +19,8 @@ npm install
 # Build SCSS and Javascript module bundle
 npm run build
 
-# Reload Apache config
-sudo service apache2 reload
+# Reload Linkr service
+sudo service linkr restart
 
 allu \
     --skip-auth \
