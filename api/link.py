@@ -72,7 +72,7 @@ def api_increment_link_hits(data):
 
         hit = database.link.add_link_hit(
             link_id=data['link_id'],
-            remote_ip=request.remote_addr,
+            remote_ip=request.access_route[0],
             referer=request.referrer,
             user_agent=request.user_agent,
         )
@@ -462,8 +462,8 @@ def validate_recaptcha(link_id, recaptcha):
     is_admin = current_user.is_authenticated and current_user.is_admin
     is_owner = current_user.is_authenticated and link.user_id == current_user.user_id
     is_recaptcha_valid = link.require_recaptcha and util.recaptcha.validate_recaptcha(
-        recaptcha,
-        request.remote_addr,
+        recaptcha_resp=recaptcha,
+        remote_ip=request.access_route[0],
     )
 
     if link.require_recaptcha and not is_recaptcha_valid and not is_admin and not is_owner:

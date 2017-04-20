@@ -64,7 +64,7 @@ def alias_route(data, alias):
 
     database.link.add_link_hit(
         link_id=link.link_id,
-        remote_ip=request.remote_addr,
+        remote_ip=request.access_route[0],
         referer=request.referrer,
         user_agent=request.user_agent,
     )

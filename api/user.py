@@ -36,7 +36,7 @@ def api_add_user(data):
         new_user = database.user.add_user(
             username=data['username'],
             password=data['password'],
-            signup_ip=request.remote_addr,
+            signup_ip=request.access_route[0],
             is_admin=is_admin and current_user.is_authenticated and current_user.is_admin,
         )
         return util.response.success({
