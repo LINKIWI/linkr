@@ -7,13 +7,12 @@ import React from 'react';
  * invocation of the browser's back button.
  */
 const BackNav = () => (
-  <div
-    className="back-nav margin--bottom text-primary transition"
-    onClick={browserHistory.goBack}
-  >
-    <KeyboardBackspace className="margin--right" />
-    <span className="sans-serif bold kilo">
-      GO BACK
+  <div className="margin--bottom">
+    <span className="back-nav text-primary transition" onClick={browserHistory.goBack}>
+      <KeyboardBackspace className="margin--right" />
+      <span className="sans-serif bold kilo">
+        GO BACK
+      </span>
     </span>
   </div>
 );
