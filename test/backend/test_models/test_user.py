@@ -62,4 +62,4 @@ class TestUser(LinkrTestCase):
         self.assertEqual(user.get_id(), '1')
 
     def test_is_active(self):
-        self.assertTrue(user.is_active)
+        self.assertTrue(user.is_active())
