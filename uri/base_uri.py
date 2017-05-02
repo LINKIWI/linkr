@@ -7,7 +7,7 @@ class URI:
     methods = ['GET']
 
     def __init__(self):
-        pass
+        pass  # pragma: no cover
 
     @classmethod
     def uri(cls, **kwargs):

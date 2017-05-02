@@ -40,10 +40,10 @@ def require_form_args(form_args=tuple([]), allow_blank_values=False, strict_para
                         data[arg] is not None and len(unicode(data[arg])) > 0 for arg in form_args
                     ])):
                 return util.response.error(
-                    400,
-                    'Required parameters are missing',
-                    'failure_incomplete_params',
-                    {
+                    status_code=400,
+                    message='Required parameters are missing',
+                    failure='failure_incomplete_params',
+                    data={
                         'missing_params': list(set(form_args).difference(set(data.keys()))),
                     },
                 )

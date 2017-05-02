@@ -24,7 +24,7 @@ class Factory:
     """
 
     def __init__(self):
-        pass
+        pass  # pragma: no cover
 
     @classmethod
     def random_or_specified_value(cls, value):
@@ -46,7 +46,7 @@ class Factory:
 
         :return: An instance of the model specified by the subclass type.
         """
-        raise NotImplementedError
+        raise NotImplementedError  # pragma: no cover
 
 
 class LinkFactory(Factory):
