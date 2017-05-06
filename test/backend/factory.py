@@ -59,7 +59,7 @@ class LinkFactory(Factory):
         cls,
         alias=random_alphanumeric_string,
         outgoing_url='https://google.com',
-        password=random_alphanumeric_string,
+        password=None,
         user_id=lambda: random.getrandbits(16),
         require_recaptcha=False,
     ):

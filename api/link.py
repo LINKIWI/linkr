@@ -124,7 +124,7 @@ def api_add_link(data):
         )
     except ReservedAliasException:
         return util.response.error(
-            status_code=404,
+            status_code=400,
             message='The requested alias is reserved, and cannot be used. Use a different alias.',
             failure='failure_reserved_alias',
         )
