@@ -115,7 +115,9 @@ Building the application from source is highly recommended. This is because the 
 
 #### `config/options/client.json`
 
-Nothing here for now!
+|Key|Value|
+|---|-----|
+|`piwik`|An object of options to pass to [`piwik-react-router`](https://www.npmjs.com/package/piwik-react-router). *If your production infrastructure does not make use of [Piwik](http://piwik.org/), leave this as null*|
 
 #### `config/options/server.json`
 

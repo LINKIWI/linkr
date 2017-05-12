@@ -1,1 +1,6 @@
-{}
+{
+  "piwik": {
+    "url": null,
+    "siteId": null
+  }
+}
