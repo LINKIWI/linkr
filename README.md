@@ -6,7 +6,7 @@ Linkr is a self-hosted URL shortener built on modern web technologies that is fa
 
 ## Demo
 
-TODO
+[Live demo](https://demo.linkrapp.com)
 
 ## Overview and Features
 
