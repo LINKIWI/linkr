@@ -4,7 +4,7 @@ import util.recaptcha
 import util.response
 from test.backend.factory import LinkFactory
 from test.backend.test_case import LinkrTestCase
-from uri.link import LinkAddURI, LinkDetailsURI, LinkEditURI, LinkIncrementHitsURI
+from uri.link import *
 
 
 class TestLink(LinkrTestCase):
@@ -268,6 +268,53 @@ class TestLink(LinkrTestCase):
                     'link_id': link.link_id,
                     'alias': 'alias',
                     'outgoing_url': 'https://google.com',
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_update_link_password_nonexistent(self):
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinkUpdatePasswordURI, data={
+                'link_id': -1,
+                'password': 'password',
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_link')
+
+    def test_api_update_link_password_unauthorized(self):
+        link = LinkFactory.generate()
+
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinkUpdatePasswordURI, data={
+                'link_id': link.link_id,
+                'password': 'password',
+            })
+
+            self.assertEqual(resp.status_code, 403)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_update_link_password_valid(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinkUpdatePasswordURI, data={
+                'link_id': link.link_id,
+                'password': 'password',
+            })
+
+            self.assertEqual(resp.status_code, 200)
+
+    def test_api_update_link_password_undefined_error(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(LinkUpdatePasswordURI, data={
+                    'link_id': link.link_id,
+                    'password': 'password',
                 })
 
                 self.assertTrue(self.api_utils.is_undefined_error(resp))

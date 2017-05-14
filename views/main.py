@@ -36,7 +36,7 @@ def alias_route(data, alias):
             return util.response.error(
                 status_code=404,
                 message='The requested link alias does not exist.',
-                failure='failure_nonexistent_alias',
+                failure='failure_nonexistent_link',
             )
 
     # Redirect to the frontend interface to handle authentication for password-protected links

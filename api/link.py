@@ -218,8 +218,14 @@ def api_update_link_password(data):
     except NonexistentLinkException:
         return util.response.error(
             status_code=404,
-            message='The requested link alias does not exist.',
-            failure='failure_nonexistent_alias',
+            message='The requested link does not exist.',
+            failure='failure_nonexistent_link',
+        )
+    except UnauthorizedException:
+        return util.response.error(
+            status_code=403,
+            message='You may only update the link password for links created by you.',
+            failure='failure_unauth',
         )
     except:
         return util.response.undefined_error()
@@ -241,9 +247,9 @@ def api_delete_link(data):
         })
     except NonexistentLinkException:
         return util.response.error(
-            404,
-            'The requested alias does not exist.',
-            'failure_nonexistent_alias',
+            status_code=404,
+            message='The requested link does not exist.',
+            failure='failure_nonexistent_link',
         )
     except UnauthorizedException:
         return util.response.error(

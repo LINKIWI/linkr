@@ -18,7 +18,7 @@ class TestMain(LinkrTestCase):
         self.assertEqual(resp.status_code, 404)
         self.assertEqual(resp.json, {
             'success': False,
-            'failure': 'failure_nonexistent_alias',
+            'failure': 'failure_nonexistent_link',
             'message': 'The requested link alias does not exist.',
         })
 
