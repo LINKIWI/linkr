@@ -182,6 +182,12 @@ def api_edit_link(data):
             message='The requested alias is invalid; it is not URL-safe or is too long.',
             failure='failure_invalid_alias',
         )
+    except ReservedAliasException:
+        return util.response.error(
+            status_code=400,
+            message='The requested alias is reserved, and cannot be used. Use a different alias.',
+            failure='failure_reserved_alias',
+        )
     except InvalidURLException:
         return util.response.error(
             status_code=400,

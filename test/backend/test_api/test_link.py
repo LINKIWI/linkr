@@ -4,7 +4,7 @@ import util.recaptcha
 import util.response
 from test.backend.factory import LinkFactory
 from test.backend.test_case import LinkrTestCase
-from uri.link import LinkAddURI, LinkDetailsURI, LinkIncrementHitsURI
+from uri.link import LinkAddURI, LinkDetailsURI, LinkEditURI, LinkIncrementHitsURI
 
 
 class TestLink(LinkrTestCase):
@@ -172,6 +172,7 @@ class TestLink(LinkrTestCase):
                 'alias': 'alias',
                 'outgoing_url': 'https://google.com',
             })
+
             self.assertTrue(self.api_utils.is_undefined_error(resp))
 
     def test_api_add_link_valid(self):
@@ -183,3 +184,90 @@ class TestLink(LinkrTestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.json['alias'], 'alias')
         self.assertEqual(resp.json['outgoing_url'], 'https://google.com')
+
+    def test_api_edit_link_nonexistent(self):
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinkEditURI, data={
+                'link_id': -1,
+                'alias': 'alias',
+                'outgoing_url': 'https://google.com',
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_link')
+
+    def test_api_edit_link_unauthorized(self):
+        link = LinkFactory.generate()
+        resp = self.api_utils.request(LinkEditURI, data={
+            'link_id': link.link_id,
+            'alias': 'alias',
+            'outgoing_url': 'https://google.com',
+        })
+
+        self.assertEqual(resp.status_code, 403)
+
+    def test_api_edit_link_invalid_alias(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinkEditURI, data={
+                'link_id': link.link_id,
+                'alias': 'invalid alias',
+                'outgoing_url': 'https://google.com',
+            })
+
+            self.assertEqual(resp.status_code, 400)
+            self.assertEqual(resp.json['failure'], 'failure_invalid_alias')
+
+    def test_api_edit_link_reserved_alias(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinkEditURI, data={
+                'link_id': link.link_id,
+                'alias': 'linkr',
+                'outgoing_url': 'https://google.com',
+            })
+
+            self.assertEqual(resp.status_code, 400)
+            self.assertEqual(resp.json['failure'], 'failure_reserved_alias')
+
+    def test_api_edit_link_invalid_url(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinkEditURI, data={
+                'link_id': link.link_id,
+                'alias': 'alias',
+                'outgoing_url': 'not a url',
+            })
+
+            self.assertEqual(resp.status_code, 400)
+            self.assertEqual(resp.json['failure'], 'failure_invalid_url')
+
+    def test_api_edit_link_valid(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinkEditURI, data={
+                'link_id': link.link_id,
+                'alias': 'alias',
+                'outgoing_url': 'https://google.com',
+            })
+
+            self.assertEqual(resp.status_code, 200)
+
+    def test_api_edit_link_undefined_error(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(LinkEditURI, data={
+                    'link_id': link.link_id,
+                    'alias': 'alias',
+                    'outgoing_url': 'https://google.com',
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))

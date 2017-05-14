@@ -64,6 +64,9 @@ def edit_link(link_id, alias=None, outgoing_url=None):
     if alias and not util.validation.is_alias_valid(alias):
         raise InvalidAliasException('Alias `{alias}` is not URL safe'.format(alias=alias))
 
+    if alias and util.validation.is_alias_reserved(alias):
+        raise ReservedAliasException('Alias `{alias}` is reserved'.format(alias=alias))
+
     if outgoing_url and not util.validation.is_url_valid(outgoing_url):
         raise InvalidURLException('URL `{url}` is not a valid URL'.format(url=outgoing_url))
 
