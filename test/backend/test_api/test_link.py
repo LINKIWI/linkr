@@ -300,7 +300,14 @@ class TestLink(LinkrTestCase):
 
             resp = self.api_utils.request(LinkUpdatePasswordURI, data={
                 'link_id': link.link_id,
-                'password': 'password',
+                'password': 'updated password',
+            })
+
+            self.assertEqual(resp.status_code, 200)
+
+            resp = self.api_utils.request(LinkDetailsURI, data={
+                'link_id': link.link_id,
+                'password': 'updated password',
             })
 
             self.assertEqual(resp.status_code, 200)
@@ -315,6 +322,56 @@ class TestLink(LinkrTestCase):
                 resp = self.api_utils.request(LinkUpdatePasswordURI, data={
                     'link_id': link.link_id,
                     'password': 'password',
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_delete_link_nonexistent(self):
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinkDeleteURI, data={
+                'link_id': -1,
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_link')
+
+    def test_api_delete_link_unauthorized(self):
+        link = LinkFactory.generate()
+
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinkDeleteURI, data={
+                'link_id': link.link_id,
+            })
+
+            self.assertEqual(resp.status_code, 403)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_delete_link_valid(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinkDeleteURI, data={
+                'link_id': link.link_id,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+
+            resp = self.api_utils.request(LinkDeleteURI, data={
+                'link_id': link.link_id,
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_link')
+
+    def test_api_delete_link_undefined_error(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(LinkDeleteURI, data={
+                    'link_id': link.link_id,
                 })
 
                 self.assertTrue(self.api_utils.is_undefined_error(resp))
