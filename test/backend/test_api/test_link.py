@@ -476,3 +476,25 @@ class TestLink(LinkrTestCase):
                 resp = self.api_utils.request(LinksForUserURI)
 
                 self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_recent_links_valid(self):
+        links = sorted(
+            [LinkFactory.generate() for _ in xrange(5)],
+            key=lambda generated: generated.link_id,
+            reverse=True,
+        )
+
+        with self.api_utils.authenticated_user(is_admin=True):
+            resp = self.api_utils.request(RecentLinksURI)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['links'], [link.as_dict() for link in links])
+
+    def test_api_recent_links_undefined_error(self):
+        with self.api_utils.authenticated_user(is_admin=True):
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(RecentLinksURI)
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
