@@ -276,10 +276,18 @@ def api_link_hits(data):
     }
 
     try:
+        validate_link_ownership(data['link_id'])
+
         hits = database.link.get_link_hits_by_id(**filtered_data)
         return util.response.success({
             'hits': [hit.as_dict() for hit in hits]
         })
+    except NonexistentLinkException:
+        return util.response.error(
+            status_code=404,
+            message='The requested link does not exist.',
+            failure='failure_nonexistent_link',
+        )
     except:
         return util.response.undefined_error()
 

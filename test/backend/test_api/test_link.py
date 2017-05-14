@@ -197,14 +197,16 @@ class TestLink(LinkrTestCase):
             self.assertEqual(resp.json['failure'], 'failure_nonexistent_link')
 
     def test_api_edit_link_unauthorized(self):
-        link = LinkFactory.generate()
-        resp = self.api_utils.request(LinkEditURI, data={
-            'link_id': link.link_id,
-            'alias': 'alias',
-            'outgoing_url': 'https://google.com',
-        })
+        link = LinkFactory.generate(user_id=5)
 
-        self.assertEqual(resp.status_code, 403)
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinkEditURI, data={
+                'link_id': link.link_id,
+                'alias': 'alias',
+                'outgoing_url': 'https://google.com',
+            })
+
+            self.assertEqual(resp.status_code, 403)
 
     def test_api_edit_link_invalid_alias(self):
         with self.api_utils.authenticated_user() as user:
@@ -371,6 +373,52 @@ class TestLink(LinkrTestCase):
                 mock_success.side_effect = ValueError
 
                 resp = self.api_utils.request(LinkDeleteURI, data={
+                    'link_id': link.link_id,
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_link_hits_nonexistent(self):
+        with self.api_utils.authenticated_user(is_admin=True):
+            resp = self.api_utils.request(LinkHitsURI, data={
+                'link_id': -1,
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_link')
+
+    def test_api_link_hits_valid(self):
+        link = LinkFactory.generate()
+
+        with self.api_utils.authenticated_user(is_admin=True):
+            resp = self.api_utils.request(LinkHitsURI, data={
+                'link_id': link.link_id,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['hits'], [])
+
+            resp = self.api_utils.request(LinkIncrementHitsURI, data={
+                'link_id': link.link_id,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+
+            resp = self.api_utils.request(LinkHitsURI, data={
+                'link_id': link.link_id,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(len(resp.json['hits']), 1)
+
+    def test_api_link_hits_undefined_error(self):
+        link = LinkFactory.generate()
+
+        with self.api_utils.authenticated_user(is_admin=True):
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(LinkHitsURI, data={
                     'link_id': link.link_id,
                 })
 

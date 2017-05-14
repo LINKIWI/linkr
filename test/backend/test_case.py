@@ -74,19 +74,18 @@ class LinkrAPITestUtils:
         )
 
     @contextmanager
-    def authenticated_user(self, user=None):
+    def authenticated_user(self, *args, **kwargs):
         """
         Context manager for wrapping an API request with a logged in user, so that the request is
-        made in an authenticated context.
+        made in an authenticated context. All arguments are transparently passed to the user
+        generation factory function.
 
-        :param user: Optional user for the authentication context. If not provided, a new user is
-                     created and authenticated for the request.
         :return: The user object that was authenticated to the endpoint.
         """
-        auth_user = user or UserFactory.generate(password='password')
+        auth_user = UserFactory.generate(password='password', *args, **kwargs)
         self.request(AuthLoginURI, data={
             'username': auth_user.username,
-            'password': 'password',
+            'password': kwargs.get('password', 'password'),
             'remember_me': False,
         })
 
