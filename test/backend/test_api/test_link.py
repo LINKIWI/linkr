@@ -3,6 +3,7 @@ import mock
 import util.recaptcha
 import util.response
 from test.backend.factory import LinkFactory
+from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
 from uri.link import *
 
@@ -421,5 +422,57 @@ class TestLink(LinkrTestCase):
                 resp = self.api_utils.request(LinkHitsURI, data={
                     'link_id': link.link_id,
                 })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_links_for_user_unauth(self):
+        LinkFactory.generate(user_id=5)
+
+        # Trying to view links created by someone else as non-admin
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(LinksForUserURI, data={
+                'user_id': 5,
+            })
+
+            self.assertEqual(resp.status_code, 403)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_links_for_user_nonexistent_user(self):
+        with self.api_utils.authenticated_user(is_admin=True):
+            resp = self.api_utils.request(LinksForUserURI, data={
+                'user_id': 5,
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_user')
+
+    def test_api_links_for_user_current_user_valid(self):
+        with self.api_utils.authenticated_user() as user:
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinksForUserURI)
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['links'], [link.as_dict()])
+
+    def test_api_links_for_user_specified_user_valid(self):
+        user = UserFactory.generate()
+
+        with self.api_utils.authenticated_user(is_admin=True):
+            link = LinkFactory.generate(user_id=user.user_id)
+
+            resp = self.api_utils.request(LinksForUserURI, data={
+                'user_id': user.user_id,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['links'], [link.as_dict()])
+
+    def test_api_links_for_user_undefined_error(self):
+        with self.api_utils.authenticated_user(is_admin=True):
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(LinksForUserURI)
 
                 self.assertTrue(self.api_utils.is_undefined_error(resp))

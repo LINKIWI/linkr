@@ -301,15 +301,18 @@ def api_links_for_user(data):
     user ID agrees with the currently logged in user's ID, or if the currently logged in user is an
     admin. If no user_id is specified, links for the currently logged in user are returned.
     """
+    expect_args = {'page_num', 'num_per_page'}
+    filtered_data = {
+        key: value
+        for key, value in data.items()
+        if key in expect_args
+    }
+
     try:
         user_id = data.get('user_id', current_user.user_id)
 
         if user_id == current_user.user_id or current_user.is_admin:
-            links = database.link.get_links_for_user(
-                user_id=user_id,
-                page_num=data.get('page_num'),
-                num_per_page=data.get('num_per_page'),
-            )
+            links = database.link.get_links_for_user(user_id=user_id, **filtered_data)
             return util.response.success({
                 'links': [link.as_dict() for link in links],
             })
