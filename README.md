@@ -26,7 +26,7 @@ Linkr is a self-hosted URL shortener built on modern web technologies that is fa
 
 * You need Python, `pip`, and the `virtualenv` package. ([Reference](https://virtualenv.pypa.io/en/stable/))
 * You need Node and `npm`. ([Reference](https://nodejs.org/en/))
-* You need a MySQL database. ([Reference](https://dev.mysql.com/doc/))
+* You need a MySQL database. ([Reference](https://dev.mysql.com/doc/)) (You can use almost any other database too; see "Alternate databases")
 * You need Apache, with `mod_wsgi` installed. ([Reference](https://modwsgi.readthedocs.io/en/develop/))
 * All following instructions assume Linux.
 
@@ -110,6 +110,10 @@ The service is now live at `t.example.com`!
 #### I am lazy and just want a prebuilt Docker image
 
 Building the application from source is highly recommended. This is because the application's configuration options are specific to your installation, and must be configured before the application can run. Also, client-side secrets are bundled directly into the application as part of the build process, so it's not possible to distribute a pre-built frontend.
+
+#### Alternate databases
+
+The default database is MySQL, but you can change this to any database that is compatible with [`flask-sqlalchemy`](http://flask-sqlalchemy.pocoo.org/2.1/config/#connection-uri-format). Simply change `SQLALCHEMY_DATABASE_URI` in `config/flask.py` for the database of your choice.
 
 ## Configuration
 
