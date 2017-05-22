@@ -21,9 +21,9 @@ def api_add_user(data):
 
         if not config.options.server['allow_open_registration']:
             return util.response.error(
-                403,
-                'The server administrator has disabled open user self-registration.',
-                'failure_open_registration_disabled',
+                status_code=403,
+                message='The server administrator has disabled open user self-registration.',
+                failure='failure_open_registration_disabled',
             )
 
         if is_admin and (not current_user.is_authenticated or not current_user.is_admin):
@@ -44,15 +44,15 @@ def api_add_user(data):
         })
     except UnavailableUsernameException:
         return util.response.error(
-            409,
-            'The requested username is already taken. Please use another username.',
-            'failure_unavailable_username',
+            status_code=409,
+            message='The requested username is already taken. Please use another username.',
+            failure='failure_unavailable_username',
         )
     except InvalidUsernameException:
         return util.response.error(
-            400,
-            'The requested username is invalid; it may only contain letters and numbers.',
-            'failure_invalid_username',
+            status_code=400,
+            message='The requested username is invalid; it may only contain letters and numbers.',
+            failure='failure_invalid_username',
         )
     except:
         return util.response.undefined_error()
