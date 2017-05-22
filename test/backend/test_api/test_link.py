@@ -556,3 +556,26 @@ class TestLink(LinkrTestCase):
                     })
 
                     self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_link_alias_search_valid(self):
+        match_links = [LinkFactory.generate(alias='ab'), LinkFactory.generate(alias='abcd')]
+        LinkFactory.generate(alias='efgh')
+
+        with self.api_utils.authenticated_user(is_admin=True):
+            resp = self.api_utils.request(LinkAliasSearchURI, data={
+                'alias': 'ab',
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['links'], [link.as_dict() for link in match_links])
+
+    def test_api_link_alias_search_undefined_error(self):
+        with self.api_utils.authenticated_user(is_admin=True):
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(LinkAliasSearchURI, data={
+                    'alias': 'ab',
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
