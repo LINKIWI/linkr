@@ -1,4 +1,4 @@
-from webpreview import web_preview
+import webpreview
 
 import config
 import database.link
@@ -365,7 +365,7 @@ def api_link_preview(data):
     try:
         link = validate_link_ownership(data['link_id'])
 
-        title, description, image = web_preview(link.outgoing_url)
+        title, description, image = webpreview.web_preview(link.outgoing_url)
 
         return util.response.success({
             'link_id': link.link_id,
