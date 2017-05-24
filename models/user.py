@@ -24,7 +24,7 @@ class User(db.Model):
     __tablename__ = 'user'
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    is_admin = db.Column(db.Boolean, index=True)
+    is_admin = db.Column(db.Boolean, index=True, default=False)
     signup_time = db.Column(db.Integer)
     signup_ip = db.Column(db.Text)
     username = db.Column(db.String(64), index=True, unique=True)
