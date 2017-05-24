@@ -25,11 +25,10 @@ const AliasNotFound = () => (
           title={'Looking for a link?'}
           message={
             <span>
-              This is a demo instance of the open-source&nbsp;
-              <a className="sans-serif bold" href="https://github.com/LINKIWI/linkr">Linkr</a>
-              &nbsp;project. It is not intended for general-purpose use; this instance's database is
-              automatically reset every 24 hours. If you're expecting something here, please ask the
-              owner of this link to use a private deployment of Linkr.
+              This is a demo instance of the open source Linkr project. It is not intended for
+              general-purpose use; this instance's database is automatically reset every 24 hours.
+              If you're expecting something here, please ask the owner of this link to use a private
+              deployment of Linkr.
             </span>
           }
         />
