@@ -82,8 +82,8 @@ class Shorten extends React.Component {
             <span>
               This is a <span className="sans-serif bold">demo</span> instance of Linkr.
               It should not be used as a public, general-purpose link shortener; please deploy an
-              instance to your own servers for this purpose. This demo instance's database is reset
-              every 24 hours.
+              instance to your own servers for this purpose. This demo instance's database is
+              automatically reset every 24 hours.
             </span>
           }
         />
