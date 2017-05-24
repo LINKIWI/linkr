@@ -18,7 +18,8 @@
     "lint-frontend": "eslint frontend/app test/frontend",
     "test-frontend": "node test/frontend | tap-spec",
     "cover-frontend": "istanbul cover test/frontend --print detail",
-    "coveralls-frontend": "npm run cover-frontend && cat coverage/lcov.info | coveralls"
+    "coveralls-frontend": "npm run cover-frontend && cat coverage/lcov.info | coveralls",
+    "reset-database": "PYTHONPATH=. python scripts/reset_database.py"
   },
   "repository": {
     "type": "git",
