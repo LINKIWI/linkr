@@ -6,7 +6,7 @@ import React from 'react';
 import request from 'browser-request';
 import urlParse from 'url-parse';
 
-import Alert, {ALERT_TYPE_ERROR} from '../../alert';
+import Alert, {ALERT_TYPE_ERROR, ALERT_TYPE_WARN} from '../../alert';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
 import Header from '../../header';
@@ -75,6 +75,19 @@ class Shorten extends React.Component {
 
     return (
       <div className="margin-large--top margin-large--bottom">
+        <Alert
+          type={ALERT_TYPE_WARN}
+          title={'Usage warning!'}
+          message={
+            <span>
+              This is a <span className="sans-serif bold">demo</span> instance of Linkr.
+              It should not be used as a public, general-purpose link shortener; please deploy an
+              instance to your own servers for this purpose. This demo instance's database is reset
+              every 24 hours.
+            </span>
+          }
+        />
+
         <p className="sans-serif bold gamma text-gray-60 margin-small--bottom">SHORTEN</p>
         <form>
           <TextField
