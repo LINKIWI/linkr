@@ -28,6 +28,11 @@ class TestAuth(LinkrTestCase):
             self.assertEqual(resp.status_code, 200)
             self.assertEqual(resp.json['user'], user.as_dict())
 
+        # Outside of authentication context manager
+        resp = self.api_utils.request(AuthCheckURI)
+        self.assertEqual(resp.status_code, 401)
+        self.assertEqual(resp.json['failure'], 'failure_unauth')
+
     def test_api_auth_login_invalid_auth(self):
         UserFactory.generate(username='username', password='password')
         resp = self.api_utils.request(AuthLoginURI, data={

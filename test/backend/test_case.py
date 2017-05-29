@@ -8,6 +8,7 @@ from linkr import app
 from linkr import db
 from test.backend.factory import UserFactory
 from uri.auth import AuthLoginURI
+from uri.auth import AuthLogoutURI
 
 
 class LinkrTestCase(TestCase):
@@ -90,6 +91,8 @@ class LinkrAPITestUtils:
         })
 
         yield auth_user
+
+        self.request(AuthLogoutURI)
 
     @staticmethod
     def is_undefined_error(resp):
