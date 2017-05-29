@@ -3,6 +3,7 @@ from contextlib import contextmanager
 
 from flask_testing import TestCase
 
+import config
 import util.response
 from linkr import app
 from linkr import db
@@ -23,6 +24,10 @@ class LinkrTestCase(TestCase):
         """
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
+
+        config.options.server['require_login_to_create'] = False
+        config.options.server['allow_open_registration'] = True
+        config.options.server['secure_frontend_requests'] = False
 
         return app
 

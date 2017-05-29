@@ -27,6 +27,7 @@ Linkr is a self-hosted URL shortener built on modern web technologies that is fa
 * You need Python, `pip`, and the `virtualenv` package. ([Reference](https://virtualenv.pypa.io/en/stable/))
 * You need Node and `npm`. ([Reference](https://nodejs.org/en/))
 * You need a MySQL database. ([Reference](https://dev.mysql.com/doc/)) (You can use almost any other database too; see "Alternate databases")
+* You need Redis. ([Reference](https://redis.io/download))
 * You need Apache, with `mod_wsgi` installed. ([Reference](https://modwsgi.readthedocs.io/en/develop/))
 * All following instructions assume Linux.
 
@@ -130,6 +131,7 @@ The default database is MySQL, but you can change this to any database that is c
 |`linkr_url`|The public-facing URL to your Linkr installation, including the protocol and without a trailing forward slash.|
 |`require_login_to_create`|True to require users to sign in before creating links; false to allow anonymous and signed-in users to create links.|
 |`allow_open_registration`|True to allow anyone to register; false to disallow all registration.|
+|`secure_frontend_requests`|True to allow the server to perform additional request validation to ensure that non-public API endpoints are only requested via Linkr's frontend interface. *It is recommended to leave this enabled, unless it is causing issues.*|
 
 #### `config/secrets/client.json`
 
@@ -150,3 +152,5 @@ Note that all of these secrets are bundled into the frontend application at buil
 |`database.name`|The name of Linkr's database.|
 |`database.user`|The username of the MySQL user for accessing the above database.|
 |`database.password`|The password of the MySQL user for accessing the above database.|
+|`redis.host`|The hostname of the Redis datastore.|
+|`redis.port`|The port of the Redis datastore.|
