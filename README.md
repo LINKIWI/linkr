@@ -2,6 +2,8 @@
 
 # linkr
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/LINKIWI/linkr.svg)](https://greenkeeper.io/)
+
 Linkr is a self-hosted URL shortener built on modern web technologies that is fast, minimalistic, and developer-friendly.
 
 ## Demo
