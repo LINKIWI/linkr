@@ -22,7 +22,7 @@ def api_auth_check():
         return util.response.error(
             status_code=401,
             message='No user is currently authenticated.',
-            failure='failure_unauthenticated',
+            failure='failure_unauth',
         )
     except:
         return util.response.undefined_error()

@@ -1,5 +1,3 @@
-from flask_login import logout_user
-
 import config
 import database.user
 import util.response
@@ -76,10 +74,6 @@ def api_deactivate_user(data):
             return util.response.success({
                 'user_id': user_id,
             })
-
-        # If the user to delete is the currently logged in user, log him or her out.
-        if user_id == current_user.user_id:
-            logout_user()
 
         return util.response.error(
             status_code=403,

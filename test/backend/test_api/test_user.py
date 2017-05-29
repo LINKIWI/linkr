@@ -6,6 +6,7 @@ import util.response
 from test.backend.factory import LinkFactory
 from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
+from uri.auth import *
 from uri.user import *
 
 
@@ -90,3 +91,93 @@ class TestUser(LinkrTestCase):
             })
 
             self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_deactivate_user_nonexistent(self):
+        user = UserFactory.generate()
+
+        with self.api_utils.authenticated_user(is_admin=True):
+            resp = self.api_utils.request(UserDeactivationURI, data={
+                'user_id': user.user_id,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['user_id'], user.user_id)
+
+            resp = self.api_utils.request(UserDeactivationURI, data={
+                'user_id': user.user_id,
+            })
+
+            self.assertEqual(resp.status_code, 404)
+            self.assertEqual(resp.json['failure'], 'failure_nonexistent_user')
+
+    def test_api_deactivate_user_unauth(self):
+        user = UserFactory.generate()
+
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(UserDeactivationURI, data={
+                'user_id': user.user_id,
+            })
+
+            self.assertEqual(resp.status_code, 403)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_deactivate_user_by_id(self):
+        with self.api_utils.authenticated_user() as user:
+            # User should initially be authenticated
+            resp = self.api_utils.request(AuthCheckURI)
+            self.assertEqual(resp.status_code, 200)
+
+            # Actual account deactivation
+            resp = self.api_utils.request(UserDeactivationURI, data={
+                'user_id': user.user_id,
+            })
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['user_id'], user.user_id)
+
+            # User should no longer be authenticated after deleting his or her own account
+            resp = self.api_utils.request(AuthCheckURI)
+            self.assertEqual(resp.status_code, 401)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_deactivate_user_admin(self):
+        user = UserFactory.generate()
+
+        with self.api_utils.authenticated_user(is_admin=True) as admin:
+            # Admin should initially be authenticated
+            resp = self.api_utils.request(AuthCheckURI)
+            self.assertEqual(resp.status_code, 200)
+
+            # Actual account deactivation of someone else's account
+            resp = self.api_utils.request(UserDeactivationURI, data={
+                'user_id': user.user_id,
+            })
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['user_id'], user.user_id)
+
+            # Admin should still be authenticated since his or her account was not affected
+            resp = self.api_utils.request(AuthCheckURI)
+            self.assertEqual(resp.status_code, 200)
+
+    def test_api_deactivate_user_current_user(self):
+        with self.api_utils.authenticated_user() as user:
+            # User should initially be authenticated
+            resp = self.api_utils.request(AuthCheckURI)
+            self.assertEqual(resp.status_code, 200)
+
+            # Actual account deactivation
+            resp = self.api_utils.request(UserDeactivationURI)
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['user_id'], user.user_id)
+
+            # User should no longer be authenticated after deleting his or her own account
+            resp = self.api_utils.request(AuthCheckURI)
+            self.assertEqual(resp.status_code, 401)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_deactivate_user_undefined_error(self):
+        with self.api_utils.authenticated_user():
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(UserDeactivationURI)
+                self.assertTrue(self.api_utils.is_undefined_error(resp))

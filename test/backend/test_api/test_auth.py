@@ -11,7 +11,7 @@ class TestAuth(LinkrTestCase):
         resp = self.api_utils.request(AuthCheckURI)
 
         self.assertEqual(resp.status_code, 401)
-        self.assertEqual(resp.json['failure'], 'failure_unauthenticated')
+        self.assertEqual(resp.json['failure'], 'failure_unauth')
 
     def test_api_auth_check_undefined_error(self):
         with mock.patch.object(util.response, 'error') as mock_error:
