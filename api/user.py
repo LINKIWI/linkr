@@ -1,5 +1,3 @@
-from flask_login import logout_user
-
 import config
 import database.user
 import util.response
@@ -12,6 +10,8 @@ from util.exception import *
 @app.route(UserAddURI.path, methods=UserAddURI.methods)
 @require_form_args(['username', 'password'])
 @optional_login_api
+@require_frontend_api
+@api_method
 def api_add_user(data):
     """
     Add a new user.
@@ -61,6 +61,8 @@ def api_add_user(data):
 @app.route(UserDeactivationURI.path, methods=UserDeactivationURI.methods)
 @require_form_args()
 @require_login_api()
+@require_frontend_api
+@api_method
 def api_deactivate_user(data):
     """
     Deactivate a user.
@@ -76,10 +78,6 @@ def api_deactivate_user(data):
             return util.response.success({
                 'user_id': user_id,
             })
-
-        # If the user to delete is the currently logged in user, log him or her out.
-        if user_id == current_user.user_id:
-            logout_user()
 
         return util.response.error(
             status_code=403,
@@ -99,6 +97,8 @@ def api_deactivate_user(data):
 @app.route(UserUpdatePasswordURI.path, methods=UserUpdatePasswordURI.methods)
 @require_form_args(['current_password', 'new_password'])
 @require_login_api()
+@require_frontend_api
+@api_method
 def api_update_user_password(data):
     """
     Update the password for the currently logged in user.
@@ -133,6 +133,8 @@ def api_update_user_password(data):
 @app.route(UserRegenerateAPIKeyURI.path, methods=UserRegenerateAPIKeyURI.methods)
 @require_form_args(['password'])
 @require_login_api()
+@require_frontend_api
+@api_method
 def api_regenerate_user_api_key(data):
     """
     Regenerate the API key for the currently logged in user.
@@ -164,6 +166,8 @@ def api_regenerate_user_api_key(data):
 @app.route(RecentUsersURI.path, methods=RecentUsersURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
+@require_frontend_api
+@api_method
 def api_recent_users(data):
     """
     Retrieve a paginated list of all recently created users.
@@ -178,7 +182,7 @@ def api_recent_users(data):
     try:
         users = database.user.get_recent_users(**filtered_data)
         return util.response.success({
-            'users': [user.as_dict() for user in users]
+            'users': [user.as_dict() for user in users],
         })
     except:
         return util.response.undefined_error()
@@ -187,6 +191,8 @@ def api_recent_users(data):
 @app.route(UserSearchURI.path, methods=UserSearchURI.methods)
 @require_form_args(['username'])
 @require_login_api(admin_only=True)
+@require_frontend_api
+@api_method
 def api_user_search(data):
     """
     Search for users by username.

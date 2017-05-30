@@ -3,11 +3,13 @@ from contextlib import contextmanager
 
 from flask_testing import TestCase
 
+import config
 import util.response
 from linkr import app
 from linkr import db
 from test.backend.factory import UserFactory
 from uri.auth import AuthLoginURI
+from uri.auth import AuthLogoutURI
 
 
 class LinkrTestCase(TestCase):
@@ -22,6 +24,10 @@ class LinkrTestCase(TestCase):
         """
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://'
+
+        config.options.server['require_login_to_create'] = False
+        config.options.server['allow_open_registration'] = True
+        config.options.server['secure_frontend_requests'] = False
 
         return app
 
@@ -90,6 +96,8 @@ class LinkrAPITestUtils:
         })
 
         yield auth_user
+
+        self.request(AuthLogoutURI)
 
     @staticmethod
     def is_undefined_error(resp):

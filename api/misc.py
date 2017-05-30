@@ -8,6 +8,8 @@ from util.decorators import *
 @app.route(ConfigURI.path, methods=ConfigURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
+@require_frontend_api
+@api_method
 def api_config(data):
     """
     Retrieve the current application configuration options.

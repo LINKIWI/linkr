@@ -1,5 +1,6 @@
 import os
 
+import redis
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -26,6 +27,14 @@ def init_db():
     return SQLAlchemy(app, session_options={
         'expire_on_commit': False,
     })
+
+
+def init_cache():
+    return redis.StrictRedis(
+        host=config.secrets.server['redis']['host'],
+        port=config.secrets.server['redis']['port'],
+        db=0,
+    )
 
 
 def init_login_manager():

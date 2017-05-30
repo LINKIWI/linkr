@@ -2,6 +2,7 @@ import core.app
 
 app = core.app.app
 db = core.app.init_db()
+cache = core.app.init_cache()
 login_manager = core.app.init_login_manager()
 sentry = core.app.init_sentry()
 

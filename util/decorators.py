@@ -1,11 +1,84 @@
+import threading
+import time
 from functools import wraps
 
+import strgen
+from flask import make_response
 from flask import request
 from flask_login import current_user
 from flask_login import login_user
 
+import config
 import database.user
+import util.cache
 import util.response
+from linkr import cache
+
+COOKIE_SPA_TOKEN = 'linkr-spa-token'
+
+
+def api_method(func):
+    """
+    Designate this endpoint function as an API method. If secure frontend requests are enabled, this
+    decorator will invalidate any incoming SPA tokens and assign a new SPA token as a response
+    cookie. Incoming SPA tokens are invalidated in the cache with a short, asynchronous delay (to
+    alleviate race conditions from concurrent client requests), and new SPA tokens are synchronously
+    inserted into the cache before returning to the client. The logic of the underlying endpoint
+    function is otherwise passed through transparently.
+
+    This decorator should be used as a top-level wrapper of an endpoint function:
+
+      @app.route('/', methods=['POST'])
+      @require_form_args()
+      @api_method
+      def view_function():
+          pass
+
+    :param func: The wrapped API endpoint function.
+    """
+    def async_delete_token(spa_token):
+        """
+        Asynchronously delete the specified SPA token from the cache, after a small delay. This is
+        a noop if the token does not currently exist in the cache.
+
+        :param spa_token: The SPA token to invalidate.
+        """
+        def task():
+            time.sleep(5)
+            cache.delete(util.cache.format_key(util.cache.TAG_SPA_TOKEN, spa_token))
+
+        thread = threading.Thread(target=task, args=())
+        thread.daemon = True
+        thread.start()
+
+    @wraps(func)
+    def decorator(*args, **kwargs):
+        if not config.options.server['secure_frontend_requests']:
+            return func(*args, **kwargs)
+
+        # Asynchronously delete the incoming SPA token (assigned from a prior request)
+        existing_spa_token = request.cookies.get(COOKIE_SPA_TOKEN)
+        async_delete_token(existing_spa_token)
+
+        # Generate a new, replacement SPA token
+        new_spa_token = strgen.StringGenerator("[\d\p\w]{50}").render()
+
+        # Transparently generate a response from the decorated API endpoint and attach the newly
+        # created SPA token as a cookie
+        resp = make_response(*func(*args, **kwargs))
+        resp.set_cookie(COOKIE_SPA_TOKEN, new_spa_token)
+
+        # To retain server-side state of this assigned token, synchronously add its value to the
+        # local cache
+        cache.set(
+            name=util.cache.format_key(util.cache.TAG_SPA_TOKEN, new_spa_token),
+            value=True,
+            ex=6 * 60 * 60,  # Automated TTL of 6 hours
+        )
+
+        return resp
+
+    return decorator
 
 
 def require_form_args(form_args=tuple([]), allow_blank_values=False, strict_params=False):
@@ -153,6 +226,45 @@ def optional_login_api(func):
                 login_user(user)
                 if data.get('api_key'):
                     del data['api_key']
+
+        return func(data, *args, **kwargs)
+
+    return decorator
+
+
+def require_frontend_api(func):
+    """
+    Require this API endpoint to be requested from a browser. The request should pass an SPA token
+    as a cookie assigned from a previous request. The request should also supply a User-Agent header
+    consistent with a browser. Refusing to supply an SPA token or supplying a stale token will cause
+    the request to be rejected.
+
+    This decorator should be used in conjunction with @api_method. This specifies an API endpoint
+    function that should both invalidate and assign SPA tokens, and reject requests if an incoming
+    token was not previously assigned by an @api_method function.
+
+      @app.route('/', methods=['POST'])
+      @require_form_args()
+      @require_frontend_api
+      @api_method
+      def view_function():
+          pass
+
+    :param func: The wrapped API endpoint function.
+    """
+    @wraps(func)
+    def decorator(data, *args, **kwargs):
+        if not config.options.server['secure_frontend_requests']:
+            return func(data, *args, **kwargs)
+
+        spa_token = request.cookies.get(COOKIE_SPA_TOKEN)
+
+        if not cache.get(util.cache.format_key(util.cache.TAG_SPA_TOKEN, spa_token)):
+            return util.response.error(
+                status_code=403,
+                message='Client context requirements not fulfilled.',
+                failure='failure_bad_client',
+            )
 
         return func(data, *args, **kwargs)
 

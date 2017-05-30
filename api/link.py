@@ -13,6 +13,7 @@ from util.exception import *
 @app.route(LinkDetailsURI.path, methods=LinkDetailsURI.methods)
 @require_form_args()
 @optional_login_api
+@api_method
 def api_link_details(data):
     """
     Retrieve details for a particular link by ID or alias.
@@ -61,6 +62,8 @@ def api_link_details(data):
 @app.route(LinkIncrementHitsURI.path, methods=LinkIncrementHitsURI.methods)
 @require_form_args(['link_id'])
 @optional_login_api
+@require_frontend_api
+@api_method
 def api_increment_link_hits(data):
     """
     Increment the number of hits for a particular link.
@@ -100,6 +103,7 @@ def api_increment_link_hits(data):
 @require_form_args(['alias', 'outgoing_url'])
 @require_login_api(only_if=config.options.server['require_login_to_create'])
 @optional_login_api
+@api_method
 def api_add_link(data):
     """
     Add a new link (alias <-> outgoing URL association).
@@ -147,6 +151,7 @@ def api_add_link(data):
 @app.route(LinkEditURI.path, methods=LinkEditURI.methods)
 @require_form_args(['link_id', 'alias', 'outgoing_url'], allow_blank_values=True)
 @require_login_api()
+@api_method
 def api_edit_link(data):
     """
     Edit an existing link's details.
@@ -201,6 +206,8 @@ def api_edit_link(data):
 @app.route(LinkUpdatePasswordURI.path, methods=LinkUpdatePasswordURI.methods)
 @require_form_args(['link_id', 'password'], allow_blank_values=True)
 @require_login_api()
+@require_frontend_api
+@api_method
 def api_update_link_password(data):
     """
     Update or remove the password of an existing link.
@@ -234,6 +241,7 @@ def api_update_link_password(data):
 @app.route(LinkDeleteURI.path, methods=LinkDeleteURI.methods)
 @require_form_args(['link_id'])
 @require_login_api()
+@api_method
 def api_delete_link(data):
     """
     Delete an existing link.
@@ -264,6 +272,8 @@ def api_delete_link(data):
 @app.route(LinkHitsURI.path, methods=LinkHitsURI.methods)
 @require_form_args(['link_id'])
 @require_login_api(admin_only=True)
+@require_frontend_api
+@api_method
 def api_link_hits(data):
     """
     Retrieve a paginated list of hits for a particular link.
@@ -295,6 +305,8 @@ def api_link_hits(data):
 @app.route(LinksForUserURI.path, methods=LinksForUserURI.methods)
 @require_form_args()
 @require_login_api()
+@require_frontend_api
+@api_method
 def api_links_for_user(data):
     """
     Retrieve all links for a user. If a user_id is specified, results are always returned if the
@@ -335,6 +347,8 @@ def api_links_for_user(data):
 @app.route(RecentLinksURI.path, methods=RecentLinksURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
+@require_frontend_api
+@api_method
 def api_recent_links(data):
     """
     Retrieve a paginated list of all recently created links.
@@ -358,6 +372,7 @@ def api_recent_links(data):
 @app.route(LinkPreviewURI.path, methods=LinkPreviewURI.methods)
 @require_form_args(['link_id'])
 @require_login_api()
+@api_method
 def api_link_preview(data):
     """
     Preview the metadata of a link's outgoing URL.
@@ -394,6 +409,8 @@ def api_link_preview(data):
 @app.route(LinkAliasSearchURI.path, methods=LinkAliasSearchURI.methods)
 @require_form_args(['alias'])
 @require_login_api(admin_only=True)
+@require_frontend_api
+@api_method
 def api_link_alias_search(data):
     """
     Search for links by alias.

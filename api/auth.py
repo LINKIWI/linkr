@@ -9,7 +9,9 @@ from util.exception import *
 
 
 @app.route(AuthCheckURI.path, methods=AuthCheckURI.methods)
-def api_auth_check():
+@require_form_args()
+@api_method
+def api_auth_check(data):
     """
     Check if any user is currently authenticated.
     """
@@ -22,7 +24,7 @@ def api_auth_check():
         return util.response.error(
             status_code=401,
             message='No user is currently authenticated.',
-            failure='failure_unauthenticated',
+            failure='failure_unauth',
         )
     except:
         return util.response.undefined_error()
@@ -30,6 +32,8 @@ def api_auth_check():
 
 @app.route(AuthLoginURI.path, methods=AuthLoginURI.methods)
 @require_form_args(['username', 'password', 'remember_me'])
+@require_frontend_api
+@api_method
 def api_auth_login(data):
     """
     Attempt to authenticate the specified user.
@@ -61,7 +65,10 @@ def api_auth_login(data):
 
 
 @app.route(AuthLogoutURI.path, methods=AuthLogoutURI.methods)
-def api_auth_logout():
+@require_form_args()
+@require_frontend_api
+@api_method
+def api_auth_logout(data):
     """
     Log out the currently authenticated user.
     """
