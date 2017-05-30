@@ -182,7 +182,7 @@ def api_recent_users(data):
     try:
         users = database.user.get_recent_users(**filtered_data)
         return util.response.success({
-            'users': [user.as_dict() for user in users]
+            'users': [user.as_dict() for user in users],
         })
     except:
         return util.response.undefined_error()

@@ -220,3 +220,102 @@ class TestUser(LinkrTestCase):
                 })
 
                 self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_regenerate_user_api_key_invalid_auth(self):
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(UserRegenerateAPIKeyURI, data={
+                'password': 'invalid',
+            })
+
+            self.assertEqual(resp.status_code, 401)
+            self.assertEqual(resp.json['failure'], 'failure_invalid_auth')
+
+    def test_api_regenerate_user_api_key_valid(self):
+        with self.api_utils.authenticated_user() as user:
+            old_api_key = user.api_key
+
+            resp = self.api_utils.request(UserRegenerateAPIKeyURI, data={
+                'password': 'password',
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['user_id'], user.user_id)
+            self.assertNotEqual(old_api_key, user.api_key)
+
+    def test_api_regenerate_user_api_key_undefined_error(self):
+        with self.api_utils.authenticated_user():
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(UserRegenerateAPIKeyURI, data={
+                    'password': 'password',
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_recent_users_unauth(self):
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(RecentUsersURI, data={
+                'page_num': 0,
+                'num_per_page': 10,
+            })
+
+            self.assertEqual(resp.status_code, 403)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_recent_users_valid(self):
+        with self.api_utils.authenticated_user(is_admin=True) as admin:
+            resp = self.api_utils.request(RecentUsersURI, data={
+                'page_num': 0,
+                'num_per_page': 10,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['users'], [admin.as_dict()])
+
+    def test_api_recent_users_undefined_error(self):
+        with self.api_utils.authenticated_user(is_admin=True):
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(RecentUsersURI, data={
+                    'page_num': 0,
+                    'num_per_page': 10,
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
+
+    def test_api_user_search_unauth(self):
+        with self.api_utils.authenticated_user():
+            resp = self.api_utils.request(UserSearchURI, data={
+                'username': 'username',
+                'page_num': 0,
+                'num_per_page': 10,
+            })
+
+            self.assertEqual(resp.status_code, 403)
+            self.assertEqual(resp.json['failure'], 'failure_unauth')
+
+    def test_api_user_search_valid(self):
+        with self.api_utils.authenticated_user(is_admin=True) as admin:
+            resp = self.api_utils.request(UserSearchURI, data={
+                'username': admin.username,
+                'page_num': 0,
+                'num_per_page': 10,
+            })
+
+            self.assertEqual(resp.status_code, 200)
+            self.assertEqual(resp.json['users'], [admin.as_dict()])
+
+    def test_api_user_search_undefined_error(self):
+        with self.api_utils.authenticated_user(is_admin=True) as admin:
+            with mock.patch.object(util.response, 'success') as mock_success:
+                mock_success.side_effect = ValueError
+
+                resp = self.api_utils.request(UserSearchURI, data={
+                    'username': admin.username,
+                    'page_num': 0,
+                    'num_per_page': 10,
+                })
+
+                self.assertTrue(self.api_utils.is_undefined_error(resp))
