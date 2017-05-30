@@ -1,13 +1,39 @@
+import mock
 import json
 import flask_login
 
+import time
+from linkr import cache
+import config
 import util.decorators
 from linkr import app
 from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
+import util.cache
 
 
 class TestDecorators(LinkrTestCase):
+    def test_api_method_simple(self):
+        @util.decorators.api_method
+        def simple():
+            return 'simple', 200
+
+        config.options.server['secure_frontend_requests'] = True
+
+        request_headers = {
+            'Cookie': '{name}={value}'.format(name=util.decorators.COOKIE_SPA_TOKEN, value='abc'),
+        }
+
+        with app.test_request_context(headers=request_headers):
+            with mock.patch.object(cache, 'set') as mock_set, \
+                 mock.patch.object(cache, 'delete') as mock_delete, \
+                 mock.patch.object(time, 'sleep') as mock_sleep:
+                simple()
+
+                self.assertEqual(mock_set.call_count, 1)
+                self.assertEqual(mock_sleep.call_count, 1)
+                self.assertEqual(mock_delete.call_count, 1)
+
     def test_require_form_args_simple(self):
         @util.decorators.require_form_args(['arg1', 'arg2'])
         def simple(data):
@@ -186,3 +212,38 @@ class TestDecorators(LinkrTestCase):
 
         with app.test_request_context(headers={'X-Linkr-Key': 'invalid'}):
             self.assertIsNone(api_key_invalid())
+
+    def test_require_frontend_api_invalid(self):
+        @util.decorators.require_form_args()
+        @util.decorators.require_frontend_api
+        def require_frontend_api_invalid(data):
+            return 'invalid', 400
+
+        config.options.server['secure_frontend_requests'] = True
+
+        with app.test_request_context():
+            with mock.patch.object(cache, 'get') as mock_get:
+                mock_get.return_value = False
+
+                resp, status = require_frontend_api_invalid()
+
+                self.assertEqual(mock_get.call_count, 1)
+                self.assertEqual(resp.json['failure'], 'failure_bad_client')
+                self.assertEqual(status, 403)
+
+    def test_require_frontend_api_valid(self):
+        @util.decorators.require_form_args()
+        @util.decorators.require_frontend_api
+        def require_frontend_api_valid(data):
+            return 'valid', 200
+
+        config.options.server['secure_frontend_requests'] = True
+
+        with app.test_request_context():
+            with mock.patch.object(cache, 'get') as mock_get:
+                mock_get.return_value = True
+
+                text, status = require_frontend_api_valid()
+
+                self.assertEqual(text, 'valid')
+                self.assertEqual(status, 200)
