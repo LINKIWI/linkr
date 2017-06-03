@@ -72,6 +72,12 @@ $ cp config/secrets/server.json.template config/secrets/server.json
 # config contains your database connection credentials.
 ```
 
+Build the app.
+
+```bash
+$ NODE_ENV=production npm run build
+```
+
 Run the `linkr_setup.py` script to walk you through setting up the database and creating an admin user.
 
 ```bash
@@ -81,12 +87,6 @@ $ python linkr_setup.py
 This script is used for initializing Linkr for the first time on a new deployment.
 This will create the Linkr MySQL tables and create an admin user account.
 ...
-```
-
-Build the app.
-
-```bash
-$ NODE_ENV=production npm run build
 ```
 
 Almost there! An Apache virtual host config sample using WSGI:
