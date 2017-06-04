@@ -135,6 +135,11 @@ class Login extends React.Component {
           {this.renderLoginError()}
           {this.renderAlreadyLoggedIn()}
 
+          <Alert
+            title={'Looking for the demo admin interface?'}
+            message={'The admin username and password are \'admin\'.'}
+          />
+
           <div className="margin-large--top margin-large--bottom">
             <p className="sans-serif bold text-gray-60 delta margin-large--bottom">Login</p>
 

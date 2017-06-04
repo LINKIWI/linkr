@@ -26,10 +26,10 @@ def api_add_user(data):
                 failure='failure_open_registration_disabled',
             )
 
-        if is_admin and (not current_user.is_authenticated or not current_user.is_admin):
+        if is_admin:
             return util.response.error(
                 status_code=403,
-                message='Only admin users may create more admin users.',
+                message='Creating additional admin users is not supported in the demo instance.',
                 failure='failure_unauth',
             )
 
@@ -69,6 +69,16 @@ def api_deactivate_user(data):
     """
     try:
         user_id = data.get('user_id', current_user.user_id)
+        user = database.user.get_user_by_id(user_id)
+        if not user:
+            raise NonexistentUserException
+
+        if user.is_admin:
+            return util.response.error(
+                status_code=403,
+                message='Deactivating an admin account is disallowed in the demo instance.',
+                failure='failure_unauth',
+            )
 
         # Then, validate that the desired user ID is either the currently logged in user (a user
         # requesting deactivation of his or her own account), or that the currently logged in user
@@ -105,6 +115,13 @@ def api_update_user_password(data):
     """
     try:
         database.user.validate_user_credentials(current_user.username, data['current_password'])
+
+        if current_user.is_admin:
+            return util.response.error(
+                status_code=403,
+                message='Changing the admin password is disallowed in the demo instance.',
+                failure='failure_unauth',
+            )
 
         database.user.update_user_password(
             user_id=current_user.user_id,

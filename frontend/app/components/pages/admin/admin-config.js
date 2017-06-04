@@ -3,6 +3,7 @@ import flat from 'flat';
 import React from 'react';
 import request from 'browser-request';
 
+import Alert, {ALERT_TYPE_INFO} from '../../alert';
 import InfoTable from '../../info-table';
 
 import Tooltip from '../../ui/tooltip';
@@ -64,6 +65,14 @@ export default class AdminConfig extends React.Component {
     return (
       <div className="margin-huge--bottom">
         <p className="text--section-header">Configuration</p>
+        <Alert
+          className={'iota'}
+          type={ALERT_TYPE_INFO}
+          title={'Server-side secrets are unavailable in the demo instance.'}
+          message={
+            'In a standard deployment, all server-side options and secrets will be visible here.'
+          }
+        />
         <p className="text--section-caption">
           These configuration values are defined server-side in {configFile}.&nbsp;
           To change any of the below values, modify {configFile}, rebuild frontend resources, and

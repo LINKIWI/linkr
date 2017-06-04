@@ -14,11 +14,20 @@ def api_config(data):
     """
     Retrieve the current application configuration options.
     """
+    options = {
+        key: 'value'
+        for key in dict(config.options.client, **config.options.server).keys()
+    }
+    secrets = {
+        key: 'value'
+        for key in dict(config.secrets.client, **config.secrets.server).keys()
+    }
+
     try:
         return util.response.success({
             'config': {
-                'options': dict(config.options.client, **config.options.server),
-                'secrets': dict(config.secrets.client, **config.secrets.server),
+                'options': options,
+                'secrets': secrets,
             },
         })
     except:

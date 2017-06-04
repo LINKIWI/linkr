@@ -10,10 +10,15 @@ class TestMisc(LinkrTestCase):
     def test_api_config_valid(self):
         with self.api_utils.authenticated_user(is_admin=True):
             resp = self.api_utils.request(ConfigURI)
+            options = resp.json['config']['options']
+            secrets = resp.json['config']['secrets']
 
             self.assertEqual(resp.status_code, 200)
-            self.assertIsNotNone(resp.json['config']['options'])
-            self.assertIsNotNone(resp.json['config']['secrets'])
+
+            for _, value in options.items():
+                self.assertEqual(value, 'value')
+            for _, value in secrets.items():
+                self.assertEqual(value, 'value')
 
     def test_api_config_undefined_error(self):
         with self.api_utils.authenticated_user(is_admin=True):
