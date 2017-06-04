@@ -1,6 +1,9 @@
 <img alt="Linkr logo" src="https://cdn.rawgit.com/LINKIWI/linkr/a4853551/frontend/static/img/favicon.png" width="96px" height="96px" align="right" />
 
-# linkr
+# Linkr
+
+[![Build Status](https://travis-ci.org/LINKIWI/linkr.svg?branch=master)](https://travis-ci.org/LINKIWI/linkr)
+[![Coverage Status](https://coveralls.io/repos/github/LINKIWI/linkr/badge.svg?branch=master)](https://coveralls.io/github/LINKIWI/linkr?branch=master)
 
 Linkr is a self-hosted URL shortener built on modern web technologies that is fast, minimalistic, and developer-friendly.
 
