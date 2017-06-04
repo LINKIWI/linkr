@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import sinon from 'sinon';
 import test from 'tape';
 
-import Checkbox from '../../../../frontend/app/components/ui/checkbox';
+import Checkbox from '../../../../../frontend/app/components/ui/checkbox';
 
 test('Checkbox respects passed check state and text', (t) => {
   const check = mount(

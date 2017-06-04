@@ -2,7 +2,7 @@ import React from 'react';
 import {mount} from 'enzyme';
 import test from 'tape';
 
-import Alert, {ALERT_TYPE_ERROR} from '../../../frontend/app/components/alert';
+import Alert, {ALERT_TYPE_ERROR} from '../../../../frontend/app/components/alert';
 
 test('Alert renders failure message override', (t) => {
   const alert = mount(

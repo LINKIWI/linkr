@@ -1,6 +1,6 @@
 /* global document */
 
 import App from '../app';
-import {render} from 'react-dom';
+import ReactDOM from 'react-dom';
 
-render(new App(), document.getElementById('app'));
+ReactDOM.render(new App(), document.getElementById('app'));
