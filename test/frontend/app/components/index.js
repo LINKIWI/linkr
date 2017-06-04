@@ -1,3 +1,4 @@
-import './ui/index';
+import './hoc';
+import './ui';
 
 import './test-alert';
