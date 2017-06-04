@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import sinon from 'sinon';
 import test from 'tape';
 
-import TextField from '../../../../frontend/app/components/ui/text-field';
+import TextField from '../../../../../frontend/app/components/ui/text-field';
 
 test('Rendering default TextField', (t) => {
   const field = mount(

@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import sinon from 'sinon';
 import test from 'tape';
 
-import Tooltip, {GRACE_TIMEOUT_INTERVAL} from '../../../../frontend/app/components/ui/tooltip';
+import Tooltip, {GRACE_TIMEOUT_INTERVAL} from '../../../../../frontend/app/components/ui/tooltip';
 
 test('Tooltip wraps children elements and adds tooltip element', (t) => {
   const tooltip = mount(

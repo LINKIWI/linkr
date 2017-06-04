@@ -3,8 +3,8 @@ import {mount} from 'enzyme';
 import sinon from 'sinon';
 import test from 'tape';
 
-import {POSITION_LEFT, POSITION_RIGHT, BOUNCE_INTERVAL} from '../../../../frontend/app/components/ui/loading-bar';
-import LoadingBar from '../../../../frontend/app/components/ui/loading-bar';
+import {POSITION_LEFT, POSITION_RIGHT, BOUNCE_INTERVAL} from '../../../../../frontend/app/components/ui/loading-bar';
+import LoadingBar from '../../../../../frontend/app/components/ui/loading-bar';
 
 test('Loading bar state update logic', (t) => {
   const clock = sinon.useFakeTimers();

@@ -3,7 +3,7 @@ import {mount} from 'enzyme';
 import sinon from 'sinon';
 import test from 'tape';
 
-import Button from '../../../../frontend/app/components/ui/button';
+import Button from '../../../../../frontend/app/components/ui/button';
 
 test('Enabled button', (t) => {
   const spy = sinon.spy();
