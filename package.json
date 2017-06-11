@@ -68,7 +68,7 @@
     "react-syntax-highlighter": "^5.0.0",
     "safe-json-parse": "^4.0.0",
     "string-template": "^1.0.0",
-    "url-parse": "^1.1.8"
+    "url-parse": "^1.1.9"
   },
   "devDependencies": {
     "babel": "^6.5.2",

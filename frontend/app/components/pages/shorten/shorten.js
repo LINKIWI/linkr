@@ -42,7 +42,12 @@ class Shorten extends React.Component {
     this.setState({submitStatus: {}});
 
     const rawOutgoingURL = this.outgoingURLInput.getValue();
-    const outgoingURL = urlParse(rawOutgoingURL).protocol ?
+    // The second parameter to urlParse is a hack to get around the fact that the library, for some
+    // unknown bizarre reason, defaults to using the browser's window location as a root path if the
+    // input is a relative path. This is quite stupid as the URL parsed here is not in any way
+    // related to the browser location, so passing a bogus root name forces the library to fall back
+    // to parsing the input URL as-is without prepending the current window location.
+    const outgoingURL = urlParse(rawOutgoingURL, '.').protocol ?
       rawOutgoingURL : `http://${rawOutgoingURL}`;
 
     this.props.loading((done) => {
