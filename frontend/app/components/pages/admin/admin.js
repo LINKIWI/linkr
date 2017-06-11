@@ -3,6 +3,7 @@ import LoadingHOC from 'react-loading-hoc';
 import React from 'react';
 
 import AdminConfig from './admin-config';
+import AdminVersion from './admin-version';
 import AdminRecentLinks from './admin-recent-links';
 import AdminUsers from './admin-users';
 import AuthenticationHOC from '../../hoc/authentication-hoc';
@@ -33,6 +34,7 @@ const Admin = (props) => {
         <AdminRecentLinks {...props} />
         <AdminUsers {...props} />
         <AdminConfig {...props} />
+        <AdminVersion {...props} />
       </div>
     ) : (
       <Alert
