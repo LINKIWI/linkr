@@ -13,15 +13,15 @@ test('Loading bar state update logic', (t) => {
   );
 
   // Initial state
-  t.equals(loadingBar.state().position, POSITION_LEFT, 'Initial position state');
-  t.equals(loadingBar.find('.loading-bar').props().style.marginLeft, `calc(${POSITION_LEFT}% + ${-POSITION_RIGHT}px)`,
+  t.equal(loadingBar.state().position, POSITION_LEFT, 'Initial position state');
+  t.equal(loadingBar.find('.loading-bar').props().style.marginLeft, `calc(${POSITION_LEFT}% + ${-POSITION_RIGHT}px)`,
     'Initial style override');
 
   // Simulate time events
   clock.tick(5);
-  t.equals(loadingBar.state().position, POSITION_RIGHT, 'First tick of position state');
+  t.equal(loadingBar.state().position, POSITION_RIGHT, 'First tick of position state');
   clock.tick(BOUNCE_INTERVAL);
-  t.equals(loadingBar.state().position, POSITION_LEFT, 'Position state bounces back');
+  t.equal(loadingBar.state().position, POSITION_LEFT, 'Position state bounces back');
 
   // Unmount clears timeout
   loadingBar.unmount();

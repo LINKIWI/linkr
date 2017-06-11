@@ -11,15 +11,16 @@
     "build-html": "PYTHONPATH=. python scripts/build_html.py",
     "dev": "concurrently --kill-others --prefix name --prefix-colors cyan.bold,yellow.bold,magenta.bold --names HTTP,JS,CSS 'npm run start' 'npm run build-js-watch' 'npm run build-css-watch'",
     "start": "python linkr.py",
+    "lint": "npm run lint-backend && npm run lint-frontend",
+    "test": "npm run test-backend && npm run test-frontend",
+    "cover": "npm run cover-backend && npm run cover-frontend",
+    "coveralls": "npm run cover && coveralls-lcov -v -n coverage/lcov.info > js-coverage.json && coveralls --merge js-coverage.json && rm js-coverage.json",
     "lint-backend": "flake8 **/*.py",
     "test-backend": "python -m unittest discover -s test/backend -v",
     "cover-backend": "coverage run --source=$(ls | grep -Ewv 'env|node_modules|test|scripts' | tr '\n' ',') -m unittest discover -s test/backend -v && coverage report -m",
-    "coveralls-backend": "npm run cover-backend && coveralls",
     "lint-frontend": "eslint --max-warnings 0 frontend/app test/frontend",
     "test-frontend": "node test/frontend | tap-spec",
-    "cover-frontend": "istanbul cover test/frontend --print detail",
-    "coveralls-frontend": "npm run cover-frontend && cat coverage/lcov.info | coveralls",
-    "reset-database": "PYTHONPATH=. python scripts/reset_database.py"
+    "cover-frontend": "istanbul cover test/frontend --print detail"
   },
   "repository": {
     "type": "git",
@@ -28,10 +29,8 @@
   "author": "Kevin Lin <developer@kevinlin.info>",
   "license": "MIT",
   "pre-commit": [
-    "lint-frontend",
-    "test-frontend",
-    "lint-backend",
-    "test-backend"
+    "lint",
+    "test"
   ],
   "dependencies": {
     "async": "^2.1.5",
@@ -49,6 +48,7 @@
     "highlight.js": "^9.10.0",
     "humanize": "^0.0.9",
     "json-stringify-pretty-compact": "^1.0.2",
+    "lowdb": "^0.16.2",
     "morgan": "^1.7.0",
     "piwik-react-router": "^0.8.2",
     "preact": "^7.2.0",
@@ -79,7 +79,6 @@
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-0": "^6.5.0",
     "concurrently": "^3.3.0",
-    "coveralls": "^2.11.15",
     "enzyme": "^2.6.0",
     "eslint": "^3.3.1",
     "eslint-config-uber-jsx": "^3.0.1",

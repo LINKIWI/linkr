@@ -1,6 +1,6 @@
 import test from 'tape';
 
-import apiData from '../../../../frontend/resources/api/data';
+import apiData from '../../../../frontend/resources/data/api';
 
 test('API data contains array of endpoints', (t) => {
   t.ok(apiData.endpoints.length > 0, 'Nonzero number of endpoints');

@@ -13,17 +13,17 @@ const config = buildIDValueMap('config-option');
  *   </div>
  *
  * this function will build a map for a specified className mapping IDs (ID) to their elements'
- * inner contents (contents). For the tree above, a call to this function with input parameter
+ * inner contents (content). For the tree above, a call to this function with input parameter
  * 'className' would return
  *
  *   {
  *     ID: 'content'
  *   }
  *
- * @param className Name of the class attached to elements of this type.
+ * @param {String} className Name of the class attached to elements of this type.
  * @returns {Object} Map from each DOM element's ID to their inner HTML contents as a string.
  */
-function buildIDValueMap(className) {
+export function buildIDValueMap(className) {
   const nodes = document.getElementsByClassName(className);
   return range
     .range(0, nodes.length)
