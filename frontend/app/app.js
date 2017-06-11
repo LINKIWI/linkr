@@ -58,7 +58,7 @@ registerLanguage('javascript', js);
 const piwik = dottie.get(config, 'options.piwik.url') && PiwikReactRouter(config.options.piwik);
 
 // Client-side persistent storage initialization
-export const db = lowdb();
+export const db = lowdb(dottie.get(config, 'options.enable_recent_links') && 'db');
 
 const App = () => (
   <Router history={piwik ? piwik.connectToHistory(browserHistory) : browserHistory}>

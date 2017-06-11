@@ -2,5 +2,6 @@
   "piwik": {
     "url": null,
     "siteId": null
-  }
+  },
+  "enable_recent_links": true
 }
