@@ -1,4 +1,7 @@
-import config
+import os
+
+import git
+
 import util.response
 from linkr import app
 from uri.misc import *
@@ -19,6 +22,31 @@ def api_config(data):
             'config': {
                 'options': dict(config.options.client, **config.options.server),
                 'secrets': dict(config.secrets.client, **config.secrets.server),
+            },
+        })
+    except:
+        return util.response.undefined_error()
+
+
+@app.route(VersionURI.path, methods=VersionURI.methods)
+@require_form_args()
+@api_method
+def api_version(data):
+    """
+    Retrieve the deployed instance's version information via Git.
+    """
+    repo = git.Repo(os.getcwd())
+
+    try:
+        return util.response.success({
+            'version': {
+                'branch': repo.active_branch.name,
+                'sha': repo.active_branch.commit.hexsha,
+                'message': repo.active_branch.commit.message,
+                'date': repo.active_branch.commit.authored_datetime.isoformat(),
+                'remote': {
+                    repo.remote().name: [url for url in repo.remote().urls],
+                },
             },
         })
     except:
