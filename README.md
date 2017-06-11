@@ -158,3 +158,20 @@ Note that all of these secrets are bundled into the frontend application at buil
 |`database.password`|The password of the MySQL user for accessing the above database.|
 |`redis.host`|The hostname of the Redis datastore.|
 |`redis.port`|The port of the Redis datastore.|
+
+## Development
+
+1. Make sure all dependencies are installed and a database is available locally. Follow the same instructions for installation.
+2. At the terminal, run `npm run dev`. This will concurrently start the following processes:
+    * `npm run start`: Server process
+    * `npm run build-js`: Javascript build of the frontend application
+    * `npm run build-css`: SCSS build
+
+## Contributing
+
+Linkr is open to pull requests for bug fixes and/or new features. Please adhere to the following guidelines:
+
+* Maintain consistent code style with the rest of the codebase.
+* Document new functions, new components, or any non-intuitive logic according to existing documentation conventions.
+* Any changed or added lines should be accompanied with unit tests.
+* Don't drop coverage or introduce regressions. CI will help with this.
