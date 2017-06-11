@@ -12,6 +12,7 @@ import Container from '../../container';
 import Header from '../../header';
 import Footer from '../../footer';
 import RecentLinks from './recent-links';
+import shortenData from '../../../../resources/data/shorten';
 
 import Button from '../../ui/button';
 import Checkbox from '../../ui/checkbox';
@@ -31,6 +32,7 @@ class Shorten extends React.Component {
     super(props);
 
     this.state = {submitStatus: {}};
+    this.randomURL = shortenData.examples[Math.trunc(Math.random() * shortenData.examples.length)];
     this.randomAlias = generateRandomAlias(10);
   }
 
@@ -90,7 +92,7 @@ class Shorten extends React.Component {
             style={{
               width: '100%'
             }}
-            placeholder="https://google.com"
+            placeholder={this.randomURL}
           />
 
           <p className="sans-serif bold gamma text-gray-60 margin--top margin-small--bottom">TO</p>
