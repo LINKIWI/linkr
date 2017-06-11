@@ -48,6 +48,7 @@
     "highlight.js": "^9.10.0",
     "humanize": "^0.0.9",
     "json-stringify-pretty-compact": "^1.0.2",
+    "lowdb": "^0.16.2",
     "morgan": "^1.7.0",
     "piwik-react-router": "^0.8.2",
     "preact": "^7.2.0",
