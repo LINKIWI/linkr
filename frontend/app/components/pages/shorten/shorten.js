@@ -11,6 +11,7 @@ import AuthenticationHOC from '../../hoc/authentication-hoc';
 import Container from '../../container';
 import Header from '../../header';
 import Footer from '../../footer';
+import RecentLinks from './recent-links';
 
 import Button from '../../ui/button';
 import Checkbox from '../../ui/checkbox';
@@ -20,6 +21,7 @@ import Tooltip from '../../ui/tooltip';
 
 import browser from '../../../util/browser';
 import context from '../../../util/context';
+import db from '../../../util/db';
 
 /**
  * Main interface for shortening a new link.
@@ -62,6 +64,9 @@ class Shorten extends React.Component {
           });
           return done();
         }
+
+        // Add this newly created link as an item in the recent links
+        db.addRecentLink(submitStatus.alias);
 
         this.setState({submitStatus});
         return done();
@@ -221,6 +226,10 @@ class Shorten extends React.Component {
         <Container className={isLoading ? 'fade' : ''}>
           {(submitStatus.success === false) && this.renderErrorAlert()}
           {this.renderShorten()}
+
+          <div style={{marginTop: '70px'}}>
+            <RecentLinks />
+          </div>
         </Container>
 
         <Footer user={user} />

@@ -5,6 +5,7 @@ import browserHistory from 'react-router/lib/browserHistory';
 import csjs from 'csjs-inject';
 import dottie from 'dottie';
 import js from 'highlight.js/lib/languages/javascript';
+import lowdb from 'lowdb';
 import PiwikReactRouter from 'piwik-react-router';
 import python from 'highlight.js/lib/languages/python';
 import React from 'react';
@@ -55,6 +56,9 @@ registerLanguage('javascript', js);
 
 // Piwik initialization
 const piwik = dottie.get(config, 'options.piwik.url') && PiwikReactRouter(config.options.piwik);
+
+// Client-side persistent storage initialization
+export const db = lowdb();
 
 const App = () => (
   <Router history={piwik ? piwik.connectToHistory(browserHistory) : browserHistory}>

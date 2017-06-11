@@ -17,6 +17,7 @@ import LoadingBar from '../../ui/loading-bar';
 
 import browser from '../../../util/browser';
 import context from '../../../util/context';
+import db from '../../../util/db';
 
 /**
  * Default status page for an alias, if redirected to the frontend.
@@ -24,6 +25,9 @@ import context from '../../../util/context';
 class Alias extends React.Component {
   constructor(props) {
     super(props);
+
+    // Add this alias as a recent link immediately, regardless of any potential error states.
+    db.addRecentLink(props.params.alias);
 
     this.state = {
       data: {},
