@@ -33,7 +33,7 @@ export default class RecentLinkActions extends React.Component {
     const {isAliasCopied} = this.state;
 
     return (
-      <span>
+      <span style={{whiteSpace: 'nowrap'}}>
         <Tooltip
           contents={
             <span className="sans-serif kilo">

@@ -2,6 +2,7 @@
 
 import dottie from 'dottie';
 import Link from 'react-router/lib/Link';
+import MediaQuery from 'react-responsive';
 import React from 'react';
 import urlParse from 'url-parse';
 
@@ -43,9 +44,17 @@ export default class RecentLinks extends React.Component {
           ]}
           entries={recentLinks.map((alias) => [
             <p className="sans-serif iota margin-small--right">
-              <Link key={alias} to={`/${alias}`}>
-                {`${urlParse(context.config.linkr_url).href}/${alias}`}
-              </Link>
+              <MediaQuery minWidth={450}>
+                <Link key={alias} to={`/${alias}`}>
+                  {`${urlParse(context.config.linkr_url).href}/${alias}`}
+                </Link>
+              </MediaQuery>
+
+              <MediaQuery maxWidth={449}>
+                <Link key={alias} to={`/${alias}`}>
+                  {alias}
+                </Link>
+              </MediaQuery>
             </p>,
             <RecentLinkActions
               alias={alias}
