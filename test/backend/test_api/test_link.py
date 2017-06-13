@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import mock
 import webpreview
 
@@ -10,6 +12,8 @@ from uri.link import *
 
 
 class TestLink(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_api_link_details_nonexistent(self):
         resp = self.api_utils.request(LinkDetailsURI)
 

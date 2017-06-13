@@ -1,8 +1,12 @@
+import linkr  # flake8: noqa: F401
+
 import util.validation
 from test.backend.test_case import LinkrTestCase
 
 
 class TestValidation(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_is_alias_valid(self):
         self.assertTrue(util.validation.is_alias_valid('alias'))
         self.assertTrue(util.validation.is_alias_valid('alias-alias'))

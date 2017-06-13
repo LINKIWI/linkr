@@ -1,9 +1,13 @@
+import linkr  # flake8: noqa: F401
+
 import util.templating
 from test.backend.test_case import LinkrTestCase
 from uri.link import LinkAddURI
 
 
 class TestTemplating(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_get_config(self):
         self.assertIsNotNone(util.templating.get_config()['config'])
 

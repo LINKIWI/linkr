@@ -16,7 +16,7 @@
     "cover": "npm run cover-backend && npm run cover-frontend",
     "coveralls": "npm run cover && coveralls-lcov -v -n coverage/lcov.info > js-coverage.json && coveralls --merge js-coverage.json && rm js-coverage.json",
     "lint-backend": "flake8 **/*.py",
-    "test-backend": "python -m unittest discover -s test/backend -v",
+    "test-backend": "nosetests --processes=-1 -v test",
     "cover-backend": "coverage run --source=$(ls | grep -Ewv 'env|node_modules|test|scripts' | tr '\n' ',') -m unittest discover -s test/backend -v && coverage report -m",
     "lint-frontend": "eslint --max-warnings 0 frontend/app test/frontend",
     "test-frontend": "node test/frontend | tap-spec",

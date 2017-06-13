@@ -1,8 +1,11 @@
+import linkr  # flake8: noqa: F401
+
 import mock
 import json
 import flask_login
 
 import time
+import threading
 from linkr import cache
 import config
 import util.decorators
@@ -13,6 +16,8 @@ import util.cache
 
 
 class TestDecorators(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_api_method_simple(self):
         @util.decorators.api_method
         def simple():
@@ -27,8 +32,13 @@ class TestDecorators(LinkrTestCase):
         with app.test_request_context(headers=request_headers):
             with mock.patch.object(cache, 'set') as mock_set, \
                  mock.patch.object(cache, 'delete') as mock_delete, \
-                 mock.patch.object(time, 'sleep') as mock_sleep:
+                 mock.patch.object(time, 'sleep') as mock_sleep, \
+                 mock.patch.object(threading, 'Thread') as mock_thread:
                 simple()
+
+                _, kwargs = mock_thread.call_args
+                task = kwargs['target']
+                task()  # Manually execute async task
 
                 self.assertEqual(mock_set.call_count, 1)
                 self.assertEqual(mock_sleep.call_count, 1)

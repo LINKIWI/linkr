@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import database.link
 import util.cryptography
 from test.backend.factory import LinkFactory
@@ -8,6 +10,8 @@ from util.exception import *
 
 
 class TestLink(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_add_link_invalid_alias(self):
         self.assertRaises(
             InvalidAliasException,

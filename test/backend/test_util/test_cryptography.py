@@ -1,8 +1,12 @@
+import linkr  # flake8: noqa: F401
+
 import util.cryptography
 from test.backend.test_case import LinkrTestCase
 
 
 class TestCryptography(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_secure_hash(self):
         self.assertEqual(
             util.cryptography.secure_hash('string', iterations=1),

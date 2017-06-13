@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import config
 import mock
 
@@ -11,6 +13,8 @@ from uri.user import *
 
 
 class TestUser(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_api_add_new_user_registration_disabled(self):
         config.options.server['allow_open_registration'] = False
 
