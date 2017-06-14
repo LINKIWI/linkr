@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import time
 
 import mock
@@ -7,6 +9,8 @@ from test.backend.test_case import LinkrTestCase
 
 
 class TestLinkHit(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_init(self):
         with mock.patch.object(time, 'time', return_value=5):
             link_hit = LinkHit(

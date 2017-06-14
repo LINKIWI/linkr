@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 from test.backend.test_case import LinkrTestCase
 from uri.base_uri import URI
 
@@ -13,6 +15,8 @@ class TestEmbeddedParamsURI(URI):
 
 
 class TestBaseURI(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_uri(self):
         self.assertEqual('/test-uri-path', TestURI.uri())
         self.assertEqual('/test-uri-path?key1=value1', TestURI.uri(key1='value1'))

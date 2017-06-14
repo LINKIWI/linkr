@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import mock
 
 import util.response
@@ -7,6 +9,8 @@ from uri.auth import AuthCheckURI, AuthLoginURI, AuthLogoutURI
 
 
 class TestAuth(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_api_auth_check_unauth(self):
         resp = self.api_utils.request(AuthCheckURI)
 

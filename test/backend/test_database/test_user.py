@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import database.link
 import database.user
 from test.backend.factory import LinkFactory
@@ -7,6 +9,8 @@ from util.exception import *
 
 
 class TestUser(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_add_user_unavailable_username(self):
         UserFactory.generate(username='username')
 

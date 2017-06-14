@@ -1,8 +1,12 @@
+import linkr  # flake8: noqa: F401
+
 import util.exception
 from test.backend.test_case import LinkrTestCase
 
 
 class TestException(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_exception_naming_convention(self):
         exceptions = [
             property

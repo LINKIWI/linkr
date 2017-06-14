@@ -1,9 +1,13 @@
+import linkr  # flake8: noqa: F401
+
 import views.main
 from test.backend.factory import LinkFactory
 from test.backend.test_case import LinkrTestCase
 
 
 class TestMain(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_alias_route_nonexistent_link_get(self):
         frontend = views.main.frontend()
 

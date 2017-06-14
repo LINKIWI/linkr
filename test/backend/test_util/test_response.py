@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import json
 
 import util.response
@@ -5,6 +7,8 @@ from test.backend.test_case import LinkrTestCase
 
 
 class TestResponse(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_success_generic(self):
         resp, status = util.response.success()
 

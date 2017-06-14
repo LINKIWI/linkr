@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import datetime
 
 import git
@@ -10,6 +12,8 @@ from uri.misc import *
 
 
 class TestMisc(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_api_config_valid(self):
         with self.api_utils.authenticated_user(is_admin=True):
             resp = self.api_utils.request(ConfigURI)

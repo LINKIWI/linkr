@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import time
 
 import mock
@@ -16,6 +18,8 @@ with mock.patch.object(time, 'time', return_value=5):
 
 
 class TestUser(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_init(self):
         self.assertEqual(user.signup_time, 5)
         self.assertEqual(user.signup_ip, '127.0.0.1')

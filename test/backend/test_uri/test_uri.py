@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import uri.auth
 import uri.link
 import uri.main
@@ -7,6 +9,8 @@ from test.backend.test_case import LinkrTestCase
 
 
 class TestURI(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_properties(self):
         uri_modules = [
             uri.auth,

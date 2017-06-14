@@ -1,3 +1,5 @@
+import linkr  # flake8: noqa: F401
+
 import json
 import mock
 import requests
@@ -7,6 +9,8 @@ from test.backend.test_case import LinkrTestCase
 
 
 class TestRecaptcha(LinkrTestCase):
+    _multiprocess_can_split_ = True
+
     def test_validate_recaptcha_error(self):
         mock_resp = mock.MagicMock()
         mock_resp.text = json.dumps({'success': False})

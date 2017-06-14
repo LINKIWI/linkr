@@ -20,7 +20,7 @@ npm install
 npm run build
 
 # Reload Linkr service
-sudo service linkr restart
+sudo service linkr linkr-reload
 
 allu \
     --skip-auth \

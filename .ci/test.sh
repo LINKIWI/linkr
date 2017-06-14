@@ -21,8 +21,6 @@ pip install -r requirements.txt
 npm-s3 install
 
 # Frontend tests
-npm run lint-backend
-npm run lint-frontend
+npm run lint
 npm run build
-npm run cover-backend
-npm run cover-frontend
+npm run cover
