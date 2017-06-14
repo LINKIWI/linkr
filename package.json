@@ -20,7 +20,8 @@
     "cover-backend": "coverage run --source=$(ls | grep -Ewv 'env|node_modules|test|scripts' | tr '\n' ',') -m unittest discover -s test/backend -v && coverage report -m",
     "lint-frontend": "eslint --max-warnings 0 frontend/app test/frontend",
     "test-frontend": "node test/frontend | tap-spec",
-    "cover-frontend": "istanbul cover test/frontend --print detail"
+    "cover-frontend": "istanbul cover test/frontend --print detail",
+    "reset-database": "PYTHONPATH=. python scripts/reset_database.py"
   },
   "repository": {
     "type": "git",
