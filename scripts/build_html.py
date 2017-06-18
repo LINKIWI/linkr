@@ -1,6 +1,4 @@
-# flake8: noqa: F401
-
-import linkr
+import linkr  # flake8: noqa: F401
 
 import views
 

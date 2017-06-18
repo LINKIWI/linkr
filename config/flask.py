@@ -1,7 +1,8 @@
 # flake8: noqa: E501
 
-import config
+import os
 
+import config
 
 # Flask-SQLAlchemy
 SQLALCHEMY_DATABASE_URI = 'mysql://{database_user}:{database_password}@{database_host}/{database_name}'.format(
@@ -16,4 +17,4 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 SESSION_COOKIE_NAME = 'linkr-session'
 
 # Flask session secret key
-SECRET_KEY = '\xec5\xea\xc9\x9f,o\xd7v\xac\x06\xe2\xeeK2\xb9\x1d\x8a\xdel\xb27\x8a\xa8>\x07\n\xd4Z\xfeO\xa1'
+SECRET_KEY = open('.secret').read() if os.path.isfile('.secret') else os.urandom(32)
