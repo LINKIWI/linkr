@@ -17,6 +17,7 @@ class LinkShortenSuccessURI(URI):
 
 
 class LinkDetailsURI(URI):
+    is_public = True
     methods = ['GET', 'POST']
     path = URI.api_uri('/link/details')
 
@@ -27,11 +28,13 @@ class LinkAliasSearchURI(URI):
 
 
 class LinkAddURI(URI):
+    is_public = True
     methods = ['PUT']
     path = URI.api_uri('/link/add')
 
 
 class LinkEditURI(URI):
+    is_public = True
     methods = ['POST']
     path = URI.api_uri('/link/edit')
 
@@ -42,6 +45,7 @@ class LinkUpdatePasswordURI(URI):
 
 
 class LinkDeleteURI(URI):
+    is_public = True
     methods = ['DELETE']
     path = URI.api_uri('/link/delete')
 
@@ -67,5 +71,6 @@ class LinkIncrementHitsURI(URI):
 
 
 class LinkPreviewURI(URI):
+    is_public = True
     methods = ['GET', 'POST']
     path = URI.api_uri('/link/preview')

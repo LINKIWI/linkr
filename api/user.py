@@ -7,7 +7,7 @@ from util.decorators import *
 from util.exception import *
 
 
-@app.route(UserAddURI.get_path(secure=True), methods=UserAddURI.methods)
+@app.route(UserAddURI.get_path(), methods=UserAddURI.methods)
 @require_form_args(['username', 'password'])
 @optional_login_api
 @require_frontend_api
@@ -58,7 +58,7 @@ def api_add_user(data):
         return util.response.undefined_error()
 
 
-@app.route(UserDeactivationURI.get_path(secure=True), methods=UserDeactivationURI.methods)
+@app.route(UserDeactivationURI.get_path(), methods=UserDeactivationURI.methods)
 @require_form_args()
 @require_login_api()
 @require_frontend_api
@@ -104,7 +104,7 @@ def api_deactivate_user(data):
         return util.response.undefined_error()
 
 
-@app.route(UserUpdatePasswordURI.get_path(secure=True), methods=UserUpdatePasswordURI.methods)
+@app.route(UserUpdatePasswordURI.get_path(), methods=UserUpdatePasswordURI.methods)
 @require_form_args(['current_password', 'new_password'])
 @require_login_api()
 @require_frontend_api
@@ -147,7 +147,7 @@ def api_update_user_password(data):
         return util.response.undefined_error()
 
 
-@app.route(UserRegenerateAPIKeyURI.get_path(secure=True), methods=UserRegenerateAPIKeyURI.methods)
+@app.route(UserRegenerateAPIKeyURI.get_path(), methods=UserRegenerateAPIKeyURI.methods)
 @require_form_args(['password'])
 @require_login_api()
 @require_frontend_api
@@ -180,7 +180,7 @@ def api_regenerate_user_api_key(data):
         return util.response.undefined_error()
 
 
-@app.route(RecentUsersURI.get_path(secure=True), methods=RecentUsersURI.methods)
+@app.route(RecentUsersURI.get_path(), methods=RecentUsersURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
 @require_frontend_api
@@ -205,7 +205,7 @@ def api_recent_users(data):
         return util.response.undefined_error()
 
 
-@app.route(UserSearchURI.get_path(secure=True), methods=UserSearchURI.methods)
+@app.route(UserSearchURI.get_path(), methods=UserSearchURI.methods)
 @require_form_args(['username'])
 @require_login_api(admin_only=True)
 @require_frontend_api
