@@ -15,6 +15,9 @@ default_server = {
     'secure_frontend_requests': True,
 }
 
+client_config = dict(default_client, **util.config_io.read_config('config/options/client.json'))
+server_config = dict(default_server, **util.config_io.read_config('config/options/server.json'))
+
 
 def client(key):
     """
@@ -23,7 +26,6 @@ def client(key):
     :param key: Dot-delimited key for the config option.
     :return: The value of the config option, or None if it does not exist.
     """
-    client_config = dict(default_client, **util.config_io.read_config('config/options/client.json'))
     return util.config_io.get_property(client_config, key.split('.'))
 
 
@@ -34,5 +36,4 @@ def server(key):
     :param key: Dot-delimited key for the config option.
     :return: The value of the config option, or None if it does not exist.
     """
-    server_config = dict(default_server, **util.config_io.read_config('config/options/server.json'))
     return util.config_io.get_property(server_config, key.split('.'))
