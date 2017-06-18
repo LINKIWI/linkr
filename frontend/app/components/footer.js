@@ -13,16 +13,10 @@ import context from '../util/context';
 /**
  * Footer showing account details.
  */
-class Footer extends React.Component {
+export class Footer extends React.Component {
   static propTypes = {
     user: React.PropTypes.object
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {};
-  }
 
   handleAccountClick(evt) {
     evt.preventDefault();
@@ -68,7 +62,7 @@ class Footer extends React.Component {
                   }}
                 />
               </span>
-              <span className="sans-serif bold text-gray-10 kilo margin-tiny--bottom">
+              <span className="footer-username sans-serif bold text-gray-10 kilo margin-tiny--bottom">
                 {user.username.toUpperCase()}
               </span>
             </div>
@@ -78,12 +72,12 @@ class Footer extends React.Component {
               verticalAlign: 'middle'
             }}>
               <Button
-                className="footer-button sans-serif bold kilo bg-gray-10 text-gray-80"
+                className="footer-account-button footer-button sans-serif bold kilo bg-gray-10 text-gray-80"
                 text={'ACCOUNT'}
                 onClick={this.handleAccountClick.bind(this)}
               />
               <Button
-                className="footer-button sans-serif bold kilo bg-gray-10 text-gray-80 margin--left"
+                className="footer-logout-button footer-button sans-serif bold kilo bg-gray-10 text-gray-80 margin--left"
                 text={'LOGOUT'}
                 onClick={this.handleLogoutClick.bind(this)}
               />
