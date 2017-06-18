@@ -7,23 +7,22 @@ import flask_login
 import time
 import threading
 from linkr import cache
-import config
 import util.decorators
 from linkr import app
 from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
+from test.backend.test_case import mock_config_options
 import util.cache
 
 
 class TestDecorators(LinkrTestCase):
     _multiprocess_can_split_ = True
 
+    @mock_config_options(server={'secure_frontend_requests': True})
     def test_api_method_simple(self):
         @util.decorators.api_method
         def simple():
             return 'simple', 200
-
-        config.options.server['secure_frontend_requests'] = True
 
         request_headers = {
             'Cookie': '{name}={value}'.format(name=util.decorators.COOKIE_SPA_TOKEN, value='abc'),
@@ -223,13 +222,12 @@ class TestDecorators(LinkrTestCase):
         with app.test_request_context(headers={'X-Linkr-Key': 'invalid'}):
             self.assertIsNone(api_key_invalid())
 
+    @mock_config_options(server={'secure_frontend_requests': True})
     def test_require_frontend_api_invalid(self):
         @util.decorators.require_form_args()
         @util.decorators.require_frontend_api
         def require_frontend_api_invalid(data):
             return 'invalid', 400
-
-        config.options.server['secure_frontend_requests'] = True
 
         with app.test_request_context():
             with mock.patch.object(cache, 'get') as mock_get:
@@ -241,13 +239,12 @@ class TestDecorators(LinkrTestCase):
                 self.assertEqual(resp.json['failure'], 'failure_bad_client')
                 self.assertEqual(status, 403)
 
+    @mock_config_options(server={'secure_frontend_requests': True})
     def test_require_frontend_api_valid(self):
         @util.decorators.require_form_args()
         @util.decorators.require_frontend_api
         def require_frontend_api_valid(data):
             return 'valid', 200
-
-        config.options.server['secure_frontend_requests'] = True
 
         with app.test_request_context():
             with mock.patch.object(cache, 'get') as mock_get:
