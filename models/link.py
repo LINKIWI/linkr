@@ -89,7 +89,7 @@ class Link(db.Model):
             'submit_time': self.submit_time,
             'alias': self.alias,
             'full_alias': '{base}/{alias}'.format(
-                base=config.options.server['linkr_url'],
+                base=config.options.server('linkr_url'),
                 alias=self.alias,
             ),
             'outgoing_url': self.outgoing_url,

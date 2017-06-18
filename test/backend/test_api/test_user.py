@@ -1,13 +1,12 @@
 import linkr  # flake8: noqa: F401
 
-import config
 import mock
 
-import database.user
 import util.recaptcha
 import util.response
 from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
+from test.backend.test_case import mock_config_options
 from uri.auth import *
 from uri.user import *
 
@@ -15,9 +14,8 @@ from uri.user import *
 class TestUser(LinkrTestCase):
     _multiprocess_can_split_ = True
 
+    @mock_config_options(server={'allow_open_registration': False})
     def test_api_add_new_user_registration_disabled(self):
-        config.options.server['allow_open_registration'] = False
-
         resp = self.api_utils.request(UserAddURI, data={
             'username': 'username',
             'password': 'password',
@@ -26,9 +24,8 @@ class TestUser(LinkrTestCase):
         self.assertEqual(resp.status_code, 403)
         self.assertEqual(resp.json['failure'], 'failure_open_registration_disabled')
 
+    @mock_config_options(server={'allow_open_registration': True})
     def test_api_add_new_user_unauth_new_admin(self):
-        config.options.server['allow_open_registration'] = True
-
         resp = self.api_utils.request(UserAddURI, data={
             'username': 'username',
             'password': 'password',
@@ -38,9 +35,8 @@ class TestUser(LinkrTestCase):
         self.assertEqual(resp.status_code, 403)
         self.assertEqual(resp.json['failure'], 'failure_unauth')
 
+    @mock_config_options(server={'allow_open_registration': True})
     def test_api_add_new_user_non_admin_new_admin(self):
-        config.options.server['allow_open_registration'] = True
-
         with self.api_utils.authenticated_user():
             resp = self.api_utils.request(UserAddURI, data={
                 'username': 'username',
@@ -51,8 +47,8 @@ class TestUser(LinkrTestCase):
             self.assertEqual(resp.status_code, 403)
             self.assertEqual(resp.json['failure'], 'failure_unauth')
 
+    @mock_config_options(server={'allow_open_registration': True})
     def test_api_add_new_user_unavailable_username(self):
-        config.options.server['allow_open_registration'] = True
         UserFactory.generate(username='username')
 
         resp = self.api_utils.request(UserAddURI, data={
@@ -63,9 +59,8 @@ class TestUser(LinkrTestCase):
         self.assertEqual(resp.status_code, 409)
         self.assertEqual(resp.json['failure'], 'failure_unavailable_username')
 
+    @mock_config_options(server={'allow_open_registration': True})
     def test_api_add_new_user_invalid_username(self):
-        config.options.server['allow_open_registration'] = True
-
         resp = self.api_utils.request(UserAddURI, data={
             'username': 'username with spaces',
             'password': 'password',
@@ -74,9 +69,8 @@ class TestUser(LinkrTestCase):
         self.assertEqual(resp.status_code, 400)
         self.assertEqual(resp.json['failure'], 'failure_invalid_username')
 
+    @mock_config_options(server={'allow_open_registration': True})
     def test_api_add_new_user_valid(self):
-        config.options.server['allow_open_registration'] = True
-
         resp = self.api_utils.request(UserAddURI, data={
             'username': 'username',
             'password': 'password',

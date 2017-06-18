@@ -2,13 +2,14 @@ import os
 
 import git
 
+import config
 import util.response
 from linkr import app
 from uri.misc import *
 from util.decorators import *
 
 
-@app.route(ConfigURI.path, methods=ConfigURI.methods)
+@app.route(ConfigURI.get_path(secure=True), methods=ConfigURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
 @require_frontend_api
@@ -19,11 +20,11 @@ def api_config(data):
     """
     options = {
         key: 'value'
-        for key in dict(config.options.client, **config.options.server).keys()
+        for key in dict(config.options.client(''), **config.options.server('')).keys()
     }
     secrets = {
         key: 'value'
-        for key in dict(config.secrets.client, **config.secrets.server).keys()
+        for key in dict(config.secrets.client(''), **config.secrets.server('')).keys()
     }
 
     try:
@@ -37,8 +38,10 @@ def api_config(data):
         return util.response.undefined_error()
 
 
-@app.route(VersionURI.path, methods=VersionURI.methods)
+@app.route(VersionURI.get_path(secure=True), methods=VersionURI.methods)
 @require_form_args()
+@require_login_api(admin_only=True)
+@require_frontend_api
 @api_method
 def api_version(data):
     """

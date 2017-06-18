@@ -1,8 +1,9 @@
 import linkr  # flake8: noqa: F401
 
 import mock
-from linkr import db
+
 import database.common
+from linkr import db
 from test.backend.test_case import LinkrTestCase
 
 

@@ -58,17 +58,18 @@ class TestMisc(LinkrTestCase):
         with mock.patch.object(git, 'Repo') as mock_get_repo:
             mock_get_repo.return_value = mock_repo
 
-            resp = self.api_utils.request(VersionURI)
+            with self.api_utils.authenticated_user(is_admin=True):
+                resp = self.api_utils.request(VersionURI)
 
-            self.assertEqual(resp.json['version'], {
-                'branch': 'master',
-                'sha': 'sha',
-                'message': 'message',
-                'date': '2017-06-11T11:00:00',
-                'remote': {
-                    'remote-name': ['remote-url'],
-                },
-            })
+                self.assertEqual(resp.json['version'], {
+                    'branch': 'master',
+                    'sha': 'sha',
+                    'message': 'message',
+                    'date': '2017-06-11T11:00:00',
+                    'remote': {
+                        'remote-name': ['remote-url'],
+                    },
+                })
 
     def test_api_version_undefined_error(self):
         with self.api_utils.authenticated_user(is_admin=True):

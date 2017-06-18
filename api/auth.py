@@ -8,7 +8,8 @@ from util.decorators import *
 from util.exception import *
 
 
-@app.route(AuthCheckURI.path, methods=AuthCheckURI.methods)
+@app.route(AuthCheckURI.get_path(secure=True), methods=AuthCheckURI.methods)
+@app.route(AuthCheckURI.get_path(secure=False), methods=AuthCheckURI.methods)
 @require_form_args()
 @api_method
 def api_auth_check(data):
@@ -30,7 +31,7 @@ def api_auth_check(data):
         return util.response.undefined_error()
 
 
-@app.route(AuthLoginURI.path, methods=AuthLoginURI.methods)
+@app.route(AuthLoginURI.get_path(secure=True), methods=AuthLoginURI.methods)
 @require_form_args(['username', 'password', 'remember_me'])
 @require_frontend_api
 @api_method
@@ -64,7 +65,7 @@ def api_auth_login(data):
         return util.response.undefined_error()
 
 
-@app.route(AuthLogoutURI.path, methods=AuthLogoutURI.methods)
+@app.route(AuthLogoutURI.get_path(secure=True), methods=AuthLogoutURI.methods)
 @require_form_args()
 @require_frontend_api
 @api_method

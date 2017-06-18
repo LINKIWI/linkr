@@ -11,7 +11,7 @@ def get_config():
     """
     Expose the server-side configuration options as a templating method.
     """
-    return dict(config=lambda: config.options.server)
+    return dict(config=lambda: config.options.server(''))
 
 
 @app.context_processor
