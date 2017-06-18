@@ -10,7 +10,8 @@ class TestURI(URI):
     path = '/test-uri-path'
 
 
-class TestAPIURI(URI):
+class TestSecureAPIURI(URI):
+    is_public = False
     path = '/linkr/api/path'
 
 
@@ -66,9 +67,9 @@ class TestBaseURI(LinkrTestCase):
 
     @mock_config_options(server={'secure_frontend_requests': True})
     def test_get_path_secure(self):
-        path = TestAPIURI.get_path(secure=True)
+        path = TestSecureAPIURI.get_path()
         self.assertTrue(path.startswith('/linkr/api/'))
-        self.assertNotEqual(path, TestAPIURI.path)
+        self.assertNotEqual(path, TestSecureAPIURI.path)
 
     def test_view_uri(self):
         self.assertEqual(URI.view_uri('/path'), '/linkr/path')

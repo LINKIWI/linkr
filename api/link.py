@@ -10,8 +10,7 @@ from util.decorators import *
 from util.exception import *
 
 
-@app.route(LinkDetailsURI.get_path(secure=True), methods=LinkDetailsURI.methods)
-@app.route(LinkDetailsURI.get_path(secure=False), methods=LinkDetailsURI.methods)
+@app.route(LinkDetailsURI.get_path(), methods=LinkDetailsURI.methods)
 @require_form_args()
 @optional_login_api
 @api_method
@@ -60,7 +59,7 @@ def api_link_details(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkIncrementHitsURI.get_path(secure=True), methods=LinkIncrementHitsURI.methods)
+@app.route(LinkIncrementHitsURI.get_path(), methods=LinkIncrementHitsURI.methods)
 @require_form_args(['link_id'])
 @optional_login_api
 @require_frontend_api
@@ -100,8 +99,7 @@ def api_increment_link_hits(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkAddURI.get_path(secure=True), methods=LinkAddURI.methods)
-@app.route(LinkAddURI.get_path(secure=False), methods=LinkAddURI.methods)
+@app.route(LinkAddURI.get_path(), methods=LinkAddURI.methods)
 @require_form_args(['alias', 'outgoing_url'])
 @require_login_api(only_if=config.options.server('require_login_to_create'))
 @optional_login_api
@@ -150,8 +148,7 @@ def api_add_link(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkEditURI.get_path(secure=True), methods=LinkEditURI.methods)
-@app.route(LinkEditURI.get_path(secure=False), methods=LinkEditURI.methods)
+@app.route(LinkEditURI.get_path(), methods=LinkEditURI.methods)
 @require_form_args(['link_id', 'alias', 'outgoing_url'], allow_blank_values=True)
 @require_login_api()
 @api_method
@@ -206,7 +203,7 @@ def api_edit_link(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkUpdatePasswordURI.get_path(secure=True), methods=LinkUpdatePasswordURI.methods)
+@app.route(LinkUpdatePasswordURI.get_path(), methods=LinkUpdatePasswordURI.methods)
 @require_form_args(['link_id', 'password'], allow_blank_values=True)
 @require_login_api()
 @require_frontend_api
@@ -241,8 +238,7 @@ def api_update_link_password(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkDeleteURI.get_path(secure=True), methods=LinkDeleteURI.methods)
-@app.route(LinkDeleteURI.get_path(secure=False), methods=LinkDeleteURI.methods)
+@app.route(LinkDeleteURI.get_path(), methods=LinkDeleteURI.methods)
 @require_form_args(['link_id'])
 @require_login_api()
 @api_method
@@ -273,7 +269,7 @@ def api_delete_link(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkHitsURI.get_path(secure=True), methods=LinkHitsURI.methods)
+@app.route(LinkHitsURI.get_path(), methods=LinkHitsURI.methods)
 @require_form_args(['link_id'])
 @require_login_api(admin_only=True)
 @require_frontend_api
@@ -306,7 +302,7 @@ def api_link_hits(data):
         return util.response.undefined_error()
 
 
-@app.route(LinksForUserURI.get_path(secure=True), methods=LinksForUserURI.methods)
+@app.route(LinksForUserURI.get_path(), methods=LinksForUserURI.methods)
 @require_form_args()
 @require_login_api()
 @require_frontend_api
@@ -348,7 +344,7 @@ def api_links_for_user(data):
         return util.response.undefined_error()
 
 
-@app.route(RecentLinksURI.get_path(secure=True), methods=RecentLinksURI.methods)
+@app.route(RecentLinksURI.get_path(), methods=RecentLinksURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
 @require_frontend_api
@@ -373,8 +369,7 @@ def api_recent_links(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkPreviewURI.get_path(secure=True), methods=LinkPreviewURI.methods)
-@app.route(LinkPreviewURI.get_path(secure=False), methods=LinkPreviewURI.methods)
+@app.route(LinkPreviewURI.get_path(), methods=LinkPreviewURI.methods)
 @require_form_args(['link_id'])
 @require_login_api()
 @api_method
@@ -411,7 +406,7 @@ def api_link_preview(data):
         return util.response.undefined_error()
 
 
-@app.route(LinkAliasSearchURI.get_path(secure=True), methods=LinkAliasSearchURI.methods)
+@app.route(LinkAliasSearchURI.get_path(), methods=LinkAliasSearchURI.methods)
 @require_form_args(['alias'])
 @require_login_api(admin_only=True)
 @require_frontend_api

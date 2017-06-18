@@ -9,7 +9,7 @@ from uri.misc import *
 from util.decorators import *
 
 
-@app.route(ConfigURI.get_path(secure=True), methods=ConfigURI.methods)
+@app.route(ConfigURI.get_path(), methods=ConfigURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
 @require_frontend_api
@@ -29,7 +29,7 @@ def api_config(data):
         return util.response.undefined_error()
 
 
-@app.route(VersionURI.get_path(secure=True), methods=VersionURI.methods)
+@app.route(VersionURI.get_path(), methods=VersionURI.methods)
 @require_form_args()
 @require_login_api(admin_only=True)
 @require_frontend_api
