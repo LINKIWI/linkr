@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Beautiful link shortening",
   "scripts": {
-    "build": "npm run build-css && npm run build-js && npm run build-html && npm run generate-secret",
+    "build": "npm run generate-secret && npm run build-css && npm run build-js && npm run build-html",
     "build-js": "mkdir -p frontend/static/dist && webpack --config frontend/config/webpack",
     "build-css": "mkdir -p frontend/static/dist && node-sass --output-style compressed frontend/styles/main.scss frontend/static/dist/main.css",
     "build-js-watch": "npm run build-js -- --watch --colors",
