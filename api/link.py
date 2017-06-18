@@ -101,7 +101,7 @@ def api_increment_link_hits(data):
 
 @app.route(LinkAddURI.path, methods=LinkAddURI.methods)
 @require_form_args(['alias', 'outgoing_url'])
-@require_login_api(only_if=config.options.server['require_login_to_create'])
+@require_login_api(only_if=config.options.server('require_login_to_create'))
 @optional_login_api
 @api_method
 def api_add_link(data):

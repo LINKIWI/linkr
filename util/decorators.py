@@ -8,7 +8,7 @@ from flask import request
 from flask_login import current_user
 from flask_login import login_user
 
-import config
+import config as base_config
 import database.user
 import util.cache
 import util.response
@@ -53,7 +53,7 @@ def api_method(func):
 
     @wraps(func)
     def decorator(*args, **kwargs):
-        if not config.options.server['secure_frontend_requests']:
+        if not base_config.options.server('secure_frontend_requests'):
             return func(*args, **kwargs)
 
         # Asynchronously delete the incoming SPA token (assigned from a prior request)
@@ -254,7 +254,7 @@ def require_frontend_api(func):
     """
     @wraps(func)
     def decorator(data, *args, **kwargs):
-        if not config.options.server['secure_frontend_requests']:
+        if not base_config.options.server('secure_frontend_requests'):
             return func(data, *args, **kwargs)
 
         spa_token = request.cookies.get(COOKIE_SPA_TOKEN)

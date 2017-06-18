@@ -49,14 +49,14 @@ def verify_config():
     try:
         config = __import__('config')
         print 'Configuration read successfully!'
-        print 'Linkr URL: {url}'.format(url=config.options.server['linkr_url'])
-        print 'Database host: {db_host}'.format(db_host=config.secrets.server['database']['host'])
-        print 'Database name: {db_name}'.format(db_name=config.secrets.server['database']['name'])
+        print 'Linkr URL: {url}'.format(url=config.options.server('linkr_url'))
+        print 'Database host: {db_host}'.format(db_host=config.secrets.server('database.host'))
+        print 'Database name: {db_name}'.format(db_name=config.secrets.server('database.name'))
         print 'Database username: {db_user}'.format(
-            db_user=config.secrets.server['database']['user'],
+            db_user=config.secrets.server('database.user'),
         )
         print 'Database password: {db_pass}'.format(
-            db_pass=config.secrets.server['database']['password'],
+            db_pass=config.secrets.server('database.password'),
         )
     except:
         print 'There was an error reading the config files!'

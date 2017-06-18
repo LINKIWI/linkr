@@ -2,6 +2,7 @@ import os
 
 import git
 
+import config
 import util.response
 from linkr import app
 from uri.misc import *
@@ -20,8 +21,8 @@ def api_config(data):
     try:
         return util.response.success({
             'config': {
-                'options': dict(config.options.client, **config.options.server),
-                'secrets': dict(config.secrets.client, **config.secrets.server),
+                'options': dict(config.options.client(''), **config.options.server('')),
+                'secrets': dict(config.secrets.client(''), **config.secrets.server('')),
             },
         })
     except:

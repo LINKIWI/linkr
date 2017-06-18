@@ -2,7 +2,7 @@ import config
 
 
 class URI:
-    fqdn = config.options.server['linkr_url']
+    fqdn = config.options.server('linkr_url')
     path = '/'
     methods = ['GET']
 

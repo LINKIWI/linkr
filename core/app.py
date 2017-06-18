@@ -31,8 +31,8 @@ def init_db():
 
 def init_cache():
     return redis.StrictRedis(
-        host=config.secrets.server['redis']['host'],
-        port=config.secrets.server['redis']['port'],
+        host=config.secrets.server('redis.host'),
+        port=config.secrets.server('redis.port'),
         db=0,
     )
 
@@ -54,6 +54,6 @@ def init_sentry():
 
     :return: A Sentry instance used universally for capturing uncaught exceptions.
     """
-    sentry = Sentry(dsn=config.secrets.server['sentry_server_dsn'])
+    sentry = Sentry(dsn=config.secrets.server('sentry_server_dsn'))
     sentry.init_app(app)
     return sentry
