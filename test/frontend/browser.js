@@ -1,6 +1,7 @@
 /* global global, document, window */
 
 import jsdom from 'jsdom';
+import Raven from 'raven-js';
 import sinon from 'sinon';
 
 function setupDom() {
@@ -12,6 +13,9 @@ function setupDom() {
   global.window = document.defaultView;
   global.navigator = window.navigator;
   global.XMLHttpRequest = sinon.useFakeXMLHttpRequest();
+
+  // Raven stub
+  sinon.stub(Raven, 'config').returns({install: () => {}});
 }
 
 setupDom();
