@@ -69,7 +69,7 @@ class URI:
                 msg=cls.path,
                 digestmod=hashlib.sha256,
             ).hexdigest()
-            return '/linkr/{digest}'.format(digest=digest)
+            return '/linkr/api/{digest}'.format(digest=digest)
 
         return cls.path
 

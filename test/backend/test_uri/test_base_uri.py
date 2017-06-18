@@ -1,6 +1,5 @@
 import linkr  # flake8: noqa: F401
 
-import config
 from test.backend.test_case import LinkrTestCase
 from test.backend.test_case import mock_config_options
 from uri.base_uri import URI
@@ -68,7 +67,7 @@ class TestBaseURI(LinkrTestCase):
     @mock_config_options(server={'secure_frontend_requests': True})
     def test_get_path_secure(self):
         path = TestAPIURI.get_path(secure=True)
-        self.assertTrue(path.startswith('/linkr/'))
+        self.assertTrue(path.startswith('/linkr/api/'))
         self.assertNotEqual(path, TestAPIURI.path)
 
     def test_view_uri(self):

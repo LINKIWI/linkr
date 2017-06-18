@@ -1,18 +1,19 @@
 import linkr  # flake8: noqa: F401
 
-import mock
 import json
-import flask_login
-
-import time
 import threading
-from linkr import cache
+import time
+
+import flask_login
+import mock
+
+import util.cache
 import util.decorators
 from linkr import app
+from linkr import cache
 from test.backend.factory import UserFactory
 from test.backend.test_case import LinkrTestCase
 from test.backend.test_case import mock_config_options
-import util.cache
 
 
 class TestDecorators(LinkrTestCase):
