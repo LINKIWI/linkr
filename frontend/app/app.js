@@ -1,4 +1,5 @@
 /* global config */
+/* eslint-disable no-unused-expressions */
 
 import bash from 'highlight.js/lib/languages/bash';
 import browserHistory from 'react-router/lib/browserHistory';
@@ -8,6 +9,7 @@ import js from 'highlight.js/lib/languages/javascript';
 import lowdb from 'lowdb';
 import PiwikReactRouter from 'piwik-react-router';
 import python from 'highlight.js/lib/languages/python';
+import Raven from 'raven-js';
 import React from 'react';
 import Router from 'react-router/lib/Router';
 import {registerLanguage} from 'react-syntax-highlighter/dist/light';
@@ -56,6 +58,9 @@ registerLanguage('javascript', js);
 
 // Piwik initialization
 const piwik = dottie.get(config, 'options.piwik.url') && PiwikReactRouter(config.options.piwik);
+
+// Client-side Sentry initialization
+Raven.config && Raven.config(dottie.get(config, 'secrets.sentry_client_dsn')).install();
 
 // Client-side persistent storage initialization
 export const db = lowdb(dottie.get(config, 'options.enable_recent_links') && 'db');
