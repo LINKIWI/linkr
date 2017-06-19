@@ -59,11 +59,11 @@ test('browser.clearTimeout aliases window.clearTimeout', (t) => {
 test('browser.loginRedirect imperatively redirects to login with a reason', (t) => {
   jsdom.changeURL(window, 'https://google.com/page');
   context.uris.LoginURI = 'login-uri';
-  const pushStub = sinon.stub(browserHistory, 'push');
+  const replaceStub = sinon.stub(browserHistory, 'replace');
 
   browser.loginRedirect('reason');
 
-  t.ok(pushStub.calledWith({
+  t.ok(replaceStub.calledWith({
     pathname: 'login-uri',
     query: {
       redirect: '/page',
@@ -71,7 +71,7 @@ test('browser.loginRedirect imperatively redirects to login with a reason', (t) 
     }
   }), 'Redirect occurs with correct parameters');
 
-  browserHistory.push.restore();
+  browserHistory.replace.restore();
   t.end();
 });
 

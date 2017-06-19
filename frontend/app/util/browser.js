@@ -61,7 +61,7 @@ function clearTimeout(timeoutID) {
  * @param {String} reason A reason code describing why the user was redirected to login.
  */
 function loginRedirect(reason) {
-  browserHistory.push({
+  browserHistory.replace({
     pathname: context.uris.LoginURI,
     query: {
       redirect: parseURL().pathname,
