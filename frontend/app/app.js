@@ -6,7 +6,6 @@ import browserHistory from 'react-router/lib/browserHistory';
 import csjs from 'csjs-inject';
 import dottie from 'dottie';
 import js from 'highlight.js/lib/languages/javascript';
-import lowdb from 'lowdb';
 import PiwikReactRouter from 'piwik-react-router';
 import python from 'highlight.js/lib/languages/python';
 import Raven from 'raven-js';
@@ -61,9 +60,6 @@ const piwik = dottie.get(config, 'options.piwik.url') && PiwikReactRouter(config
 
 // Client-side Sentry initialization
 Raven.config && Raven.config(dottie.get(config, 'secrets.sentry_client_dsn')).install();
-
-// Client-side persistent storage initialization
-export const db = lowdb(dottie.get(config, 'options.enable_recent_links') && 'db');
 
 const App = () => (
   <Router history={piwik ? piwik.connectToHistory(browserHistory) : browserHistory}>

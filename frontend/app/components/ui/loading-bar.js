@@ -32,7 +32,7 @@ export default class LoadingBar extends React.Component {
     // we will queue this event to occur as soon as possible *after* the component is mounted. It
     // is also necessary to record the interval as a class property to that it can be canceled promptly
     // if the component is immediately unmounted.
-    this.interval = setTimeout(() => this.tick(), 1);
+    this.interval = this.props.show && setTimeout(() => this.tick(), 1);
   }
 
   componentWillUnmount() {

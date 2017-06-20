@@ -1,25 +1,25 @@
 /* global process */
 /* eslint-disable no-process-env */
 
-import path from 'path';
-import webpack from 'webpack';
+const path = require('path');
+const webpack = require('webpack');
 
-import clientOptions from '../../../config/options/client';
-import clientSecrets from '../../../config/secrets/client';
+const clientOptions = require('../../../config/options/client');
+const clientSecrets = require('../../../config/secrets/client');
 
 const isProduction = process.env.NODE_ENV === 'production';
 
-export default {
+module.exports = {
   context: path.resolve(__dirname, '../../'),
   entry: {
     bundle: './scripts/client.js'
   },
   output: {
-    path: './frontend/static/dist',
+    path: path.resolve(__dirname, '../../static/dist'),
     filename: '[name].js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /frontend\/.+\.js$/,
         exclude: /node_modules/,
@@ -33,6 +33,7 @@ export default {
     ]
   },
   plugins: [
+    new webpack.ProgressPlugin(),
     new webpack.DefinePlugin({
       config: JSON.stringify({
         options: clientOptions,
@@ -44,8 +45,11 @@ export default {
         }
       })
     }),
+    isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
+    isProduction && new webpack.LoaderOptionsPlugin({
+      minimize: true
+    }),
     isProduction && new webpack.optimize.UglifyJsPlugin({
-      minimize: true,
       comments: false
     })
   ].filter(Boolean),

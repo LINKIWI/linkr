@@ -90,7 +90,7 @@ export default class Header extends React.Component {
               return (
                 <Link
                   key={`link_${idx}`}
-                  className={`${idx === selectIndex ? 'link-selected' : ''} margin--right`}
+                  className={`header-link-item ${idx === selectIndex ? 'link-selected' : ''} margin--right`}
                   to={link.url}
                 >
                   {link.name}

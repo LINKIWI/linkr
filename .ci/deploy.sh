@@ -14,7 +14,7 @@ source env/bin/activate
 
 # Install step
 pip install -r requirements.txt
-npm install
+npm install --production=false
 
 # Build SCSS and Javascript module bundle
 npm run build

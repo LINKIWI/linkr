@@ -1,4 +1,4 @@
-import {db} from '../app';
+/* global window */
 
 const KEY_RECENT_LINKS = 'recent-links';
 
@@ -12,7 +12,9 @@ function addRecentLink(alias) {
   // Removing the alias followed by pushing it to the end of the array has the effect of bringing
   // a previously-accessed alias to the head of the recent links array.
   removeRecentLink(alias);
-  db.get(KEY_RECENT_LINKS).push(alias).write();
+  const recentLinks = getRecentLinks();
+  const updatedRecentLinks = recentLinks.concat(alias);
+  window.localStorage.setItem(KEY_RECENT_LINKS, JSON.stringify(updatedRecentLinks));
 }
 
 /**
@@ -24,7 +26,7 @@ function removeRecentLink(alias) {
   const recentLinks = getRecentLinks();
   const updatedRecentLinks = recentLinks.filter((existingAlias) => existingAlias !== alias);
 
-  db.set(KEY_RECENT_LINKS, updatedRecentLinks).write();
+  window.localStorage.setItem(KEY_RECENT_LINKS, JSON.stringify(updatedRecentLinks));
 }
 
 /**
@@ -33,7 +35,9 @@ function removeRecentLink(alias) {
  * @returns {Array} Aliases in the most-recently-accessed order according to local history.
  */
 function getRecentLinks() {
-  return (db.get(KEY_RECENT_LINKS).value() || []).reverse().filter(Boolean);
+  const value = window.localStorage.getItem(KEY_RECENT_LINKS);
+  const recentLinks = value ? JSON.parse(value) : [];
+  return recentLinks.reverse().filter(Boolean);
 }
 
 export default {
