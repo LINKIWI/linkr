@@ -15,11 +15,11 @@ export default {
     bundle: './scripts/client.js'
   },
   output: {
-    path: './frontend/static/dist',
+    path: path.resolve(__dirname, '../../static/dist'),
     filename: '[name].js'
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /frontend\/.+\.js$/,
         exclude: /node_modules/,
@@ -43,6 +43,10 @@ export default {
           'NODE_ENV': JSON.stringify('production')
         }
       })
+    }),
+    isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
+    isProduction && new webpack.LoaderOptionsPlugin({
+      minimize: true
     }),
     isProduction && new webpack.optimize.UglifyJsPlugin({
       minimize: true,
