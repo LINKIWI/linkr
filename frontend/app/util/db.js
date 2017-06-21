@@ -40,8 +40,19 @@ function getRecentLinks() {
   return recentLinks.reverse().filter(Boolean);
 }
 
+/**
+ * Execute the specified function only if window.localStorage is defined; otherwise, noop.
+ *
+ * @param {Function} func Function to safely wrap.
+ * @returns {Function} Either the original function if window.localStorage is defined; otherwise, a
+ *                     noop function.
+ */
+function withLocalStorage(func) {
+  return window.localStorage ? func : () => {};
+}
+
 export default {
-  addRecentLink,
-  removeRecentLink,
-  getRecentLinks
+  addRecentLink: withLocalStorage(addRecentLink),
+  removeRecentLink: withLocalStorage(removeRecentLink),
+  getRecentLinks: withLocalStorage(getRecentLinks)
 };
