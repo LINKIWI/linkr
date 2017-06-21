@@ -58,7 +58,7 @@ class URI:
         :return: This URI's path or a secure representation thereof.
         """
         secure_frontend_requests = config.options.server('secure_frontend_requests')
-        is_api_uri = cls.path.startswith('/linkr/api')
+        is_api_uri = cls.path.startswith('/linkr/api/')
 
         # API endpoints should be encrypted if this endpoint is specified as frontend-only and the
         # relevant configuration option is enabled.
