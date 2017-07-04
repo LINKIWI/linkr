@@ -27,7 +27,9 @@ export default class Button extends React.Component {
    * mousing out, so that the focus style does not clash with the hover style.
    */
   handleMouseOut() {
-    this.button.blur();
+    if (this.button) {
+      this.button.blur();
+    }
   }
 
   render() {
