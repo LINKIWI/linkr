@@ -99,7 +99,7 @@ Almost there! An Apache virtual host config sample using WSGI:
     ServerName t.example.com
 
     AliasMatch "^/(linkr/(?!.*api/).+)?$" /path/to/linkr/frontend/static/dist/index.html
-    Alias /static /path/to/linkr/frontend/static
+    Alias /linkr/static /path/to/linkr/frontend/static
 
     WSGIScriptAlias / /path/to/linkr/linkr.wsgi
 
