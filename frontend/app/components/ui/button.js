@@ -21,13 +21,30 @@ export default class Button extends React.Component {
     onClick: noop
   };
 
+  constructor(props) {
+    super(props);
+
+    this.setRef = this.setRef.bind(this);
+    this.state = {};
+  }
+
   /**
    * For accessibility compatibility: by default, after clicking on the button, the DOM element
    * will still remain in focus. This workaround forces the DOM to un-focus the element after
    * mousing out, so that the focus style does not clash with the hover style.
    */
   handleMouseOut() {
-    this.button.blur();
+    const {button} = this.state;
+
+    if (button) {
+      button.blur();
+    }
+  }
+
+  setRef(ref) {
+    if (!this.state.button) {
+      this.setState({button: ref});
+    }
   }
 
   render() {
@@ -35,9 +52,7 @@ export default class Button extends React.Component {
 
     return (
       <button
-        ref={(elem) => {
-          this.button = elem;
-        }}
+        ref={this.setRef}
         className={`button ${disabled ? 'disabled' : ''} ${className}`}
         style={style}
         onClick={disabled ? noop : onClick}

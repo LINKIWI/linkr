@@ -16,7 +16,7 @@ function fontFaceStyle(name, data, file) {
     @font-face {
       font-family: '${name}';
       src: url(data:application/x-font-ttf;base64,${data}),
-           url('/static/fonts/${file}');
+           url('/linkr/static/fonts/${file}');
     }
   `;
 }
