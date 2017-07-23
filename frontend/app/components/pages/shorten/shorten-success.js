@@ -33,7 +33,7 @@ class ShortenSuccess extends React.Component {
       json: {
         alias: this.props.params.alias
       }
-    }, (err, resp, data) => {  // eslint-disable-line handle-callback-err
+    }, (err, resp, data = {}) => {  // eslint-disable-line handle-callback-err
       this.setState({data});
       return done();
     }));
