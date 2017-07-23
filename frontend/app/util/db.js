@@ -14,7 +14,8 @@ function addRecentLink(alias) {
   removeRecentLink(alias);
   const recentLinks = getRecentLinks();
   const updatedRecentLinks = recentLinks.concat(alias);
-  window.localStorage.setItem(KEY_RECENT_LINKS, JSON.stringify(updatedRecentLinks));
+
+  setItem(KEY_RECENT_LINKS, JSON.stringify(updatedRecentLinks));
 }
 
 /**
@@ -26,7 +27,7 @@ function removeRecentLink(alias) {
   const recentLinks = getRecentLinks();
   const updatedRecentLinks = recentLinks.filter((existingAlias) => existingAlias !== alias);
 
-  window.localStorage.setItem(KEY_RECENT_LINKS, JSON.stringify(updatedRecentLinks));
+  setItem(KEY_RECENT_LINKS, JSON.stringify(updatedRecentLinks));
 }
 
 /**
@@ -38,6 +39,22 @@ function getRecentLinks() {
   const value = window.localStorage.getItem(KEY_RECENT_LINKS);
   const recentLinks = value ? JSON.parse(value) : [];
   return recentLinks.reverse().filter(Boolean);
+}
+
+/**
+ * Wrapper over localStorage.setItem to gracefully fail on errors.
+ *
+ * @param {String} key Local storage item key.
+ * @param {String} value Local storage item value for this key.
+ */
+function setItem(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (e) {
+    // Though localStorage and setItem are defined, some browsers will throw on every invocation if
+    // the client has disallowed storage of any persistent data.
+    // It's safe to noop here since these functions have no other side effects.
+  }
 }
 
 /**
