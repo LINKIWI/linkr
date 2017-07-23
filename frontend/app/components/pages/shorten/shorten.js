@@ -32,7 +32,7 @@ class Shorten extends React.Component {
     super(props);
 
     this.state = {submitStatus: {}};
-    this.randomURL = shortenData.examples[Math.trunc(Math.random() * shortenData.examples.length)];
+    this.randomURL = shortenData.examples[Math.floor(Math.random() * shortenData.examples.length)];
     this.randomAlias = generateRandomAlias(10);
   }
 
