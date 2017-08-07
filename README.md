@@ -158,6 +158,8 @@ Note that all of these secrets are bundled into the frontend application at buil
 |`database.password`|The password of the MySQL user for accessing the above database.|
 |`redis.host`|The hostname of the Redis datastore.|
 |`redis.port`|The port of the Redis datastore.|
+|`statsd.host`|The hostname of the Statsd server. *If you don't use Statsd, leave this as default*|
+|`statsd.port`|The port of the Statsd server. *If you don't use Statsd, leave this as default*|
 
 ## Development
 

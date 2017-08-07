@@ -2,6 +2,7 @@ import threading
 import time
 from functools import wraps
 
+import statsd
 import strgen
 from flask import make_response
 from flask import request
@@ -15,6 +16,36 @@ import util.response
 from linkr import cache
 
 COOKIE_SPA_TOKEN = 'linkr-spa-token'
+
+
+def time_request(bucket):
+    """
+    Time the request and send the duration to statsd as a timing event under the specified bucket.
+
+    This decorator sits at the highest level, and is used as follows:
+
+      @time_request('my.bucket.name')
+      @app.route('/')
+      def view_function():
+          pass
+
+    :param bucket: Name of the statsd bucket for this latency stat.
+    """
+    def decorator(func):
+        @wraps(func)
+        def proxy_func_with_timing(*args, **kwargs):
+            start_time = time.time()
+
+            ret = func(*args, **kwargs)
+
+            duration = (time.time() - start_time) * 1000
+            statsd.timing(bucket, duration)
+
+            return ret
+
+        return proxy_func_with_timing
+
+    return decorator
 
 
 def api_method(func):

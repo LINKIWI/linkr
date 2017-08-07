@@ -1,6 +1,7 @@
 import os
 
 import redis
+import statsd
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
@@ -57,3 +58,14 @@ def init_sentry():
     sentry = Sentry(dsn=config.secrets.server('sentry_server_dsn'))
     sentry.init_app(app)
     return sentry
+
+
+def init_statsd():
+    """
+    Initialize the statsd client.
+    """
+    statsd.init_statsd({
+        'STATSD_HOST': config.secrets.server('statsd.host'),
+        'STATSD_PORT': config.secrets.server('statsd.port'),
+        'STATSD_BUCKET_PREFIX': 'linkr',
+    })
