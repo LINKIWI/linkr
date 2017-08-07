@@ -12,6 +12,7 @@ from util.exception import *
 @optional_login_api
 @require_frontend_api
 @api_method
+@time_request('latency.api.user.add')
 def api_add_user(data):
     """
     Add a new user.
@@ -63,6 +64,7 @@ def api_add_user(data):
 @require_login_api()
 @require_frontend_api
 @api_method
+@time_request('latency.api.user.delete')
 def api_deactivate_user(data):
     """
     Deactivate a user.
@@ -99,6 +101,7 @@ def api_deactivate_user(data):
 @require_login_api()
 @require_frontend_api
 @api_method
+@time_request('latency.api.user.update_password')
 def api_update_user_password(data):
     """
     Update the password for the currently logged in user.
@@ -135,6 +138,7 @@ def api_update_user_password(data):
 @require_login_api()
 @require_frontend_api
 @api_method
+@time_request('latency.api.user.regenerate_api_key')
 def api_regenerate_user_api_key(data):
     """
     Regenerate the API key for the currently logged in user.
@@ -168,6 +172,7 @@ def api_regenerate_user_api_key(data):
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.user.recent')
 def api_recent_users(data):
     """
     Retrieve a paginated list of all recently created users.
@@ -193,6 +198,7 @@ def api_recent_users(data):
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.user.search')
 def api_user_search(data):
     """
     Search for users by username.

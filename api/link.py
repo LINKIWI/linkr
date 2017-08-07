@@ -14,6 +14,7 @@ from util.exception import *
 @require_form_args()
 @optional_login_api
 @api_method
+@time_request('latency.api.link.details')
 def api_link_details(data):
     """
     Retrieve details for a particular link by ID or alias.
@@ -64,6 +65,7 @@ def api_link_details(data):
 @optional_login_api
 @require_frontend_api
 @api_method
+@time_request('latency.api.link.increment_hits')
 def api_increment_link_hits(data):
     """
     Increment the number of hits for a particular link.
@@ -104,6 +106,7 @@ def api_increment_link_hits(data):
 @require_login_api(only_if=config.options.server('require_login_to_create'))
 @optional_login_api
 @api_method
+@time_request('latency.api.link.add')
 def api_add_link(data):
     """
     Add a new link (alias <-> outgoing URL association).
@@ -152,6 +155,7 @@ def api_add_link(data):
 @require_form_args(['link_id', 'alias', 'outgoing_url'], allow_blank_values=True)
 @require_login_api()
 @api_method
+@time_request('latency.api.link.edit')
 def api_edit_link(data):
     """
     Edit an existing link's details.
@@ -208,6 +212,7 @@ def api_edit_link(data):
 @require_login_api()
 @require_frontend_api
 @api_method
+@time_request('latency.api.link.update_password')
 def api_update_link_password(data):
     """
     Update or remove the password of an existing link.
@@ -242,6 +247,7 @@ def api_update_link_password(data):
 @require_form_args(['link_id'])
 @require_login_api()
 @api_method
+@time_request('latency.api.link.delete')
 def api_delete_link(data):
     """
     Delete an existing link.
@@ -274,6 +280,7 @@ def api_delete_link(data):
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.link.hits')
 def api_link_hits(data):
     """
     Retrieve a paginated list of hits for a particular link.
@@ -307,6 +314,7 @@ def api_link_hits(data):
 @require_login_api()
 @require_frontend_api
 @api_method
+@time_request('latency.api.link.for_user')
 def api_links_for_user(data):
     """
     Retrieve all links for a user. If a user_id is specified, results are always returned if the
@@ -349,6 +357,7 @@ def api_links_for_user(data):
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.link.recent')
 def api_recent_links(data):
     """
     Retrieve a paginated list of all recently created links.
@@ -373,6 +382,7 @@ def api_recent_links(data):
 @require_form_args(['link_id'])
 @require_login_api()
 @api_method
+@time_request('latency.api.link.preview')
 def api_link_preview(data):
     """
     Preview the metadata of a link's outgoing URL.
@@ -411,6 +421,7 @@ def api_link_preview(data):
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.link.search')
 def api_link_alias_search(data):
     """
     Search for links by alias.
