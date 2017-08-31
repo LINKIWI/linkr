@@ -11,6 +11,7 @@ from util.exception import *
 @app.route(AuthCheckURI.get_path(), methods=AuthCheckURI.methods)
 @require_form_args()
 @api_method
+@time_request('latency.api.auth.check')
 def api_auth_check(data):
     """
     Check if any user is currently authenticated.
@@ -34,6 +35,7 @@ def api_auth_check(data):
 @require_form_args(['username', 'password', 'remember_me'])
 @require_frontend_api
 @api_method
+@time_request('latency.api.auth.login')
 def api_auth_login(data):
     """
     Attempt to authenticate the specified user.
@@ -64,6 +66,7 @@ def api_auth_login(data):
         return util.response.undefined_error()
 
 
+@time_request('latency.api.auth.logout')
 @app.route(AuthLogoutURI.get_path(), methods=AuthLogoutURI.methods)
 @require_form_args()
 @require_frontend_api

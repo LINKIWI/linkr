@@ -9,6 +9,7 @@ from linkr import app
 from uri.link import *
 from uri.main import *
 from util.decorators import require_form_args
+from util.decorators import time_request
 
 # Server-side cache of rendered templates whose contents are persistent across requests.
 template_cache = {}
@@ -16,6 +17,7 @@ template_cache = {}
 
 @app.route(LinkAliasRedirectURI.path, methods=LinkAliasRedirectURI.methods)
 @require_form_args([])
+@time_request('latency.view.main.alias_route')
 def alias_route(data, alias):
     """
     Server-side link alias processing. For GET requests, will respond with a 302 redirect to the
@@ -74,6 +76,7 @@ def alias_route(data, alias):
 
 @app.route(HomeURI.path, defaults={'path': ''}, methods=HomeURI.methods)
 @app.route(DefaultURI.path, methods=DefaultURI.methods)
+@time_request('latency.view.main.frontend')
 def frontend(path=''):
     """
     Serve the frontend application. All rendering logic is handled client-side.

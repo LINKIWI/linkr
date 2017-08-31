@@ -14,6 +14,7 @@ from util.decorators import *
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.misc.config')
 def api_config(data):
     """
     Retrieve the current application configuration options.
@@ -43,6 +44,7 @@ def api_config(data):
 @require_login_api(admin_only=True)
 @require_frontend_api
 @api_method
+@time_request('latency.api.misc.version')
 def api_version(data):
     """
     Retrieve the deployed instance's version information via Git.

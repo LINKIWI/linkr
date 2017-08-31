@@ -17,7 +17,7 @@ export default class RecentLinks extends React.Component {
     super();
 
     this.state = {
-      recentLinks: db.getRecentLinks().slice(0, 10)
+      recentLinks: (db.getRecentLinks() || []).slice(0, 10)
     };
   }
 
