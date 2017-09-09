@@ -125,6 +125,7 @@ The default database is MySQL, but you can change this to any database that is c
 
 |Key|Value|
 |---|-----|
+|`title`|The main page title on all Linkr frontend pages.|
 |`piwik`|An object of options to pass to [`piwik-react-router`](https://www.npmjs.com/package/piwik-react-router). *If your production infrastructure does not make use of [Piwik](http://piwik.org/), leave this as null*|
 |`enable_recent_links`|True to allow client-side storage and display of recently created and accessed links on the home page.|
 

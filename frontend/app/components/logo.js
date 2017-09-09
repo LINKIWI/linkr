@@ -1,4 +1,7 @@
+/* global config */
+
 import browserHistory from 'react-router/lib/browserHistory';
+import dottie from 'dottie';
 import React from 'react';
 
 import context from '../util/context';
@@ -12,7 +15,9 @@ const Logo = () => (
       browserHistory.push(context.uris.HomeURI);
     }}
   >
-    <span className="logo sans-serif bold text-primary">linkr</span>
+    <span className="logo sans-serif bold text-primary">
+      {dottie.get(config, 'options.title', 'linkr')}
+    </span>
   </span>
 );
 
