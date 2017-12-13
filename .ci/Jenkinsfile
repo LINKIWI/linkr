@@ -1,0 +1,74 @@
+pipeline {
+    agent {
+        dockerfile {
+            dir '.ci'
+        }
+    }
+
+    stages {
+        stage('Install') {
+            parallel {
+                stage('Python') {
+                    steps {
+                        sh 'sudo pip install -r requirements.txt'
+                    }
+                }
+                stage('Node') {
+                    steps {
+                        sh 'npm-s3 install'
+                    }
+                }
+                stage('Environment') {
+                    steps {
+                        sh 'cp config/options/client.json.template config/options/client.json'
+                        sh 'cp config/options/server.json.template config/options/server.json'
+                        sh 'cp config/secrets/client.json.template config/secrets/client.json'
+                        sh 'cp config/secrets/server.json.template config/secrets/server.json'
+                    }
+                }
+            }
+        }
+        stage('Frontend') {
+            parallel {
+                stage('Lint') {
+                    steps {
+                        sh 'npm run lint-frontend'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        sh 'npm run test-frontend'
+                    }
+                }
+                stage('Build') {
+                    steps {
+                        sh 'npm run build'
+                    }
+                }
+            }
+        }
+        stage('Backend') {
+            parallel {
+                stage('Lint') {
+                    steps {
+                        sh 'npm run lint-backend'
+                    }
+                }
+                stage('Test') {
+                    steps {
+                        sh 'npm run test-backend'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            deleteDir()
+        }
+        failure {
+            echo 'tofo'
+        }
+    }
+}
