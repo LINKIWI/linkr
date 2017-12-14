@@ -16,7 +16,6 @@ before_script:
   - cp config/options/server.json.template config/options/server.json
   - cp config/secrets/client.json.template config/secrets/client.json
   - cp config/secrets/server.json.template config/secrets/server.json
-  - mysql -u root < .ci/db-init.sql
 script:
   - npm run lint
   - npm run build

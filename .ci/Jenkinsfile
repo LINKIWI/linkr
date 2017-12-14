@@ -67,8 +67,5 @@ pipeline {
         always {
             deleteDir()
         }
-        failure {
-            echo 'tofo'
-        }
     }
 }
