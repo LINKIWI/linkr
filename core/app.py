@@ -31,13 +31,11 @@ def init_db():
 
 
 def init_cache():
-    redis_password = config.secrets.server('redis.password')
-    redis_password = None if redis_password == 'password' else redis_password
     return redis.StrictRedis(
         host=config.secrets.server('redis.host'),
         port=config.secrets.server('redis.port'),
         db=0,
-        password=redis_password,
+        password=config.secrets.server('redis.password'),
     )
 
 
