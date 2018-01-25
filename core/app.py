@@ -35,6 +35,7 @@ def init_cache():
         host=config.secrets.server('redis.host'),
         port=config.secrets.server('redis.port'),
         db=0,
+        password=config.secrets.server('redis.password'),
     )
 
 
