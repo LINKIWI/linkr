@@ -32,7 +32,7 @@ Linkr is a self-hosted URL shortener built on modern web technologies that is fa
 * You need a MySQL database. ([Reference](https://dev.mysql.com/doc/)) (You can use almost any other database too; see "Alternate databases")
 * You need Redis. ([Reference](https://redis.io/download))
 * You need Apache, with `mod_wsgi` installed. ([Reference](https://modwsgi.readthedocs.io/en/develop/))
-* All following instructions assume Linux.
+* All following instructions assume Debian Linux.
 
 #### Instructions
 
