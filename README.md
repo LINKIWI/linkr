@@ -7,10 +7,6 @@
 
 Linkr is a self-hosted URL shortener built on modern web technologies that is fast, minimalistic, and developer-friendly.
 
-## Demo
-
-[Live demo](https://demo.linkrapp.com)
-
 ## Overview and Features
 
 * Minimalistic, modern, and responsive frontend interface for both mobile and desktop web
