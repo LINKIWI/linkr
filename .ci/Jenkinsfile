@@ -66,6 +66,9 @@ pipeline {
                     }
                 }
                 stage('Build') {
+                    environment {
+                        NODE_ENV = 'production'
+                    }
                     steps {
                         sh '. env/bin/activate && npm run build'
                     }
