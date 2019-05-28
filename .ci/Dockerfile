@@ -1,3 +1,3 @@
-FROM docker.internal.kevinlin.info/infra/ci-base:0.1.0
+FROM docker.internal.kevinlin.info/infra/ci-base:0.2.2
 
-RUN apt-get install -y python-dev libmysqlclient-dev
+RUN sudo apt-get update && sudo apt-get install -y python-dev libmysqlclient-dev

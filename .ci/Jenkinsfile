@@ -6,25 +6,49 @@ pipeline {
         }
     }
 
+    options {
+        withAWS(
+            endpointUrl: 'https://storage.kevinlin.info',
+            credentials: 'storage-internal',
+        )
+    }
+
     stages {
+        stage('Environment') {
+            steps {
+                s3Download(
+                    bucket: 'internal',
+                    path: 'resources/linkr/config/options/client.json',
+                    file: 'config/options/client.json',
+                )
+                s3Download(
+                    bucket: 'internal',
+                    path: 'resources/linkr/config/options/server.json',
+                    file: 'config/options/server.json',
+                )
+                s3Download(
+                    bucket: 'internal',
+                    path: 'resources/linkr/config/secrets/client.json',
+                    file: 'config/secrets/client.json',
+                )
+                s3Download(
+                    bucket: 'internal',
+                    path: 'resources/linkr/config/secrets/server.json',
+                    file: 'config/secrets/server.json',
+                )
+            }
+        }
         stage('Install') {
             parallel {
                 stage('Python') {
                     steps {
-                        sh 'sudo pip install -r requirements.txt'
+                        sh 'virtualenv --always-copy env'
+                        sh '. env/bin/activate && pip install -r requirements.txt'
                     }
                 }
                 stage('Node') {
                     steps {
                         sh 'npm-s3 install'
-                    }
-                }
-                stage('Environment') {
-                    steps {
-                        sh 'cp config/options/client.json.template config/options/client.json'
-                        sh 'cp config/options/server.json.template config/options/server.json'
-                        sh 'cp config/secrets/client.json.template config/secrets/client.json'
-                        sh 'cp config/secrets/server.json.template config/secrets/server.json'
                     }
                 }
             }
@@ -43,7 +67,7 @@ pipeline {
                 }
                 stage('Build') {
                     steps {
-                        sh 'npm run build'
+                        sh '. env/bin/activate && npm run build'
                     }
                 }
             }
@@ -52,14 +76,25 @@ pipeline {
             parallel {
                 stage('Lint') {
                     steps {
-                        sh 'npm run lint-backend'
+                        sh '. env/bin/activate && npm run lint-backend'
                     }
                 }
                 stage('Test') {
                     steps {
-                        sh 'npm run test-backend'
+                        sh '. env/bin/activate && npm run test-backend'
                     }
                 }
+            }
+        }
+        stage('Release') {
+            steps {
+                sh 'virtualenv --relocatable env'
+                sh 'tar -czf release.tar.gz *'
+                s3Upload(
+                    bucket: 'internal',
+                    path: "deploy/${env.JOB_NAME}/${env.GIT_COMMIT}/",
+                    file: 'release.tar.gz',
+                )
             }
         }
     }
